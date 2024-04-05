@@ -1,0 +1,62 @@
+{
+  "suits": [
+    {
+      "type": "standard",
+      "color": "red",
+      "values": {
+        "type": "range",
+        "min": 1,
+        "max": 14
+      }
+    },
+    {
+      "type": "standard",
+      "color": "yellow",
+      "values": {
+        "type": "range",
+        "min": 1,
+        "max": 14
+      }
+    },
+    {
+      "type": "standard",
+      "color": "blue",
+      "values": {
+        "type": "range",
+        "min": 1,
+        "max": 14
+      }
+    },
+    {
+      "type": "trump",
+      "color": "black",
+      "values": {
+        "type": "range",
+        "min": 1,
+        "max": 14
+      }
+    }
+  ],
+  "specials": [
+    {
+      "name": "mermaid",
+      "count": 2
+    },
+    {
+      "name": "pirate",
+      "count": 5
+    },
+    {
+      "name": "skull_king",
+      "count": 1
+    },
+    {
+      "name": "escape",
+      "count": 5
+    },
+    {
+      "name": "jester",
+      "count": 1
+    }
+  ]
+}

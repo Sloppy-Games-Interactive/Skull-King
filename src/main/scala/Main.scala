@@ -1,5 +1,5 @@
-@main def hello(): Unit =
-  println("Hello world!")
-  println(msg)
+@main def run(): Unit =
+  println("Yo ho ho!")
+  println(s"played cards: ${cards}")
 
-def msg = "I was compiled by Scala 3. :)"
+def cards = ("Red 3", "Blue 12", "Red 7")

@@ -49,6 +49,14 @@
     {
       "name": "skull_king",
       "count": 1
+    },
+    {
+      "name": "escape",
+      "count": 5
+    },
+    {
+      "name": "jester",
+      "count": 1
     }
   ]
 }

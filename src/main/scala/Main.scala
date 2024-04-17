@@ -1,6 +1,7 @@
 @main def run(): Unit =
   println("Yo ho ho ho!")
   println("Hallo!")
-  println(s"played cards: ${cards}")
+  println(s"played cards: $deck")
 
-def cards = ("Red 3", "Blue 12", "Red 7")
+case class Deck(cards:List[Card])
+val deck: Deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)

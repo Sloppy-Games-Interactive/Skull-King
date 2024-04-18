@@ -6,10 +6,10 @@ import java.nio.charset.StandardCharsets
 class MainTest extends AnyWordSpec {
   "askHowManyPlayers" should {
     "return the correct number of players" in {
-      val input = new ByteArrayInputStream("3\n".getBytes(StandardCharsets.UTF_8))
-      val output = new ByteArrayOutputStream()
+      val input = ByteArrayInputStream("3\n".getBytes(StandardCharsets.UTF_8))
+      val output = ByteArrayOutputStream()
       Console.withIn(input) {
-        Console.withOut(new PrintStream(output)) {
+        Console.withOut(PrintStream(output)) {
           assert(askHowManyPlayers() == 3)
         }
       }
@@ -17,7 +17,7 @@ class MainTest extends AnyWordSpec {
     }
 
     "throw an exception for invalid input" in {
-      val input = new ByteArrayInputStream("invalid\n".getBytes(StandardCharsets.UTF_8))
+      val input = ByteArrayInputStream("invalid\n".getBytes(StandardCharsets.UTF_8))
       Console.withIn(input) {
         assertThrows[NumberFormatException] {
           askHowManyPlayers()
@@ -26,10 +26,10 @@ class MainTest extends AnyWordSpec {
     }
 
     "ask again if the number of players is too small" in {
-      val input = new ByteArrayInputStream("1\n3\n".getBytes(StandardCharsets.UTF_8))
-      val output = new ByteArrayOutputStream()
+      val input = ByteArrayInputStream("1\n3\n".getBytes(StandardCharsets.UTF_8))
+      val output = ByteArrayOutputStream()
       Console.withIn(input) {
-        Console.withOut(new PrintStream(output)) {
+        Console.withOut(PrintStream(output)) {
           assert(askHowManyPlayers() == 3)
         }
       }

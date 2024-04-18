@@ -1,3 +1,5 @@
+import scala.util.Random
+
 trait Readable {
   def readable: String
 }
@@ -31,7 +33,17 @@ case class Card(value:Int, suit:Readable) {
 val card = Card(10, Suit.Red)
 println(card)
 
-case class Deck(cards:List[Card])
+case class Deck(cards:List[Card]) {
+  var currentCards: List[Card] = cards
+  def shuffle(): Unit = {
+    currentCards = Random.shuffle(currentCards)
+  }
+  def draw(): Card = {
+    val drawnCard = currentCards.last
+    currentCards = currentCards.dropRight(1)
+    drawnCard
+  }
+}
 
 val redCards = (1 to 14).map(Card(_, Suit.Red))
 val blueCards = (1 to 14).map(Card(_, Suit.Blue))
@@ -40,4 +52,10 @@ val blackCards = (1 to 14).map(Card(_, Suit.Black))
 val specialCards = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid), Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))
 
 
-val deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
+
+var deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
+deck.currentCards
+deck.shuffle()
+deck.currentCards
+deck.draw()
+deck.currentCards

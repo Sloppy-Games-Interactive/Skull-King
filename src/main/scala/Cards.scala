@@ -28,16 +28,9 @@ case class Card(value:Int, suit:Readable) {
   }
 }
 
-val card = Card(10, Suit.Red)
-println(card)
-
-case class Deck(cards:List[Card])
-
-val redCards = (1 to 14).map(Card(_, Suit.Red))
-val blueCards = (1 to 14).map(Card(_, Suit.Blue))
-val yellowCards = (1 to 14).map(Card(_, Suit.Yellow))
-val blackCards = (1 to 14).map(Card(_, Suit.Black))
-val specialCards = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid), Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))
-
-
-val deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
+val redCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Red))
+val blueCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Blue))
+val yellowCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Yellow))
+val blackCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Black))
+val specialCards: Vector[Card] = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid),
+  Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))

@@ -19,5 +19,16 @@ class DeckTest extends  AnyWordSpec{
       assert(deck.cards.count(card => card.suit == SpecialCard.Pirate) == 1)
       assert(deck.cards.count(card => card.suit == SpecialCard.Escape) == 1)
     }
+    "be shuffleable" in {
+      val shuffled = deck.shuffle()
+
+      assert(deck.cards != shuffled.cards)
+    }
+    "be drawable" in {
+      val (card, newDeck) = deck.draw()
+
+      assert(newDeck.cards.length == 60)
+      assert(!newDeck.cards.contains(card))
+    }
   }
 }

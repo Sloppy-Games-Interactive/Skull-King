@@ -1,9 +1,9 @@
 import scala.annotation.tailrec
 import scala.io.StdIn.readLine
 
-@main def run(): Unit =
+@main def run(): Unit = {
   val numPlayers = askHowManyPlayers()
-  
+}
   
   
 @tailrec
@@ -20,6 +20,3 @@ def askHowManyPlayers(): Int = {
     numPlayers
   }
 }
-
-case class Deck(cards:List[Card])
-val deck: Deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)

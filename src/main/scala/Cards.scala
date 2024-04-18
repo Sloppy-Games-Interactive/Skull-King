@@ -22,17 +22,17 @@ enum SpecialCard(val readable: String) extends Readable {
   case Escape extends SpecialCard("🚣")
 }
 
-case class Card(value:Int, suit:Readable) {
+case class Card(suit: Readable, value: Int) {
   override def toString: String = {
     s"${suit.readable} $value"
   }
 }
 
-val redCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Red))
-val blueCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Blue))
-val yellowCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Yellow))
-val blackCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Black))
-val specialCards: Vector[Card] = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid),
-  Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))
+val redCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Red, value))
+val blueCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Blue, value))
+val yellowCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Yellow, value))
+val blackCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Black, value))
+val specialCards: Vector[Card] = Vector(Card(SpecialCard.Joker, 0), Card(SpecialCard.Mermaid, 0),
+  Card(SpecialCard.SkullKing, 0), Card(SpecialCard.Pirate, 0), Card(SpecialCard.Escape, 0))
 
 val allCards: List[Card] = (redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList

@@ -31,7 +31,7 @@ class DeckTest extends  AnyWordSpec{
       assert(!newDeck.cards.contains(card))
     }
     "be printable" in {
-      val card1 = Card(1, Suit.Red)
+      val card1 = Card(Suit.Red, 1)
       val printDeck = Deck(List(card1))
 
       assert(printDeck.toString() == "[ \uD83D\uDFE5 1 ]")

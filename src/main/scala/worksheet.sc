@@ -9,5 +9,5 @@ newDeck
 newDeck.draw()
 
 
-val card1 = Card(1, Suit.Red)
+val card1 = Card(Suit.Red, 1)
 val printDeck = Deck(List(card1))

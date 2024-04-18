@@ -30,5 +30,11 @@ class DeckTest extends  AnyWordSpec{
       assert(newDeck.cards.length == 60)
       assert(!newDeck.cards.contains(card))
     }
+    "be printable" in {
+      val card1 = Card(1, Suit.Red)
+      val printDeck = Deck(List(card1))
+
+      assert(printDeck.toString() == "[ \uD83D\uDFE5 1 ]")
+    }
   }
 }

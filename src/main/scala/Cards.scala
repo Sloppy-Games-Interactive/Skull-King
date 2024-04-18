@@ -24,7 +24,7 @@ enum SpecialCard(val readable: String) extends Readable {
 
 case class Card(value:Int, suit:Readable) {
   override def toString: String = {
-    s"Card: ${suit.readable} $value"
+    s"${suit.readable} $value"
   }
 }
 

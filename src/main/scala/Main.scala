@@ -4,9 +4,7 @@ import scala.io.StdIn.readLine
 @main def run(): Unit = {
   val numPlayers = askHowManyPlayers()
 
-  val deck: Deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
-  deck.shuffle()
-  println(s"Current deck: ${deck.currentCards}")
+  val deck = Deck(allCards)
 }
   
   

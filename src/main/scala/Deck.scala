@@ -1,15 +1,12 @@
 import scala.util.Random
 
 case class Deck(cards:List[Card]) {
-  var currentCards: List[Card] = cards
-  def shuffle(): Unit = {
-    currentCards = Random.shuffle(currentCards)
+  def shuffle(): Deck = {
+    Deck(Random.shuffle(cards))
   }
-  def draw(): Card = {
-    val drawnCard = currentCards.last // get the last card
-    currentCards = currentCards.dropRight(1) // remove the last card
-    drawnCard
+  def draw(): (Card, Deck) = {
+    (cards.last, Deck(cards.dropRight(1)))
   }
 }
 
-val deck: Deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
+val deck: Deck = Deck(allCards)

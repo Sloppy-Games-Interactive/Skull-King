@@ -34,3 +34,5 @@ val yellowCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Yellow))
 val blackCards: IndexedSeq[Card] = (1 to 14).map(Card(_, Suit.Black))
 val specialCards: Vector[Card] = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid),
   Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))
+
+val allCards: List[Card] = (redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList

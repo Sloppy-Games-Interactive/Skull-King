@@ -52,10 +52,30 @@ val blackCards = (1 to 14).map(Card(_, Suit.Black))
 val specialCards = Vector(Card(0, SpecialCard.Joker), Card(0, SpecialCard.Mermaid), Card(0, SpecialCard.SkullKing), Card(0, SpecialCard.Pirate), Card(0, SpecialCard.Escape))
 
 
+val allCards = (redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList
 
-var deck = Deck((redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList)
+
+val deck = Deck(allCards)
 deck.currentCards
 deck.shuffle()
 deck.currentCards
 deck.draw()
 deck.currentCards
+
+
+case class ImmutableDeck(cards:List[Card]) {
+  def shuffle(): ImmutableDeck = {
+    ImmutableDeck(Random.shuffle(cards))
+  }
+  def draw(): (Card, ImmutableDeck) = {
+    (cards.last, ImmutableDeck(cards.dropRight(1)))
+  }
+}
+
+val immDeck = ImmutableDeck(allCards)
+val shuffled = immDeck.shuffle()
+val (drawnCard, newDeck) = shuffled.draw()
+
+drawnCard
+newDeck
+newDeck.draw()

@@ -1,25 +1,6 @@
-import scala.annotation.targetName
-
 trait Readable {
   def readable: String
   def cardType: CardType
-}
-
-trait Ordered[A] {
-  def compare(that: A): Int
-
-  @targetName("lessThanComparable")
-  def <(that: A): Boolean = this.compare(that) < 0
-  @targetName("lessThanOrEqualComparable")
-  def <=(that: A): Boolean = this.compare(that) <= 0
-  @targetName("greaterThanComparable")
-  def >(that: A): Boolean = this.compare(that) > 0
-  @targetName("greaterThanOrEqualComparable")
-  def >=(that: A): Boolean = this.compare(that) >= 0
-  @targetName("equalsComparable")
-  def ==(that: A): Boolean = this.compare(that) == 0
-  @targetName("notEqualsComparable")
-  def !=(that: A): Boolean = this.compare(that) != 0
 }
 
 enum CardType {

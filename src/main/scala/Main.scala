@@ -3,6 +3,10 @@ import scala.io.StdIn.readLine
 
 @main def run(): Unit = {
   val numPlayers = askHowManyPlayers()
+  println(s"Cards: $fullDeck")
+  println("Shuffling...")
+  val shuffledDeck = fullDeck.shuffle()
+  println(s"Shuffled deck: $shuffledDeck")
 }
 
 @tailrec

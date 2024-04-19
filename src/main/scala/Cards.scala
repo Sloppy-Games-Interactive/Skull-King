@@ -43,16 +43,9 @@ case class Card(suit: Readable, value: Int) extends Ordered[Card] {
       // TODO handle both special
       // for now just pretend that first card always wins
       case (s1: SpecialCard, s2: SpecialCard) => 1
-      case (s1: Suit, s2: Suit) =>
-        if (s1.color == s2.color) {
-          this.value - that.value
-        } else {
-          if (s2.cardType == CardType.Trump) {
-            -1
-          } else {
-            1
-          }
-        }
+      case (s1: Suit, s2: Suit) if (s1.color == s2.color) => this.value - that.value
+      case (s1: Suit, s2: Suit) if (s2.cardType == CardType.Trump) => -1
+      case _ => 1
   }
 }
 

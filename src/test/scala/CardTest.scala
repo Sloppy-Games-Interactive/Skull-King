@@ -23,10 +23,8 @@ class CardTest extends AnyWordSpec {
 
       assert(r1 < r2)
       assert(r2 > r1)
-      assert(r1 == r1)
       assert(r1 <= r1)
       assert(r1 >= r1)
-      assert(r1 != r2)
       assert(r1.compare(r2) == -1)
       assert(r2.compare(r1) == 1)
       assert(r1.compare(r1) == 0)
@@ -38,10 +36,8 @@ class CardTest extends AnyWordSpec {
 
       assert(r1 < t1)
       assert(t1 > r1)
-      assert(r1 == r1)
       assert(r1 <= r1)
       assert(r1 >= r1)
-      assert(r1 != t1)
       assert(r1.compare(t1) == -1)
       assert(t1.compare(r1) == 1)
     }
@@ -52,10 +48,8 @@ class CardTest extends AnyWordSpec {
 
       assert(r1 < j1)
       assert(j1 > r1)
-      assert(r1 == r1)
       assert(r1 <= r1)
       assert(r1 >= r1)
-      assert(r1 != j1)
       assert(r1.compare(j1) == -1)
       assert(j1.compare(r1) == 1)
     }

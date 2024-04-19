@@ -26,9 +26,13 @@ class DeckTest extends  AnyWordSpec{
     }
     "be drawable" in {
       val (card, newDeck) = fullDeck.draw()
+      val (drawnCards, newDeck2) = fullDeck.draw(5)
 
-      assert(newDeck.cards.length == 60)
+      assert(newDeck.cards.length == (fullDeck.cards.length - 1))
       assert(!newDeck.cards.contains(card))
+      assert(drawnCards.length == 5)
+      assert(newDeck2.cards.length == (fullDeck.cards.length - 5))
+      assert(!newDeck2.cards.contains(drawnCards))
     }
     "be printable" in {
       val card1 = Card(Suit.Red, 1)

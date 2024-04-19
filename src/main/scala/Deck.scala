@@ -12,4 +12,4 @@ case class Deck(cards:List[Card]) {
   }
 }
 
-val deck: Deck = Deck(allCards)
+val fullDeck: Deck = Deck(allCards)

@@ -5,6 +5,23 @@ trait Readable {
   def cardType: CardType
 }
 
+trait Ordered[A] {
+  def compare(that: A): Int
+
+  @targetName("lessThanComparable")
+  def <(that: A): Boolean = this.compare(that) < 0
+  @targetName("lessThanOrEqualComparable")
+  def <=(that: A): Boolean = this.compare(that) <= 0
+  @targetName("greaterThanComparable")
+  def >(that: A): Boolean = this.compare(that) > 0
+  @targetName("greaterThanOrEqualComparable")
+  def >=(that: A): Boolean = this.compare(that) >= 0
+  @targetName("equalsComparable")
+  def ==(that: A): Boolean = this.compare(that) == 0
+  @targetName("notEqualsComparable")
+  def !=(that: A): Boolean = this.compare(that) != 0
+}
+
 enum CardType {
   case Standard
   case Trump
@@ -26,7 +43,7 @@ enum SpecialCard(val readable: String, val cardType:CardType) extends Readable {
   case Escape extends SpecialCard("🚣", CardType.Special)
 }
 
-class Card(val suit: Readable, val value: Int) {
+case class Card(suit: Readable, value: Int) extends Ordered[Card] {
   override def toString: String = {
     s"${suit.readable} $value"
   }
@@ -39,53 +56,22 @@ class Card(val suit: Readable, val value: Int) {
     case _ => false
   }
   def compare(that: Card): Int = {
-    if (this.isSpecial && !that.isSpecial) {
-      return 1
-    }
-
-    if (!this.isSpecial && that.isSpecial) {
-      return -1
-    }
-
-    if (this.isSpecial && that.isSpecial) {
-      // handle both special
+    (this.suit, that.suit) match
+      case (s1: SpecialCard, s2: Suit) => 1
+      case (s1: Suit, s2: SpecialCard) => -1
+      // TODO handle both special
       // for now just pretend that first card always wins
-      return 1
-    }
-
-    if (this.suit.eq(that.suit)) {
-      return this.value - that.value
-    }
-
-    if (that.isTrump) {
-      return -1
-    }
-
-    return 1
-  }
-  @targetName("lessThanComparableCard")
-  def <(that: Card): Boolean = {
-    this.compare(that) < 0
-  }
-  @targetName("greaterThanOrEqualComparableCard")
-  def <=(that: Card): Boolean = {
-    this.compare(that) <= 0
-  }
-  @targetName("greaterThanComparableCard")
-  def >(that: Card): Boolean = {
-    this.compare(that) > 0
-  }
-  @targetName("lessThanOrEqualComparableCard")
-  def >=(that: Card): Boolean = {
-    this.compare(that) >= 0
-  }
-  @targetName("equalsComparableCard")
-  def ==(that: Card): Boolean = {
-    this.compare(that) == 0
-  }
-  @targetName("notEqualsComparableCard")
-  def !=(that: Card): Boolean = {
-    this.compare(that) != 0
+      case (s1: SpecialCard, s2: SpecialCard) => 1
+      case (s1: Suit, s2: Suit) =>
+        if (s1.color == s2.color) {
+          this.value - that.value
+        } else {
+          if (s2.cardType == CardType.Trump) {
+            -1
+          } else {
+            1
+          }
+        }
   }
 }
 

@@ -4,31 +4,35 @@ import org.scalatest.wordspec.AnyWordSpec
 class DeckTest extends  AnyWordSpec{
   "Deck" should {
     "have 61 cards" in {
-      assert(deck.cards.length == 61)
+      assert(fullDeck.cards.length == 61)
     }
     "have 56 cards of each suit" in {
-      assert(deck.cards.count(_.suit == Suit.Red) == 14)
-      assert(deck.cards.count(_.suit == Suit.Black) == 14)
-      assert(deck.cards.count(_.suit == Suit.Blue) == 14)
-      assert(deck.cards.count(_.suit == Suit.Yellow) == 14)
+      assert(fullDeck.cards.count(_.suit == Suit.Red) == 14)
+      assert(fullDeck.cards.count(_.suit == Suit.Black) == 14)
+      assert(fullDeck.cards.count(_.suit == Suit.Blue) == 14)
+      assert(fullDeck.cards.count(_.suit == Suit.Yellow) == 14)
     }
     "have 5 special cards" in {
-      assert(deck.cards.count(card => card.suit == SpecialCard.Joker) == 1)
-      assert(deck.cards.count(card => card.suit == SpecialCard.Mermaid) == 1)
-      assert(deck.cards.count(card => card.suit == SpecialCard.SkullKing) == 1)
-      assert(deck.cards.count(card => card.suit == SpecialCard.Pirate) == 1)
-      assert(deck.cards.count(card => card.suit == SpecialCard.Escape) == 1)
+      assert(fullDeck.cards.count(card => card.suit == SpecialCard.Joker) == 1)
+      assert(fullDeck.cards.count(card => card.suit == SpecialCard.Mermaid) == 1)
+      assert(fullDeck.cards.count(card => card.suit == SpecialCard.SkullKing) == 1)
+      assert(fullDeck.cards.count(card => card.suit == SpecialCard.Pirate) == 1)
+      assert(fullDeck.cards.count(card => card.suit == SpecialCard.Escape) == 1)
     }
     "be shuffleable" in {
-      val shuffled = deck.shuffle()
+      val shuffled = fullDeck.shuffle()
 
-      assert(deck.cards != shuffled.cards)
+      assert(fullDeck.cards != shuffled.cards)
     }
     "be drawable" in {
-      val (card, newDeck) = deck.draw()
+      val (card, newDeck) = fullDeck.draw()
+      val (drawnCards, newDeck2) = fullDeck.draw(5)
 
-      assert(newDeck.cards.length == 60)
+      assert(newDeck.cards.length == (fullDeck.cards.length - 1))
       assert(!newDeck.cards.contains(card))
+      assert(drawnCards.length == 5)
+      assert(newDeck2.cards.length == (fullDeck.cards.length - 5))
+      assert(!newDeck2.cards.contains(drawnCards))
     }
     "be printable" in {
       val card1 = Card(Suit.Red, 1)

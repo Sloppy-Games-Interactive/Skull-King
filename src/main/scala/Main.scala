@@ -4,8 +4,7 @@ import scala.io.StdIn.readLine
 @main def run(): Unit = {
   val numPlayers = askHowManyPlayers()
 }
-  
-  
+
 @tailrec
 def askHowManyPlayers(): Int = {
   val minPlayers = 2

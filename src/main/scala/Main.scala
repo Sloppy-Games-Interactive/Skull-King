@@ -7,6 +7,20 @@ import scala.io.StdIn.readLine
   println("Shuffling...")
   val shuffledDeck = fullDeck.shuffle()
   println(s"Shuffled deck: $shuffledDeck")
+  println("")
+  println("")
+  var playerHands = createHandsForPlayers(numPlayers)
+
+  var deck = shuffledDeck
+  playerHands.zipWithIndex.foreach((h, i) => {
+    val (newDeck, hand) = h.drawFromDeck(deck, 5)
+    deck = newDeck
+    playerHands = playerHands.updated(i, hand)
+
+    println(s"Hand of Player ${i + 1}:")
+    println(hand)
+    println("")
+  })
 }
 
 @tailrec
@@ -22,4 +36,8 @@ def askHowManyPlayers(): Int = {
   } else {
     numPlayers
   }
+}
+
+def createHandsForPlayers(numPlayers: Int): List[Hand] = {
+  (1 to numPlayers).map(i => Hand()).toList
 }

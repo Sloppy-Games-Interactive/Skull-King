@@ -36,6 +36,12 @@ case class Card(suit: Readable, value: Int) extends Ordered[Card] {
     case _: Suit => suit.cardType == CardType.Trump
     case _ => false
   }
+
+  /**
+   *
+   * @param that
+   * @return
+   */
   def compare(that: Card): Int = {
     (this.suit, that.suit) match
       case (s1: SpecialCard, s2: Suit) => 1

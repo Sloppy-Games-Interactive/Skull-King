@@ -1,8 +1,9 @@
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, PrintStream}
 import java.nio.charset.StandardCharsets
+import java.util.regex.Pattern
 
 class MainSpec extends AnyWordSpec {
   "askHowManyPlayers" should {
@@ -36,8 +37,9 @@ class MainSpec extends AnyWordSpec {
         }
       }
       val expectedOutput = "How many players? Please enter a number between 2 and 4.\nHow many players?"
-      
-      output.toString(StandardCharsets.UTF_8.name()).trim should be(expectedOutput)
+      val outputString = output.toString(StandardCharsets.UTF_8.name())
+      // fix string for windows
+      outputString.trim().replace("\r\n", "\n") should include(expectedOutput)
     }
   }
 }

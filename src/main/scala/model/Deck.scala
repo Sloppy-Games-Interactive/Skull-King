@@ -6,7 +6,7 @@ import scala.util.Random
  *
  * @param cards is the list of cards in the deck
  */
-case class Deck(cards: List[Card]) {
+case class Deck(cards: List[Card] = List()) {
   /**
    * shuffle cards in the card list
    *

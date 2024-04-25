@@ -2,7 +2,12 @@ package model
 
 import model.{Card, Deck}
 
+/**
+ * Hand class for
+ * @param cards take a list of playable cards, default empty list of card
+ */
 class Hand(val cards: List[Card] = List()) {
+  def count: Int = cards.length
   /**
    * Play nth card from hand
    * @param position

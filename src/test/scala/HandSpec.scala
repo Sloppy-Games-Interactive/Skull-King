@@ -6,6 +6,14 @@ import org.scalatest.matchers.should.Matchers.*
 
 class HandSpec extends AnyWordSpec {
   "model.Hand" should {
+    "have count" in {
+      val r1 = Card(Suit.Red, 1)
+      val r2 = Card(Suit.Red, 2)
+      val cards = List(r1, r2)
+      val h = new Hand(cards)
+
+      h.count shouldEqual 2
+    }
     "play a card" in {
       val r1 = Card(Suit.Red, 1)
       val r2 = Card(Suit.Red, 2)

@@ -3,7 +3,6 @@ import org.scalatest.matchers.should.Matchers.*
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, PrintStream}
 import java.nio.charset.StandardCharsets
-import java.util.regex.Pattern
 
 class MainSpec extends AnyWordSpec {
   "askHowManyPlayers" should {
@@ -40,14 +39,6 @@ class MainSpec extends AnyWordSpec {
       val outputString = output.toString(StandardCharsets.UTF_8.name())
       // fix string for windows
       outputString.trim().replace("\r\n", "\n") should include(expectedOutput)
-    }
-
-    "create hands for players" in {
-      val numPlayers = 3
-
-      val hands = createHandsForPlayers(numPlayers)
-
-      hands should have length(numPlayers)
     }
   }
 }

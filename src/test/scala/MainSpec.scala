@@ -41,5 +41,13 @@ class MainSpec extends AnyWordSpec {
       // fix string for windows
       outputString.trim().replace("\r\n", "\n") should include(expectedOutput)
     }
+
+    "create hands for players" in {
+      val numPlayers = 3
+
+      val hands = createHandsForPlayers(numPlayers)
+
+      hands should have length(numPlayers)
+    }
   }
 }

@@ -1,8 +1,11 @@
+import model.{Card, Deck, Hand, Suit}
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
+
+
 
 class HandSpec extends AnyWordSpec {
-  "Hand" should {
+  "model.Hand" should {
     "play a card" in {
       val r1 = Card(Suit.Red, 1)
       val r2 = Card(Suit.Red, 2)
@@ -14,8 +17,9 @@ class HandSpec extends AnyWordSpec {
       newHand.cards should not contain r2
     }
     "draw from deck" in {
+      val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
       val h = new Hand()
-      val (newDeck, newHand) = h.drawFromDeck(fullDeck.shuffle(), 2)
+      val (newDeck, newHand) = h.drawFromDeck(deck.shuffle(), 2)
 
       newDeck.cards should not contain theSameElementsAs(newHand.cards)
       newHand.cards should have length 2

@@ -1,3 +1,7 @@
+package model
+
+import model.{Card, Deck}
+
 class Hand(val cards: List[Card] = List()) {
   /**
    * Play nth card from hand

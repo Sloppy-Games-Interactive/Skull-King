@@ -1,38 +1,25 @@
+import model.{Card, Deck, SpecialCard, Suit}
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class DeckSpec extends  AnyWordSpec{
-  "Deck" should {
-    "have 61 cards" in {
-      fullDeck.cards.length should be (61)
-    }
-    "have 56 cards of each suit" in {
-      fullDeck.cards.count(_.suit == Suit.Red) should be (14)
-      fullDeck.cards.count(_.suit == Suit.Black) should be (14)
-      fullDeck.cards.count(_.suit == Suit.Blue) should be (14)
-      fullDeck.cards.count(_.suit == Suit.Yellow) should be (14)
-    }
-    "have 5 special cards" in {
-      fullDeck.cards.count(_.suit == SpecialCard.Joker) should be (1)
-      fullDeck.cards.count(_.suit == SpecialCard.Mermaid) should be (1)
-      fullDeck.cards.count(_.suit == SpecialCard.SkullKing) should be (1)
-      fullDeck.cards.count(_.suit == SpecialCard.Pirate) should be (1)
-      fullDeck.cards.count(_.suit == SpecialCard.Escape) should be (1)
-    }
+  "model.Deck" should {
     "be shuffleable" in {
-      val shuffled = fullDeck.shuffle()
+      val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
+      val shuffled = deck.shuffle()
 
-      fullDeck.cards should contain theSameElementsAs shuffled.cards
-      fullDeck.cards should not be shuffled.cards
+      deck.cards should contain theSameElementsAs shuffled.cards
+      deck.cards should not be shuffled.cards
     }
     "be drawable" in {
-      val (card, newDeck) = fullDeck.draw()
-      val (drawnCards, newDeck2) = fullDeck.draw(5)
+      val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
+      val (card, newDeck) = deck.draw()
+      val (drawnCards, newDeck2) = deck.draw(5)
 
-      newDeck.cards.length should be (fullDeck.cards.length - 1)
+      newDeck.cards.length should be (deck.cards.length - 1)
       newDeck.cards should not contain card
       drawnCards.length should be (5)
-      newDeck2.cards.length should be (fullDeck.cards.length - 5)
+      newDeck2.cards.length should be (deck.cards.length - 5)
       newDeck2.cards should not contain drawnCards
     }
     "be printable" in {

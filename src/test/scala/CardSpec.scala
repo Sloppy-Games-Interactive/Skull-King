@@ -1,8 +1,9 @@
+import model.{Card, SpecialCard, Suit}
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class CardSpec extends AnyWordSpec {
-  "Card" should {
+  "model.Card" should {
     "have a readable" in {
       val card = Card(Suit.Red, 1)
       card.suit.readable should be("\uD83D\uDFE5")
@@ -18,7 +19,7 @@ class CardSpec extends AnyWordSpec {
       card.toString should be("🤡 0")
     }
 
-    "be comparable (Suit|Suit)" in {
+    "be comparable (model.Suit|model.Suit)" in {
       val r1 = Card(Suit.Red, 1)
       val r2 = Card(Suit.Red, 2)
 
@@ -32,7 +33,7 @@ class CardSpec extends AnyWordSpec {
       r1 should be >= r1
     }
 
-    "be comparable (Suit|Trump)" in {
+    "be comparable (model.Suit|Trump)" in {
       val r1 = Card(Suit.Red, 1)
       val t1 = Card(Suit.Black, 1)
       
@@ -45,7 +46,7 @@ class CardSpec extends AnyWordSpec {
       r1 should be >= r1
     }
 
-    "be comparable (Suit|Special)" in {
+    "be comparable (model.Suit|Special)" in {
       val r1 = Card(Suit.Red, 1)
       val j1 = Card(SpecialCard.Joker, 1)
       

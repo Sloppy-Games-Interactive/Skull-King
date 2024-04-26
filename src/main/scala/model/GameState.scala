@@ -61,7 +61,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
       s"""
         |Round: $round
         |Players:
-        |${players.sortBy(_.score).map((player: Player) => {(player.name + ":\n" + player.hand.toString.patch(0, "  ", 0)).patch(0, "  ", 0)}).mkString("\n")}
+        |${players.sortBy(_.score).map((player: Player) => {(player.name + ":\n" + player.hand.toString).patch(0, "  ", 0)}).mkString("\n")}
         |""".stripMargin
   }
 }

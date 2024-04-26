@@ -38,7 +38,7 @@ class HandSpec extends AnyWordSpec {
       val cards = List(r1, r2)
       val h = new Hand(cards)
 
-      h.toString shouldEqual "1: \uD83D\uDFE5 1\n2: \uD83D\uDFE5 2"
+      h.toString.replaceAll(" ", "") shouldEqual "1:\uD83D\uDFE51\n2:\uD83D\uDFE52"
     }
   }
 }

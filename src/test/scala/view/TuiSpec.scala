@@ -8,65 +8,79 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 class TuiSpec extends AnyWordSpec {
-  val tui: Tui = Tui(Controller())
+
 
   "n" should {
     "start new game" in {
-      val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("n", initialState)
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
 
-      initialState.round should be(5)
-      state.round should be(0)
+      controller.state.round should be(5)
+      tui.processInputLine("n")
+      controller.state.round should be(0)
     }
   }
   "p" should {
     "add player" in {
+      val controller = Controller(GameState(List(), 5))
+      val tui: Tui = Tui(controller)
+
         val input = ByteArrayInputStream("foo\n".getBytes(StandardCharsets.UTF_8))
-        val initialState = GameState()
-        val state = Console.withIn(input) {
-          tui.processInputLine("p", initialState)
+        Console.withIn(input) {
+          tui.processInputLine("p")
         }
 
-        state.players should have length 1
-        state.players.head.name should be("foo")
+        controller.state.players should have length 1
+        controller.state.players.head.name should be("foo")
     }
   }
   "r" should {
     "prepare round" in {
-      val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("r", initialState)
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
 
-      initialState.round should be(5)
-      state.round should be(6)
+      controller.state.round should be(5)
+      tui.processInputLine("r")
+      controller.state.round should be(6)
     }
   }
   "d" should {
     "deal cards" in {
-      val initialState = GameState(List(Player("foo")), 5).startNewRound
-      val state = tui.processInputLine("d", initialState)
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
 
-      initialState.players.head.hand.count should be(0)
-      state.players.head.hand.count should be(6)
+      controller.prepareRound
+      controller.state.players.head.hand.count should be(0)
+      tui.processInputLine("d")
+      controller.state.players.head.hand.count should be(6)
     }
   }
   "yo ho ho" should {
-    "start a new trick" in {
-      val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("yo ho ho", initialState)
+    "start a new trick" in { // TODO
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      tui.processInputLine("yo ho ho")
       assert(true)
     }
   }
   "q" should {
     "quit" in { // TODO
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
       val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("q", initialState)
+      val state = tui.processInputLine("q")
       assert(true)
     }
   }
   "_" should {
+    val controller = Controller(GameState(List(Player("foo")), 5))
+    val tui: Tui = Tui(controller)
+
     "parse player input" in { // TODO
       val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("TODO", initialState)
+      val state = tui.processInputLine("TODO")
       assert(true)
     }
   }

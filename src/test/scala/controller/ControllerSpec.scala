@@ -1,6 +1,5 @@
 package controller
 
-import model.GameState
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 import util.Observer
@@ -13,7 +12,7 @@ class ControllerSpec extends AnyWordSpec {
         override def update: Unit = updated += 1
       }
 
-      val controller = Controller(GameState())
+      val controller = Controller()
       "start new game" in {
         val observer = TestObserver()
         controller.add(observer)

@@ -1,48 +1,70 @@
 package controller
 
-import controller.Controller
-import model.{GameState, Player}
+import model.GameState
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
-import view.Tui
-
-import java.io.ByteArrayInputStream
-import java.nio.charset.StandardCharsets
+import util.Observer
 
 class ControllerSpec extends AnyWordSpec {
-  val controller = Controller()
+  "Controller" when {
+    "observed by an Observer" should {
+      class TestObserver extends Observer {
+        var updated: Int = 0
+        override def update: Unit = updated += 1
+      }
 
-  "Controller" should {
-    "start new game" in {
-      val state = controller.newGame
+      val controller = Controller(GameState())
+      "start new game" in {
+        val observer = TestObserver()
+        controller.add(observer)
 
-      state.round should be(0)
-    }
-    "add player" in {
-      val initialState = GameState(List(), 5)
-      val state = controller.addPlayer(initialState, "foo")
+        controller.newGame
 
-      state.players should have length 1
-      state.players.head.name should be("foo")
-    }
-    "prepare round" in {
-      val initialState = GameState(List(), 5)
-      val state = controller.prepareRound(initialState)
+        observer.updated should be(1)
+        controller.state.round should be(0)
+      }
+      "add player" in {
+        val observer = TestObserver()
+        controller.add(observer)
 
-      initialState.round should be(5)
-      state.round should be(6)
-    }
-    "deal cards" in {
-      val initialState = GameState(List(Player("foo")), 5).startNewRound
-      val state = controller.dealCards(initialState)
+        controller.newGame
+        controller.addPlayer("foo")
 
-      initialState.players.head.hand.count should be(0)
-      state.players.head.hand.count should be(6)
-    }
-    "start a new trick" in {
-      val initialState = GameState(List(), 5)
-      val state = controller.startTrick(initialState)
-      assert(true)
+        observer.updated should be(2)
+        controller.state.players should have length 1
+        controller.state.players.head.name should be("foo")
+      }
+      "prepare round" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.prepareRound
+
+        observer.updated should be(2)
+        controller.state.round should be(1)
+      }
+      "deal cards" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.addPlayer("foo")
+        controller.prepareRound
+        controller.dealCards
+
+        observer.updated should be(4)
+        controller.state.players.head.hand.count should be(1)
+      }
+      "start a new trick" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.startTrick
+        observer.updated should be(2)
+        assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
+      }
     }
   }
 }

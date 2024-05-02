@@ -1,15 +1,33 @@
 package controller
 
-import model.{Player, GameState}
+import model.{GameState, Player}
+import util.Observable
 
-class Controller {
-  def newGame: GameState = GameState()
+class Controller(var state: GameState = GameState()) extends Observable{
   
-  def addPlayer(state: GameState, name: String): GameState = state.addPlayer(Player(name))
+  def newGame: Unit = {
+    state = GameState()
+    notifyObservers()
+  }
   
-  def prepareRound(state: GameState): GameState = state.startNewRound
+  def addPlayer(name: String): Unit = {
+    state = state.addPlayer(Player(name))
+    notifyObservers()
+  }
   
-  def dealCards(state: GameState): GameState = state.dealCards
+  def prepareRound: Unit = {
+    state = state.startNewRound
+    notifyObservers()
+  }
   
-  def startTrick(state: GameState): GameState = state
+  def dealCards: Unit = {
+    state = state.dealCards
+    notifyObservers()
+  }
+  
+  def startTrick: Unit = {
+    //TODO: implement
+    notifyObservers()
+    
+  }
 }

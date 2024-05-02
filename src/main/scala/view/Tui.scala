@@ -2,22 +2,31 @@ package view
 
 import controller.Controller
 import model.GameState
+import util.Observer
+
 import scala.io.StdIn.readLine
 
-class Tui(controller: Controller) {
-  def processInputLine(input: String, state: GameState): GameState = {
+class Tui(controller: Controller) extends Observer {
+
+  controller.add(this)
+  
+  override def update: Unit = {
+    print(controller.state.getStatusAsTable)
+  }
+
+  def processInputLine(input: String): Unit = {
     input match {
-      case "q" => state
+      case "q" => 
       case "n" => controller.newGame
       case "p" => {
         println("Enter player name: ")
         val name = readLine()
-        controller.addPlayer(state, name)
+        controller.addPlayer(name)
       }
-      case "r" => controller.prepareRound(state)
-      case "d" => controller.dealCards(state)
-      case "yo ho ho" => controller.startTrick(state)
-      case _ => state // TODO parse player playing card
+      case "r" => controller.prepareRound
+      case "d" => controller.dealCards
+      case "yo ho ho" => controller.startTrick
+      case _ =>  // TODO parse player playing card
     }
   }
 }

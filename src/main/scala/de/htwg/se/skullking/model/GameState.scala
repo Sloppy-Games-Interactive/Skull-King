@@ -25,8 +25,8 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
     val blueCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Blue, value))
     val yellowCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Yellow, value))
     val blackCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Black, value))
-    val specialCards: Vector[Card] = Vector(Card(SpecialCard.Joker, 0), Card(SpecialCard.Mermaid, 0),
-      Card(SpecialCard.SkullKing, 0), Card(SpecialCard.Pirate, 0), Card(SpecialCard.Escape, 0))
+    val specialCards: Vector[Card] = Vector(Card(SpecialSuit.Joker, 0), Card(SpecialSuit.Mermaid, 0),
+      Card(SpecialSuit.SkullKing, 0), Card(SpecialSuit.Pirate, 0), Card(SpecialSuit.Escape, 0))
 
     // add all cards to one list
     val allCards: List[Card] = (redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList

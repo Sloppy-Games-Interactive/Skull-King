@@ -9,8 +9,6 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 class TuiSpec extends AnyWordSpec {
-
-
   "n" should {
     "start new game" in {
       val controller = Controller(GameState(List(Player("foo")), 5))

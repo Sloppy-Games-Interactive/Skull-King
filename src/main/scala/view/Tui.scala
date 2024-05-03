@@ -11,8 +11,8 @@ class Tui(controller: Controller) extends Observer {
   
   override def update(e: ObservableEvent): Unit = {
     e match {
-      case ControllerEvents.Quit => print("Goodbye!")
-      case _ => print(controller.state.getStatusAsTable)
+      case ControllerEvents.Quit => println("Goodbye!")
+      case _ => println(controller.state.getStatusAsTable)
     }
   }
 

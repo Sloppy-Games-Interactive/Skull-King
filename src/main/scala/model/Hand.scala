@@ -1,4 +1,13 @@
+package model
+
+import model.{Card, Deck}
+
+/**
+ * Hand class for
+ * @param cards take a list of playable cards, default empty list of card
+ */
 class Hand(val cards: List[Card] = List()) {
+  def count: Int = cards.length
   /**
    * Play nth card from hand
    * @param position
@@ -15,6 +24,6 @@ class Hand(val cards: List[Card] = List()) {
   }
   override def toString: String = {
     // print cards in hand as list like: 1: Red 1\n2: Red 2\n3: Black 1
-    cards.zipWithIndex.map { case (card, idx) => s"${idx + 1}: $card" }.mkString("\n")
+    cards.zipWithIndex.map { case (card, idx) => s"${idx + 1}: $card".patch(0, "    ", 0) }.mkString("\n")
   }
 }

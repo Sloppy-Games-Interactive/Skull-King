@@ -1,6 +1,7 @@
+package view
+
 import model.{Player, GameState}
 import controller.Controller
-import view.Tui
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 

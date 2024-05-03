@@ -1,4 +1,9 @@
+### Develop
 [![Coverage Status](https://coveralls.io/repos/github/Sloppy-Games-Interactive/Skull-King/badge.svg?branch=develop)](https://coveralls.io/github/Sloppy-Games-Interactive/Skull-King?branch=develop)
+![Build Status](https://github.com/Sloppy-Games-Interactive/Skull-King/actions/workflows/scala.yml/badge.svg?branch=develop)
+### Main
+[![Coverage Status](https://coveralls.io/repos/github/Sloppy-Games-Interactive/Skull-King/badge.svg?branch=main)](https://coveralls.io/github/Sloppy-Games-Interactive/Skull-King?branch=main)
+![Build Status](https://github.com/Sloppy-Games-Interactive/Skull-King/actions/workflows/scala.yml/badge.svg?branch=main)
 
 ## sbt project compiled with Scala 3
 

@@ -4,7 +4,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 
 class HandSpec extends AnyWordSpec {
-  "model.Hand" should {
+  "Hand" should {
     "have count" in {
       val r1 = Card(Suit.Red, 1)
       val r2 = Card(Suit.Red, 2)

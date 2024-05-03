@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/Sloppy-Games-Interactive/Skull-King/badge.svg?branch=main)](https://coveralls.io/github/Sloppy-Games-Interactive/Skull-King?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/Sloppy-Games-Interactive/Skull-King/badge.svg?branch=develop)](https://coveralls.io/github/Sloppy-Games-Interactive/Skull-King?branch=develop)
 
 ## sbt project compiled with Scala 3
 

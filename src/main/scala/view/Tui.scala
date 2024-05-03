@@ -1,8 +1,7 @@
 package view
 
-import controller.Controller
-import model.GameState
-import util.Observer
+import controller.{Controller, ControllerEvents}
+import util.{ObservableEvent, Observer}
 
 import scala.io.StdIn.readLine
 
@@ -10,13 +9,16 @@ class Tui(controller: Controller) extends Observer {
 
   controller.add(this)
   
-  override def update: Unit = {
-    print(controller.state.getStatusAsTable)
+  override def update(e: ObservableEvent): Unit = {
+    e match {
+      case ControllerEvents.Quit => print("Goodbye!")
+      case _ => print(controller.state.getStatusAsTable)
+    }
   }
 
   def processInputLine(input: String): Unit = {
     input match {
-      case "q" => 
+      case "q" => controller.quit
       case "n" => controller.newGame
       case "p" => {
         println("Enter player name: ")

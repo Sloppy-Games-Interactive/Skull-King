@@ -7,7 +7,7 @@ class ObservableSpec extends AnyWordSpec {
   "Observable" should {
     class TestObserver extends Observer {
       var updated: Int = 0
-      override def update: Unit = updated += 1
+      override def update(e: ObservableEvent): Unit = updated += 1
     }
 
     val observable = Observable()

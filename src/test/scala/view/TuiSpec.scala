@@ -65,13 +65,16 @@ class TuiSpec extends AnyWordSpec {
     }
   }
   "q" should {
-    "quit" in { // TODO
+    "quit" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
       val tui: Tui = Tui(controller)
 
-      val initialState = GameState(List(), 5)
-      val state = tui.processInputLine("q")
-      assert(true)
+      val out = new java.io.ByteArrayOutputStream()
+      Console.withOut(out) {
+        tui.processInputLine("q")
+      }
+
+      out.toString() should include("Goodbye")
     }
   }
   "_" should {

@@ -2,14 +2,14 @@ package controller
 
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
-import util.Observer
+import util.{ObservableEvent, Observer}
 
 class ControllerSpec extends AnyWordSpec {
   "Controller" when {
     "observed by an Observer" should {
       class TestObserver extends Observer {
         var updated: Int = 0
-        override def update: Unit = updated += 1
+        override def update(e: ObservableEvent): Unit = updated += 1
       }
 
       val controller = Controller()

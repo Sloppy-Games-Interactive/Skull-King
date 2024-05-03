@@ -1,19 +1,22 @@
 import org.scalatest.wordspec.AnyWordSpec
+import org.scalatest.matchers.should.Matchers.*
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, PrintStream}
 import java.nio.charset.StandardCharsets
+import java.util.regex.Pattern
 
-class MainTest extends AnyWordSpec {
+class MainSpec extends AnyWordSpec {
   "askHowManyPlayers" should {
     "return the correct number of players" in {
       val input = ByteArrayInputStream("3\n".getBytes(StandardCharsets.UTF_8))
       val output = ByteArrayOutputStream()
       Console.withIn(input) {
         Console.withOut(PrintStream(output)) {
-          assert(askHowManyPlayers() == 3)
+          askHowManyPlayers() should be(3)
         }
       }
-      assert(output.toString(StandardCharsets.UTF_8.name()).trim == "How many players?")
+      
+      output.toString(StandardCharsets.UTF_8.name()).trim should be("How many players?")
     }
 
     "throw an exception for invalid input" in {
@@ -30,11 +33,21 @@ class MainTest extends AnyWordSpec {
       val output = ByteArrayOutputStream()
       Console.withIn(input) {
         Console.withOut(PrintStream(output)) {
-          assert(askHowManyPlayers() == 3)
+          askHowManyPlayers() should be(3)
         }
       }
       val expectedOutput = "How many players? Please enter a number between 2 and 4.\nHow many players?"
-      assert(output.toString(StandardCharsets.UTF_8.name()).trim == expectedOutput)
+      val outputString = output.toString(StandardCharsets.UTF_8.name())
+      // fix string for windows
+      outputString.trim().replace("\r\n", "\n") should include(expectedOutput)
+    }
+
+    "create hands for players" in {
+      val numPlayers = 3
+
+      val hands = createHandsForPlayers(numPlayers)
+
+      hands should have length(numPlayers)
     }
   }
 }

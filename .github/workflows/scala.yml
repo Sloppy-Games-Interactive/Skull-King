@@ -27,8 +27,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build Project and export Coverage
-
+      - name: export Coverage
         run: |
           export CI_BRANCH="${GITHUB_REF#refs/heads/}"
           sbt clean coverage test coverageReport coveralls

@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends  AnyWordSpec{
-  "model.Deck" should {
+  "Deck" should {
     "be shuffleable" in {
       val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
       val shuffled = deck.shuffle()

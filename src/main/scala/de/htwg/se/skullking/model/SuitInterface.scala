@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.model
 
-trait ReadableCard {
+trait SuitInterface {
   def readable: String
 
   def cardType: CardType

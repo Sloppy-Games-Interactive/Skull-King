@@ -8,6 +8,7 @@ class GameStateSpec extends AnyWordSpec {
   val gameState: GameState = GameState()
 
   "GameState" should {
+
     "add a player" in {
       val p1 = Player("foo")
       val p2 = Player("bar")
@@ -61,5 +62,17 @@ class GameStateSpec extends AnyWordSpec {
       s2Table should include("foo")
       s2Table should include("bar")
     }
+
+    "set prediction" in {
+      val p1 = Player("foo")
+      val p2 = Player("bar")
+
+      val s1 = GameState(List(), 4).addPlayer(p1).addPlayer(p2)
+      val s2 = s1.startNewRound
+
+      val s3 = s2.setPrediction(p2, 3)
+      s3.players.head.prediction should be(3)
+    }
+
   }
 }

@@ -5,6 +5,7 @@ import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
 class ControllerSpec extends AnyWordSpec {
+
   "Controller" when {
     "observed by an Observer" should {
       class TestObserver extends Observer {
@@ -22,6 +23,7 @@ class ControllerSpec extends AnyWordSpec {
         observer.updated should be(1)
         controller.state.round should be(0)
       }
+
       "add player" in {
         val observer = TestObserver()
         controller.add(observer)
@@ -33,6 +35,7 @@ class ControllerSpec extends AnyWordSpec {
         controller.state.players should have length 1
         controller.state.players.head.name should be("foo")
       }
+
       "prepare round" in {
         val observer = TestObserver()
         controller.add(observer)
@@ -43,6 +46,7 @@ class ControllerSpec extends AnyWordSpec {
         observer.updated should be(2)
         controller.state.round should be(1)
       }
+
       "deal cards" in {
         val observer = TestObserver()
         controller.add(observer)
@@ -55,6 +59,7 @@ class ControllerSpec extends AnyWordSpec {
         observer.updated should be(4)
         controller.state.players.head.hand.count should be(1)
       }
+
       "start a new trick" in {
         val observer = TestObserver()
         controller.add(observer)
@@ -64,6 +69,20 @@ class ControllerSpec extends AnyWordSpec {
         observer.updated should be(2)
         assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
       }
+
+      "set prediction" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.addPlayer("foo")
+        controller.prepareRound
+        controller.setPrediction(controller.state.players.head, 3)
+
+        observer.updated should be(4)
+        controller.state.players.head.prediction should be(3)
+      }
+
     }
   }
 }

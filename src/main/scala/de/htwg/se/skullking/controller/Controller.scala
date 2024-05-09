@@ -31,6 +31,11 @@ class Controller(var state: GameState = GameState()) extends Observable{
     
   }
   
+  def setPrediction(player: Player, prediction: Int): Unit = {
+    state = state.setPrediction(player, prediction)
+    notifyObservers(ControllerEvents.PredictionSet)
+  }
+  
   def quit: Unit = {
     // TODO: implement save game state to file
     notifyObservers(ControllerEvents.Quit)
@@ -43,5 +48,6 @@ enum ControllerEvents extends ObservableEvent {
   case RoundPrepared
   case CardsDealt
   case TrickStarted
+  case PredictionSet
   case Quit
 }

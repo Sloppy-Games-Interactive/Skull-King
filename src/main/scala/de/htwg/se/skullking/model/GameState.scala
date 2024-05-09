@@ -17,6 +17,27 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
   def addPlayer(player: Player): GameState = GameState(player :: players, round, deck)
 
   /**
+   * set prediction for player
+   * @param player player object to set prediction
+   * @param prediction prediction value
+   * @return new GameState
+   */
+  def setPrediction(player: Player, prediction: Int): GameState = {
+    
+    GameState(
+      players.map((p: Player) => {
+        if (p.name == player.name) {
+          Player(p.name, p.hand, p.score, prediction)
+        } else {
+          p
+        }
+      }),
+      round,
+      deck
+    )
+  }
+
+  /**
    * start new game round with new deck
    * @return new GameState
    */
@@ -62,7 +83,9 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
       s"""
         |Round: $round
         |Players:
-        |${players.sortBy(_.score).map((player: Player) => {(player.name + ":\n" + player.hand.toString).patch(0, "  ", 0)}).mkString("\n")}
+        |${players.sortBy(_.score).map((player: Player) => {
+        (player.name + " Prediction: " + player.prediction + ":\n" + player.hand.toString).patch(0, "  ", 0)}).mkString("\n")
+      }
         |""".stripMargin
   }
 }

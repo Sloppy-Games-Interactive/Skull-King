@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 class TuiSpec extends AnyWordSpec {
+
   "n" should {
     "start new game" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
@@ -19,6 +20,7 @@ class TuiSpec extends AnyWordSpec {
       controller.state.round should be(0)
     }
   }
+
   "p" should {
     "add player" in {
       val controller = Controller(GameState(List(), 5))
@@ -33,6 +35,7 @@ class TuiSpec extends AnyWordSpec {
         controller.state.players.head.name should be("foo")
     }
   }
+
   "r" should {
     "prepare round" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
@@ -43,6 +46,7 @@ class TuiSpec extends AnyWordSpec {
       controller.state.round should be(6)
     }
   }
+
   "d" should {
     "deal cards" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
@@ -54,6 +58,49 @@ class TuiSpec extends AnyWordSpec {
       controller.state.players.head.hand.count should be(6)
     }
   }
+
+  "pt" should {
+    "set prediction" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.state.players.head.prediction should be(0)
+      val input = ByteArrayInputStream("3\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("pt")
+      }
+      controller.state.players.head.prediction should be(3)
+    }
+
+    "set prediction with to great round (invalid) input" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.state.players.head.prediction should be(0)
+      // 7 because round is 5 + prepareRound increments round by 1
+      val input = ByteArrayInputStream("7\n3\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("pt")
+      }
+      controller.state.players.head.prediction should be(3)
+    }
+
+    "set prediction with to small round (invalid) input" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.state.players.head.prediction should be(0)
+      val input = ByteArrayInputStream("-1\n3\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("pt")
+      }
+      controller.state.players.head.prediction should be(3)
+    }
+  }
+
   "yo ho ho" should {
     "start a new trick" in { // TODO
       val controller = Controller(GameState(List(Player("foo")), 5))
@@ -63,6 +110,7 @@ class TuiSpec extends AnyWordSpec {
       assert(true)
     }
   }
+
   "q" should {
     "quit" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
@@ -76,6 +124,7 @@ class TuiSpec extends AnyWordSpec {
       out.toString() should include("Goodbye")
     }
   }
+
   "_" should {
     val controller = Controller(GameState(List(Player("foo")), 5))
     val tui: Tui = Tui(controller)
@@ -86,4 +135,5 @@ class TuiSpec extends AnyWordSpec {
       assert(true)
     }
   }
+
 }

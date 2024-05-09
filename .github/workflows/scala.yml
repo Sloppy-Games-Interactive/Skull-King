@@ -28,12 +28,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Run tests
+        run: sbt clean coverage test
+
       - uses: actions/checkout@v4
       - name: export Coverage
-        run: |
-          export CI_BRANCH="${GITHUB_REF#refs/heads/}"
-          sbt coverage test coverageReport coveralls
+        run: sbt coverageReport coveralls
         env:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: Scala ${{ matrix.scala }}
+
 

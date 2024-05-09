@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ ubuntu-latest, macOS-latest, windows-latest ]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,6 +23,18 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Install sbt
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+            sudo apt-get install sbt
+      - name: Install sbt
+        if: startsWith(matrix.os, 'macos')
+        run: |
+            brew install sbt
+      - name: Install sbt
+        if: startsWith(matrix.os, 'windows')
+        run: |
+            choco install sbt
       - name: compile
         run: sbt compile
       - name: run tests
@@ -48,7 +60,7 @@ jobs:
     steps:
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

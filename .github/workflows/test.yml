@@ -8,12 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Run tests
-        run: sbt clean coverage test
-
       - uses: actions/checkout@v4
       - name: export Coverage
-        run: sbt coverageReport coveralls
+        run: sbt clean coverage test coverageReport coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_FLAG_NAME: Scala ${{ matrix.scala }}

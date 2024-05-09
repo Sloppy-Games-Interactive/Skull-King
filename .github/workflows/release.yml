@@ -21,13 +21,10 @@ jobs:
         include:
           - os: ubuntu-latest
             java: 17
-            jobtype: 1
-          - os: ubuntu-latest
+          - os: macos-latest
             java: 17
-            jobtype: 2
           - os: windows-latest
             java: 17
-            jobtype: 2
 
 
     steps:

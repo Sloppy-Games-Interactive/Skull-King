@@ -1,4 +1,4 @@
-name: Scala CI
+name: Scala CI/CD
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
       - name: export Coverage
         run: |
           export CI_BRANCH="${GITHUB_REF#refs/heads/}"
-          sbt clean coverage test coverageReport coveralls
+          sbt coveralls
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

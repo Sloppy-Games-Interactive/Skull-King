@@ -55,11 +55,6 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
               --generate-notes
-
-      - name: Upload artifacts
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
           gh release upload "$tag" /home/runner/work/Skull-King/Skull-King/target/scala-3.4.0/*.jar
           
 

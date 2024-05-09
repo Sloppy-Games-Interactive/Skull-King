@@ -23,6 +23,18 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Install sbt
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+            sudo apt-get install sbt
+      - name: Install sbt
+        if: startsWith(matrix.os, 'macos')
+        run: |
+            brew install sbt
+      - name: Install sbt
+        if: startsWith(matrix.os, 'windows')
+        run: |
+            choco install sbt
       - name: compile
         run: sbt compile
       - name: run tests

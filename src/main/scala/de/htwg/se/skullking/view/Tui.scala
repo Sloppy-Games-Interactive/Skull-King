@@ -25,6 +25,22 @@ class Tui(controller: Controller) extends Observer {
         val name = readLine()
         controller.addPlayer(name)
       }
+      // predict the tricks for each player
+      case "pt" => {
+        for (player <- controller.state.players) {
+          var validPrediction = false
+          while (!validPrediction) {
+            println(s"Enter prediction for ${player.name}: ")
+            val prediction = readLine().toInt
+            if (prediction < 0 || prediction > controller.state.round) {
+              println("Prediction must be greater or equal to 0 and less or equal to round number.")
+            } else {
+              controller.setPrediction(player, prediction)
+              validPrediction = true
+            }
+          }
+        }
+      }
       case "r" => controller.prepareRound
       case "d" => controller.dealCards
       case "yo ho ho" => controller.startTrick

@@ -56,7 +56,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
 
     // next round?
     GameState(
-      players.map((player: Player) => player.resetHand),
+      players.map((player: Player) => player.resetHand.resetPrediction),
       round + 1,
       fullDeck.shuffle()
     )

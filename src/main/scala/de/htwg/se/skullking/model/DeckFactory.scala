@@ -1,5 +1,12 @@
 package de.htwg.se.skullking.model
 
+enum DeckContent {
+  case specials
+  case normal
+  case full
+  case empty
+}
+
 object DeckFactory {
   private val amountOfNormalCards = List.range(1, 15)
   private val amountOfJoker: Int = 1
@@ -15,11 +22,11 @@ object DeckFactory {
     List.fill(amountOfSkullKing)(Card(SpecialSuit.SkullKing, 0)) ++
     List.fill(amountOfEscape)(Card(SpecialSuit.Escape, 0))
 
-  def apply(kind: String): Deck = kind match {
-    case "specials" => withSpecials
-    case "normal" => normalCards
-    case "full" => fullDeck
-    case _ => Deck()
+  def apply(kind: DeckContent = DeckContent.empty): Deck = kind match {
+    case DeckContent.specials => withSpecials
+    case DeckContent.normal => normalCards
+    case DeckContent.full => fullDeck
+    case DeckContent.empty => Deck()
   }
 
   private def normalCards: Deck = {

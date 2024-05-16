@@ -42,7 +42,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
    * @return new GameState
    */
   def startNewRound: GameState = {
-    val fullDeck: Deck = DeckFactory("full")
+    val fullDeck: Deck = DeckFactory(DeckContent.full)
 
     // next round?
     GameState(

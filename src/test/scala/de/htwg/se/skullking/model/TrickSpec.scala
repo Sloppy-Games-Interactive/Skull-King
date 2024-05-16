@@ -21,6 +21,12 @@ class TrickSpec extends AnyWordSpec {
     val p = Card(Suit.Pirate)
     val m = Card(Suit.Mermaid)
     val sk = Card(Suit.SkullKing)
+    
+    "nobody plays" should {
+      "have no winner" in {
+        Trick().winner shouldBe -1
+      }
+    }
 
     "playing any card" should {
       val t0 = Trick()

@@ -1,7 +1,6 @@
 package de.htwg.se.skullking.model
 
-enum CardType {
-  case Standard
-  case Trump
-  case Special
+object CardType extends Enumeration {
+  type CardType = Value
+  val Standard, Trump, Special = Value
 }

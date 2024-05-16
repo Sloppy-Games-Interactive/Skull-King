@@ -16,14 +16,20 @@ class CardSpec extends AnyWordSpec {
     }
 
     "correctly display its suit when it is a special card" in {
-      val card = Card(SpecialSuit.Joker, 0)
-      card.toString should be("🤡 0")
+      val card = Card(Suit.Joker)
+      card.toString should be("🃏 as 🏴‍☠️")
+    }
+
+    "joker should be playable as escape and pirate" in {
+      val card = JokerCard()
+      card.playAs(JokerBehaviour.Escape).toString should be("🃏 as 🏝️")
+      card.playAs(JokerBehaviour.Pirate).toString should be("🃏 as 🏴‍☠️")
     }
 
     "be identifiable as Trump" in {
       val card = Card(Suit.Black, 1)
       val r1 = Card(Suit.Red, 1)
-      val p = Card(SpecialSuit.Pirate, 0)
+      val p = Card(Suit.Pirate)
       
       card.isTrump should be(true)
       r1.isTrump should be(false)
@@ -31,7 +37,7 @@ class CardSpec extends AnyWordSpec {
     }
 
     "be identifiable as Special" in {
-      val p = Card(SpecialSuit.Pirate, 0)
+      val p = Card(Suit.Pirate)
       val r1 = Card(Suit.Red, 1)
       val b1 = Card(Suit.Black, 1)
       

@@ -9,19 +9,19 @@ class DeckSpec extends  AnyWordSpec{
       val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
       val shuffled = deck.shuffle()
 
-      deck.cards should contain theSameElementsAs shuffled.cards
-      deck.cards should not be shuffled.cards
+      deck.getCards should contain theSameElementsAs shuffled.getCards
+      deck.getCards should not be shuffled.getCards
     }
     "be drawable" in {
       val deck: Deck = Deck(List(Card(Suit.Red, 1), Card(Suit.Red, 2), Card(Suit.Red, 3), Card(Suit.Red, 4), Card(Suit.Red, 5)))
       val (card, newDeck) = deck.draw()
       val (drawnCards, newDeck2) = deck.draw(5)
 
-      newDeck.cards.length should be (deck.cards.length - 1)
-      newDeck.cards should not contain card
+      newDeck.getCards.length should be (deck.getCards.length - 1)
+      newDeck.getCards should not contain card
       drawnCards.length should be (5)
-      newDeck2.cards.length should be (deck.cards.length - 5)
-      newDeck2.cards should not contain drawnCards
+      newDeck2.getCards.length should be (deck.getCards.length - 5)
+      newDeck2.getCards should not contain drawnCards
     }
     "be printable" in {
       val card1 = Card(Suit.Red, 1)

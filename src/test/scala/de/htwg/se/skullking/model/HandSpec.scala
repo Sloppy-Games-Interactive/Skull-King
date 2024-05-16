@@ -28,7 +28,7 @@ class HandSpec extends AnyWordSpec {
       val h = new Hand()
       val (newDeck, newHand) = h.drawFromDeck(deck.shuffle(), 2)
 
-      newDeck.cards should not contain theSameElementsAs(newHand.cards)
+      newDeck.getCards should not contain theSameElementsAs(newHand.cards)
       newHand.cards should have length 2
     }
     "print hand" in {

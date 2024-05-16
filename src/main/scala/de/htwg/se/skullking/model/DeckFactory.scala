@@ -16,11 +16,11 @@ object DeckFactory {
   private val amountOfEscape: Int = 5
 
   private val normalSuits = List(Suit.Red, Suit.Blue, Suit.Yellow, Suit.Black)
-  private val jokerCards = List.fill(amountOfJoker)(Card(SpecialSuit.Joker, 0))
-  private val specialCards = List.fill(amountOfPirate)(Card(SpecialSuit.Pirate, 0)) ++
-    List.fill(amountOfMermaid)(Card(SpecialSuit.Mermaid, 0)) ++
-    List.fill(amountOfSkullKing)(Card(SpecialSuit.SkullKing, 0)) ++
-    List.fill(amountOfEscape)(Card(SpecialSuit.Escape, 0))
+  private val jokerCards = List.fill(amountOfJoker)(JokerCard())
+  private val specialCards = List.fill(amountOfPirate)(Card(Suit.Pirate)) ++
+    List.fill(amountOfMermaid)(Card(Suit.Mermaid)) ++
+    List.fill(amountOfSkullKing)(Card(Suit.SkullKing)) ++
+    List.fill(amountOfEscape)(Card(Suit.Escape))
 
   def apply(kind: DeckContent = DeckContent.empty): Deck = kind match {
     case DeckContent.specials => withSpecials

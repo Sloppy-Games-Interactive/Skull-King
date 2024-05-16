@@ -17,10 +17,10 @@ class TrickSpec extends AnyWordSpec {
     val b2 = Card(Suit.Black, 2)
     val b14 = Card(Suit.Black, 14)
 
-    val e = Card(SpecialSuit.Escape, 0)
-    val p = Card(SpecialSuit.Pirate, 0)
-    val m = Card(SpecialSuit.Mermaid, 0)
-    val sk = Card(SpecialSuit.SkullKing, 0)
+    val e = Card(Suit.Escape)
+    val p = Card(Suit.Pirate)
+    val m = Card(Suit.Mermaid)
+    val sk = Card(Suit.SkullKing)
 
     "playing any card" should {
       val t0 = Trick()

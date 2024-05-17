@@ -3,8 +3,7 @@ package de.htwg.se.skullking.controller
 import de.htwg.se.skullking.model.{GameState, Player}
 import de.htwg.se.skullking.util.{Observable, ObservableEvent}
 
-class Controller(var state: GameState = GameState()) extends Observable{
-  
+class Controller(var state: GameState = GameState()) extends Observable {
   def newGame: Unit = {
     state = GameState()
     notifyObservers(ControllerEvents.NewGame)

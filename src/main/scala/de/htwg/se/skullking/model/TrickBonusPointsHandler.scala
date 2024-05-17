@@ -8,14 +8,18 @@ trait BonusPointsHandler {
  * 10 points for each standard suit value 14 card
  */
 class StandardBonusPointsHandler extends BonusPointsHandler {
-  override def handle(t: Trick): Int = t.cards.collect { case c: StandardCard => c }.count(c => !c.isTrump && !c.isSpecial && c.value == 14) * 10
+  override def handle(t: Trick): Int = t.cards.collect{
+    case c: StandardCard => c
+  }.count(c => !c.isTrump && !c.isSpecial && c.value == 14) * 10
 }
 
 /**
  * 20 points for trump 14 card
  */
 class TrumpBonusPointsHandler extends BonusPointsHandler {
-  override def handle(t: Trick): Int = t.cards.collect { case c: StandardCard => c }.count(c => c.isTrump && c.value == 14) * 20
+  override def handle(t: Trick): Int = t.cards.collect{
+    case c: StandardCard => c
+  }.count(c => c.isTrump && c.value == 14) * 20
 }
 
 /**

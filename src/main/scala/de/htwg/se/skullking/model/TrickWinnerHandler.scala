@@ -47,7 +47,11 @@ class winnerSpecialWinnerHandler extends WinnerHandler {
  */
 class winnerTrumpWinnerHandler extends WinnerHandler {
   override def handle(t: Trick): Option[Int] = t.stack match {
-    case withTrump if withTrump.exists((c, id) => c.isTrump) => Some(withTrump.collect { case (c: StandardCard, id) => (c, id) }.filter((c, id) => c.isTrump).maxBy((c, id) => c.value)._2)
+    case withTrump if withTrump.exists((c, id) => c.isTrump) => {
+      Some(withTrump.collect{
+        case (c: StandardCard, id) => (c, id)
+      }.filter((c, id) => c.isTrump).maxBy((c, id) => c.value)._2)
+    }
     case _ => None
   }
 }
@@ -57,7 +61,11 @@ class winnerTrumpWinnerHandler extends WinnerHandler {
  */
 class winnerLeadSuitWinnerHandler extends WinnerHandler {
   override def handle(t: Trick): Option[Int] = t.stack match {
-    case withLeadSuit if withLeadSuit.exists((c, id) => c.suit == t.leadSuit) => Some(withLeadSuit.collect { case (c: StandardCard, id) => (c, id) }.filter((c, id) => c.suit == t.leadSuit).maxBy((c, id) => c.value)._2)
+    case withLeadSuit if withLeadSuit.exists((c, id) => c.suit == t.leadSuit) => {
+      Some(withLeadSuit.collect{
+        case (c: StandardCard, id) => (c, id)
+      }.filter((c, id) => c.suit == t.leadSuit).maxBy((c, id) => c.value)._2)
+    }
     case _ => None
   }
 }

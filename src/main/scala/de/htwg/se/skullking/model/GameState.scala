@@ -8,7 +8,6 @@ package de.htwg.se.skullking.model
  * @param deck new full deck
  */
 class GameState(val players: List[Player] = List(), val round: Int = 0, val deck: Deck = Deck()) {
-
   /**
    * add player to global GameState player list
    * @param player player object to add
@@ -23,7 +22,6 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
    * @return new GameState
    */
   def setPrediction(player: Player, prediction: Int): GameState = {
-    
     GameState(
       players.map((p: Player) => {
         if (p.name == player.name) {

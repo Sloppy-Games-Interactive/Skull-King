@@ -14,11 +14,11 @@ class Hand(val cards: List[Card] = List()) {
   def play(position: Int): (Card, Hand) = {
     val actualIdx = position - 1
     val (before, after) = cards.splitAt(actualIdx)
-    (after.head, new Hand(before ++ after.tail))
+    (after.head, Hand(before ++ after.tail))
   }
   def drawFromDeck(deck: Deck, n: Int): (Deck, Hand) = {
     val (drawn, remaining) = deck.draw(n)
-    (remaining, new Hand(cards ++ drawn))
+    (remaining, Hand(cards ++ drawn))
   }
   override def toString: String = {
     // print cards in hand as list like: 1: Red 1\n2: Red 2\n3: Black 1

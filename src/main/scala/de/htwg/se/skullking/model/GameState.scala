@@ -1,5 +1,8 @@
 package de.htwg.se.skullking.model
 
+import de.htwg.se.skullking.model.deck.{Deck, DeckContent, DeckFactory}
+import de.htwg.se.skullking.model.player.Player
+
 /**
  * Global GameState manager
  *
@@ -8,7 +11,6 @@ package de.htwg.se.skullking.model
  * @param deck new full deck
  */
 class GameState(val players: List[Player] = List(), val round: Int = 0, val deck: Deck = Deck()) {
-
   /**
    * add player to global GameState player list
    * @param player player object to add
@@ -23,7 +25,6 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
    * @return new GameState
    */
   def setPrediction(player: Player, prediction: Int): GameState = {
-    
     GameState(
       players.map((p: Player) => {
         if (p.name == player.name) {
@@ -42,17 +43,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
    * @return new GameState
    */
   def startNewRound: GameState = {
-    val redCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Red, value))
-    val blueCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Blue, value))
-    val yellowCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Yellow, value))
-    val blackCards: IndexedSeq[Card] = (1 to 14).map((value: Int) => Card(Suit.Black, value))
-    val specialCards: Vector[Card] = Vector(Card(SpecialSuit.Joker, 0), Card(SpecialSuit.Mermaid, 0),
-      Card(SpecialSuit.SkullKing, 0), Card(SpecialSuit.Pirate, 0), Card(SpecialSuit.Escape, 0))
-
-    // add all cards to one list
-    val allCards: List[Card] = (redCards ++ blueCards ++ yellowCards ++ blackCards ++ specialCards).toList
-
-    val fullDeck: Deck = Deck(allCards)
+    val fullDeck: Deck = DeckFactory(DeckContent.full)
 
     // next round?
     GameState(
@@ -61,11 +52,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
       fullDeck.shuffle()
     )
   }
-
-  /**
-   * Deal cards to all players
-   * @return new gameState
-   */
+  
   def dealCards: GameState = {
     var currentDeck = deck
     GameState(

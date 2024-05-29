@@ -1,12 +1,10 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.deck
+
+import de.htwg.se.skullking.model.card.Card
 
 import scala.util.Random
 
-/**
- *
- * @param cards is the list of cards in the deck
- */
-case class Deck(cards: List[Card] = List()) {
+class Deck(cards: List[Card] = List()) {
   /**
    * shuffle cards in the card list
    *
@@ -24,6 +22,8 @@ case class Deck(cards: List[Card] = List()) {
     (cards.last, Deck(cards.dropRight(1)))
   }
 
+  def length: Int = cards.length
+  def getCards: List[Card] = cards
   /**
    *
    * @param n is the number of cards to draw

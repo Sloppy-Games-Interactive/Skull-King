@@ -1,7 +1,8 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.player
 
 /**
  * Player class for the GameState players list
+ *
  * @param name of the player
  * @param hand cards witch hold the player in the hand
  * @param score personal score of the round?

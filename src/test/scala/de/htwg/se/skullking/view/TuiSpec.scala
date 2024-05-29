@@ -1,7 +1,8 @@
 package de.htwg.se.skullking.view
 
 import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.model.{GameState, Player}
+import de.htwg.se.skullking.model.GameState
+import de.htwg.se.skullking.model.player.Player
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 
@@ -9,6 +10,33 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 class TuiSpec extends AnyWordSpec {
+  "z" should {
+    "undo" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.state.round should be(5)
+      controller.prepareRound
+      controller.state.round should be(6)
+      tui.processInputLine("z")
+      controller.state.round should be(5)
+    }
+  }
+
+  "y" should {
+    "redo" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.state.round should be(5)
+      controller.prepareRound
+      controller.state.round should be(6)
+      tui.processInputLine("z")
+      controller.state.round should be(5)
+      tui.processInputLine("y")
+      controller.state.round should be(6)
+    }
+  }
 
   "n" should {
     "start new game" in {

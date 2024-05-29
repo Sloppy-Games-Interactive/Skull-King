@@ -1,7 +1,10 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.player
 
-import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.skullking.model.deck.Deck
+import de.htwg.se.skullking.model.card.{Card, Suit}
+import de.htwg.se.skullking.model.player.Hand
 import org.scalatest.matchers.should.Matchers.*
+import org.scalatest.wordspec.AnyWordSpec
 
 class HandSpec extends AnyWordSpec {
   "Hand" should {
@@ -28,7 +31,7 @@ class HandSpec extends AnyWordSpec {
       val h = new Hand()
       val (newDeck, newHand) = h.drawFromDeck(deck.shuffle(), 2)
 
-      newDeck.cards should not contain theSameElementsAs(newHand.cards)
+      newDeck.getCards should not contain theSameElementsAs(newHand.cards)
       newHand.cards should have length 2
     }
     "print hand" in {

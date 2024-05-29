@@ -19,6 +19,8 @@ class Tui(controller: Controller) extends Observer {
     input match {
       case "q" => controller.quit
       case "n" => controller.newGame
+      case "z" => controller.undo
+      case "y" => controller.redo
       case "p" => {
         println("Enter player name: ")
         val name = readLine()

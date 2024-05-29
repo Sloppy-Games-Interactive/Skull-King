@@ -1,27 +1,39 @@
 package de.htwg.se.skullking.controller
 
+import de.htwg.se.skullking.controller.command.{AddPlayerCommand, DealCardsCommand, NewGameCommand, PrepareRoundCommand, SetPredictionCommand}
 import de.htwg.se.skullking.model.GameState
 import de.htwg.se.skullking.model.player.Player
-import de.htwg.se.skullking.util.{Observable, ObservableEvent}
+import de.htwg.se.skullking.util.{Observable, ObservableEvent, UndoManager}
 
 class Controller(var state: GameState = GameState()) extends Observable {
+  private val undoManager = new UndoManager
+
+  def undo: Unit = {
+    undoManager.undoStep
+    notifyObservers(ControllerEvents.Undo)
+  }
+  def redo: Unit = {
+    undoManager.redoStep
+    notifyObservers(ControllerEvents.Redo)
+  }
+
   def newGame: Unit = {
-    state = GameState()
+    undoManager.doStep(new NewGameCommand(this))
     notifyObservers(ControllerEvents.NewGame)
   }
   
   def addPlayer(name: String): Unit = {
-    state = state.addPlayer(Player(name))
+    undoManager.doStep(new AddPlayerCommand(this, Player(name)))
     notifyObservers(ControllerEvents.PlayerAdded)
   }
   
   def prepareRound: Unit = {
-    state = state.startNewRound
+    undoManager.doStep(new PrepareRoundCommand(this))
     notifyObservers(ControllerEvents.RoundPrepared)
   }
   
   def dealCards: Unit = {
-    state = state.dealCards
+    undoManager.doStep(new DealCardsCommand(this))
     notifyObservers(ControllerEvents.CardsDealt)
   }
   
@@ -32,7 +44,7 @@ class Controller(var state: GameState = GameState()) extends Observable {
   }
   
   def setPrediction(player: Player, prediction: Int): Unit = {
-    state = state.setPrediction(player, prediction)
+    undoManager.doStep(new SetPredictionCommand(this, player, prediction))
     notifyObservers(ControllerEvents.PredictionSet)
   }
   
@@ -50,4 +62,6 @@ enum ControllerEvents extends ObservableEvent {
   case TrickStarted
   case PredictionSet
   case Quit
+  case Undo
+  case Redo
 }

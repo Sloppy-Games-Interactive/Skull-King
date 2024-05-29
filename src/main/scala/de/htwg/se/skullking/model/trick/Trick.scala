@@ -1,4 +1,7 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.trick
+
+import de.htwg.se.skullking.model.card.{Card, Suit}
+
 
 class Trick(val stack: List[(Card, Int)] = List()) {
   def cards: List[Card] = stack.map((c, id) => c)

@@ -1,7 +1,11 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.player
+
+import de.htwg.se.skullking.model.deck.Deck
+import de.htwg.se.skullking.model.card.Card
 
 /**
  * Hand class for
+ *
  * @param cards take a list of playable cards, default empty list of card
  */
 class Hand(val cards: List[Card] = List()) {

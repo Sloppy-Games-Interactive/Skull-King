@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.card
 
 object CardType extends Enumeration {
   type CardType = Value

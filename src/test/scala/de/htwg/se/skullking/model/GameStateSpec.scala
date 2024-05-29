@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.model
 
+import de.htwg.se.skullking.model.player.Player
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 

@@ -1,4 +1,6 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.card
+
+import de.htwg.se.skullking.model.card.Suit
 
 abstract class Card(val suit: Suit) {
   def isSpecial: Boolean = suit.cardType match {

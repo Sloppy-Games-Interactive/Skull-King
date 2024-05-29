@@ -1,5 +1,8 @@
 package de.htwg.se.skullking.model
 
+import de.htwg.se.skullking.model.deck.{Deck, DeckContent, DeckFactory}
+import de.htwg.se.skullking.model.player.Player
+
 /**
  * Global GameState manager
  *

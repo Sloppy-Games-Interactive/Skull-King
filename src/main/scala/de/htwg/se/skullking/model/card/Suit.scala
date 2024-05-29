@@ -1,6 +1,6 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.card
 
-import de.htwg.se.skullking.model.CardType.CardType
+import de.htwg.se.skullking.model.card.CardType.CardType
 
 enum Suit(val readable: String, val cardType: CardType) {
   case Red extends Suit("🟥", CardType.Standard)

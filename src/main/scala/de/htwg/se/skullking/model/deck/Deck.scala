@@ -1,8 +1,10 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.deck
+
+import de.htwg.se.skullking.model.card.Card
 
 import scala.util.Random
 
-private class Deck(cards: List[Card] = List()) {
+class Deck(cards: List[Card] = List()) {
   /**
    * shuffle cards in the card list
    *

@@ -1,4 +1,6 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.deck
+
+import de.htwg.se.skullking.model.card.{Card, JokerCard, Suit}
 
 enum DeckContent {
   case specials

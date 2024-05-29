@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.deck
 
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec

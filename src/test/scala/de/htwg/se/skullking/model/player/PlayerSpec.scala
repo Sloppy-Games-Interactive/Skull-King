@@ -1,7 +1,8 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.player
 
-import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.skullking.model.card.{Card, Suit}
 import org.scalatest.matchers.should.Matchers.*
+import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec {
   "Player" should {

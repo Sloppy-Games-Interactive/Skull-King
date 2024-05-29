@@ -1,4 +1,6 @@
-package de.htwg.se.skullking.model
+package de.htwg.se.skullking.model.trick
+
+import de.htwg.se.skullking.model.card.{StandardCard, Suit}
 
 trait WinnerHandler {
   def handle(t: Trick): Option[Int]

@@ -6,7 +6,6 @@ import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import scala.io.StdIn.readLine
 
 class Tui(controller: Controller) extends Observer {
-
   controller.add(this)
   
   override def update(e: ObservableEvent): Unit = {

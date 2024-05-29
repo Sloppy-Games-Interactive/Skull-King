@@ -1,7 +1,8 @@
 package de.htwg.se.skullking.view
 
 import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.model.{GameState, Player}
+import de.htwg.se.skullking.model.GameState
+import de.htwg.se.skullking.model.player.Player
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 

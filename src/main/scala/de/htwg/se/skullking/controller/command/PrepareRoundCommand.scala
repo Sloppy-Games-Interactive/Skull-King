@@ -5,12 +5,8 @@ import de.htwg.se.skullking.model.GameState
 import de.htwg.se.skullking.util.Command
 
 class PrepareRoundCommand(val controller: Controller) extends Command {
-  val originalState: GameState = controller.state
   var memento: GameState = controller.state
-  override def doStep: Unit = {
-    memento = controller.state.startNewRound
-    controller.state = memento
-  }
-  override def undoStep: Unit = controller.state = originalState
-  override def redoStep: Unit = controller.state = memento
+  override def doStep: Unit = controller.state = controller.state.startNewRound
+  override def undoStep: Unit = controller.state = memento
+  override def redoStep: Unit = doStep
 }

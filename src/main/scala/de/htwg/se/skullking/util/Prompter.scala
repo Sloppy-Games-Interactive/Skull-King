@@ -13,6 +13,29 @@ class Prompter(var strategy: PromptStrategy = PromptStrategy.TUI) {
   def setStrategy(strategy: PromptStrategy): Unit = {
     this.strategy = strategy
   }
+
+  def readPlayerLimit: Int = {
+    strategy match {
+      case PromptStrategy.TUI => readPlayerLimitTui()
+    }
+  }
+
+  private def readPlayerLimitTui(): Int = {
+    val playerLimit: Option[Int] = LazyList.continually {
+      println("Enter player count:")
+      val tryPlayerLimit = Try(readLine().toInt)
+
+      tryPlayerLimit match {
+        case Success(playerLimit) if playerLimit >= 2 && playerLimit <= 9 => Some(playerLimit)
+        case _ => {
+          println("Player count must be a number between 2 and 9.")
+          None
+        }
+      }
+    }.find(_.isDefined).flatten
+
+    playerLimit.get
+  }
   
   def readPlayerName: String = {
     strategy match {

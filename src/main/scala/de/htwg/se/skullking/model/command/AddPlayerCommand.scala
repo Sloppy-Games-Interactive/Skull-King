@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.command
 
 import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.model.GameState
+import de.htwg.se.skullking.model.state.GameState
 import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.util.Command
 

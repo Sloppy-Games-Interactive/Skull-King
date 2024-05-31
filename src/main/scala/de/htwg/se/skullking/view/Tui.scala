@@ -3,9 +3,6 @@ package de.htwg.se.skullking.view
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
 import de.htwg.se.skullking.util.{ObservableEvent, Observer, Prompter, PromptStrategy}
 
-import scala.io.StdIn.readLine
-import scala.util.{Try, Success, Failure}
-
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
 
@@ -14,7 +11,29 @@ class Tui(controller: Controller) extends Observer {
   override def update(e: ObservableEvent): Unit = {
     e match {
       case ControllerEvents.Quit => println("Goodbye!")
-      case _ => println(controller.state.getStatusAsTable)
+      case ControllerEvents.PromptPlayerLimit => {
+        val limit = prompter.readPlayerLimit
+        controller.setPlayerLimit(limit)
+      }
+      case ControllerEvents.PromptPlayerName => {
+        val name = prompter.readPlayerName
+        controller.addPlayer(name)
+      }
+      case ControllerEvents.PromptPrediction => {
+        controller.state.players.active match {
+          case Some(player) => {
+            val prediction = prompter.readPlayerPrediction(player, controller.state.round)
+            controller.setPrediction(player, prediction)
+          }
+          case None => println("No active player.")
+        }
+      }
+      case _ => {
+        println(controller.state.players.active)
+        println(controller.state.players.length)
+        println(controller.state.players)
+        println(controller.state.phase)
+      }
     }
   }
 
@@ -24,20 +43,6 @@ class Tui(controller: Controller) extends Observer {
       case "n" => controller.newGame
       case "z" => controller.undo
       case "y" => controller.redo
-      case "p" => {
-        val name = prompter.readPlayerName
-        controller.addPlayer(name)
-      }
-      // predict the tricks for each player
-      case "pt" => {
-        controller.state.players.foreach(player => {
-          val prediction = prompter.readPlayerPrediction(player, controller.state.round)
-          controller.setPrediction(player, prediction)
-        })
-      }
-      case "r" => controller.prepareRound
-      case "d" => controller.dealCards
-      case "yo ho ho" => controller.startTrick
       case _ =>  println("Invalid input.")
     }
   }

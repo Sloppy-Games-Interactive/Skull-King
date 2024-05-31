@@ -28,7 +28,7 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
     GameState(
       players.map((p: Player) => {
         if (p.name == player.name) {
-          Player(p.name, p.hand, p.score, prediction)
+          Player(p.name, p.hand, p.score, Some(prediction))
         } else {
           p
         }

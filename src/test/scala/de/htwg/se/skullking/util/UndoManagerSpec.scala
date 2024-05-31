@@ -1,3 +1,5 @@
+package de.htwg.se.skullking.util
+
 import de.htwg.se.skullking.util.{UndoManager, incrCommand}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec

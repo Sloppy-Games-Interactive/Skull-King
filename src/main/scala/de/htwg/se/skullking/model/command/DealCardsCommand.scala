@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.controller.command
+package de.htwg.se.skullking.model.command
 
 import de.htwg.se.skullking.controller.Controller
 import de.htwg.se.skullking.model.GameState
@@ -8,5 +8,8 @@ class DealCardsCommand(val controller: Controller) extends Command {
   var memento: GameState = controller.state
   override def doStep: Unit = controller.state = controller.state.dealCards
   override def undoStep: Unit = controller.state = memento
-  override def redoStep: Unit = doStep
+  override def redoStep: Unit = {
+    memento = controller.state
+    doStep
+  }
 }

@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.controller.command
+package de.htwg.se.skullking.model.command
 
 import de.htwg.se.skullking.controller.Controller
 import de.htwg.se.skullking.model.GameState
@@ -9,5 +9,8 @@ class SetPredictionCommand(val controller: Controller, player: Player, predictio
   var memento: GameState = controller.state
   override def doStep: Unit = controller.state = controller.state.setPrediction(player, prediction)
   override def undoStep: Unit = controller.state = memento
-  override def redoStep: Unit = doStep
+  override def redoStep: Unit = {
+    memento = controller.state
+    doStep
+  }
 }

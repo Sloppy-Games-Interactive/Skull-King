@@ -1,12 +1,15 @@
 package de.htwg.se.skullking.view
 
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
-import de.htwg.se.skullking.util.{ObservableEvent, Observer}
+import de.htwg.se.skullking.util.{ObservableEvent, Observer, Prompter, PromptStrategy}
 
 import scala.io.StdIn.readLine
+import scala.util.{Try, Success, Failure}
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
+
+  val prompter = new Prompter(PromptStrategy.TUI)
   
   override def update(e: ObservableEvent): Unit = {
     e match {
@@ -22,30 +25,20 @@ class Tui(controller: Controller) extends Observer {
       case "z" => controller.undo
       case "y" => controller.redo
       case "p" => {
-        println("Enter player name: ")
-        val name = readLine()
+        val name = prompter.readPlayerName
         controller.addPlayer(name)
       }
       // predict the tricks for each player
       case "pt" => {
-        for (player <- controller.state.players) {
-          var validPrediction = false
-          while (!validPrediction) {
-            println(s"Enter prediction for ${player.name}: ")
-            val prediction = readLine().toInt
-            if (prediction < 0 || prediction > controller.state.round) {
-              println("Prediction must be greater or equal to 0 and less or equal to round number.")
-            } else {
-              controller.setPrediction(player, prediction)
-              validPrediction = true
-            }
-          }
-        }
+        controller.state.players.foreach(player => {
+          val prediction = prompter.readPlayerPrediction(player, controller.state.round)
+          controller.setPrediction(player, prediction)
+        })
       }
       case "r" => controller.prepareRound
       case "d" => controller.dealCards
       case "yo ho ho" => controller.startTrick
-      case _ =>  // TODO parse player playing card
+      case _ =>  println("Invalid input.")
     }
   }
 }

@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.controller
 
 import de.htwg.se.skullking.model.GameState
-import de.htwg.se.skullking.model.command.{AddPlayerCommand, DealCardsCommand, NewGameCommand, PrepareRoundCommand, SetPredictionCommand}
+import de.htwg.se.skullking.model.command.{AddPlayerCommand, DealCardsCommand, NewGameCommand, PlayCard, PrepareRoundCommand, SetPredictionCommand}
 import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.util.{Observable, ObservableEvent, UndoManager}
 
@@ -25,6 +25,11 @@ class Controller(var state: GameState = GameState()) extends Observable {
   def addPlayer(name: String): Unit = {
     undoManager.doStep(new AddPlayerCommand(this, Player(name)))
     notifyObservers(ControllerEvents.PlayerAdded)
+  }
+
+  def playCard(player: Player, cardIndex: Int): Unit = {
+    undoManager.doStep(new PlayCard(this, player, cardIndex))
+    notifyObservers(ControllerEvents.CardPlayed)
   }
   
   def prepareRound: Unit = {
@@ -64,4 +69,5 @@ enum ControllerEvents extends ObservableEvent {
   case Quit
   case Undo
   case Redo
+  case CardPlayed
 }

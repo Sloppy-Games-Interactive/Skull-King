@@ -141,6 +141,91 @@ class TuiSpec extends AnyWordSpec {
     }
   }
 
+  "c" should {
+    "play card" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.dealCards
+      controller.state.players.head.hand.count should be(6)
+      val input = ByteArrayInputStream("1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(5)
+    }
+
+    "reject invalid card index" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.dealCards
+      controller.state.players.head.hand.count should be(6)
+      val input = ByteArrayInputStream("7\n1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(5)
+    }
+
+    "reject non-integer card index" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.dealCards
+      controller.state.players.head.hand.count should be(6)
+      val input = ByteArrayInputStream("abc\n1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(5)
+    }
+
+    "reject negative card index" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.dealCards
+      controller.state.players.head.hand.count should be(6)
+      val input = ByteArrayInputStream("-1\n1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(5)
+    }
+
+    "reject card index greater than hand count" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.dealCards
+      controller.state.players.head.hand.count should be(6)
+      val input = ByteArrayInputStream("7\n1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(5)
+    }
+
+    "reject playing card from empty hand" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.state.players.head.hand.count should be(0)
+      val input = ByteArrayInputStream("1\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("c")
+      }
+      controller.state.players.head.hand.count should be(0)
+    }
+  }
+
   "yo ho ho" should {
     "start a new trick" in { // TODO
       val controller = Controller(GameState(List(Player("foo")), 5))

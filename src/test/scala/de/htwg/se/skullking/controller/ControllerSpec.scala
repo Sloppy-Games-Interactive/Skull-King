@@ -106,6 +106,24 @@ class ControllerSpec extends AnyWordSpec {
         ctrl.redo
         ctrl.state.players should have length 0
       }
+
+      "handle undo/redo play card" in {
+        val ctrl = Controller()
+
+        ctrl.newGame
+        ctrl.addPlayer("foo")
+        ctrl.prepareRound
+        ctrl.dealCards
+        ctrl.playCard(ctrl.state.players.head, 0)
+
+        ctrl.state.players.head.hand.count should be(0)
+
+        ctrl.undo
+        ctrl.state.players.head.hand.count should be(1)
+
+        ctrl.redo
+        ctrl.state.players.head.hand.count should be(0)
+      }
     }
 
     "observed by an Observer" should {
@@ -184,6 +202,30 @@ class ControllerSpec extends AnyWordSpec {
         controller.state.players.head.prediction should be(3)
       }
 
+      "quit" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.quit
+
+        observer.updated should be(2)
+        assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
+      }
+
+      "play card" in {
+        val observer = TestObserver()
+        controller.add(observer)
+
+        controller.newGame
+        controller.addPlayer("foo")
+        controller.prepareRound
+        controller.dealCards
+        controller.playCard(controller.state.players.head, 0)
+
+        observer.updated should be(5)
+        controller.state.players.head.hand.count should be(0)
+      }
     }
   }
 }

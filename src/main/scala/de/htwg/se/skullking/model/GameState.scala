@@ -66,6 +66,30 @@ class GameState(val players: List[Player] = List(), val round: Int = 0, val deck
     )
   }
 
+  def playCard(player: Player, cardIndex: Int): GameState = {
+    val adjustedCardIndex = cardIndex - 1
+    if (player.hand.cards.nonEmpty && adjustedCardIndex < player.hand.cards.length) {
+      player.hand.play(adjustedCardIndex) match {
+        case (card, newHand) => {
+          GameState(
+            players.map((p: Player) => {
+              if (p.name == player.name) {
+                Player(p.name, newHand, p.score)
+              } else {
+                p
+              }
+            }),
+            round,
+            deck
+          )
+        }
+      }
+    } else {
+      println(s"${player.name}'s hand is empty or the card index is out of range.")
+      this
+    }
+  }
+
   def getStatusAsTable: String = {
       s"""
         |Round: $round

@@ -37,6 +37,16 @@ class Tui(controller: Controller) extends Observer {
       }
       case "r" => controller.prepareRound
       case "d" => controller.dealCards
+      case "c" => {
+        controller.state.players.foreach(player => {
+          if (player.hand.count > 0) {
+            val cardIndex = prompter.readPlayCard(player)
+            controller.playCard(player, cardIndex)
+          } else {
+            println(s"${player.name} has already played all cards.")
+          }
+        })
+      }
       case "yo ho ho" => controller.startTrick
       case _ =>  println("Invalid input.")
     }

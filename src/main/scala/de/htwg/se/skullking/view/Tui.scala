@@ -20,7 +20,7 @@ class Tui(controller: Controller) extends Observer {
         controller.addPlayer(name)
       }
       case ControllerEvents.PromptPrediction => {
-        controller.state.players.active match {
+        controller.state.activePlayer match {
           case Some(player) => {
             val prediction = prompter.readPlayerPrediction(player, controller.state.round)
             controller.setPrediction(player, prediction)
@@ -29,7 +29,7 @@ class Tui(controller: Controller) extends Observer {
         }
       }
       case _ => {
-        println(controller.state.players.active)
+        println(controller.state.activePlayer)
         println(controller.state.players.length)
         println(controller.state.players)
         println(controller.state.phase)

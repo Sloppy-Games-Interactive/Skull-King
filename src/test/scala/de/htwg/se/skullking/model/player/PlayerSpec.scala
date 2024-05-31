@@ -8,15 +8,15 @@ class PlayerSpec extends AnyWordSpec {
   "Player" should {
 
     "have defaults" in {
-      val p1 = Player()
+      val p1 = Player("")
       p1.name should be("")
       p1.hand.count should be(0)
       p1.score should be(0)
-      p1.prediction should be(0)
+      p1.prediction should be(None)
     }
 
     "have a name" in {
-      val p1 = Player("p1", Hand(List()), 9, 0)
+      val p1 = Player("p1", Hand(List()), 9, Some(0))
       p1.name should be("p1")
     }
 
@@ -43,11 +43,11 @@ class PlayerSpec extends AnyWordSpec {
 
   "Player" should {
     "have a resettable prediction" in {
-      val p1 = Player("p1", Hand(List()), 9, 0)
+      val p1 = Player("p1", Hand(List()), 9, Some(0))
       val p1reset = p1.resetPrediction
 
-      p1.prediction should be(0)
-      p1reset.prediction should be(0)
+      p1.prediction should be(Some(0))
+      p1reset.prediction should be(None)
     }
   }
 }

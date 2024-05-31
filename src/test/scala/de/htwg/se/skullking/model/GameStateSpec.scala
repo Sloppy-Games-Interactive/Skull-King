@@ -72,7 +72,7 @@ class GameStateSpec extends AnyWordSpec {
       val s2 = s1.startNewRound
 
       val s3 = s2.setPrediction(p2, 3)
-      s3.players.head.prediction should be(3)
+      s3.players.head.prediction should be(Some(3))
     }
 
   }

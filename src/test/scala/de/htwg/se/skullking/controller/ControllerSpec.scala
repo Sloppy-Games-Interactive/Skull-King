@@ -13,6 +13,7 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
         ctrl.addPlayer("bar")
 
@@ -32,7 +33,9 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
-        ctrl.prepareRound
+        ctrl.setPlayerLimit(2)
+        ctrl.addPlayer("foo")
+        ctrl.addPlayer("bar")
 
         ctrl.state.round should be(1)
 
@@ -47,40 +50,25 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
-        ctrl.prepareRound
-        ctrl.setPrediction(ctrl.state.players.head, 3)
+        ctrl.addPlayer("bar")
+        ctrl.setPrediction(ctrl.state.players.head, 1)
 
-        ctrl.state.players.head.prediction should be(3)
+        ctrl.state.players.head.prediction should be(Some(1))
 
         ctrl.undo
-        ctrl.state.players.head.prediction should be(0)
+        ctrl.state.players.head.prediction should be(None)
 
         ctrl.redo
-        ctrl.state.players.head.prediction should be(3)
-      }
-
-      "handle undo/redo cards" in {
-        val ctrl = Controller()
-
-        ctrl.newGame
-        ctrl.addPlayer("foo")
-        ctrl.prepareRound
-        ctrl.dealCards
-
-        ctrl.state.players.head.hand.count should be(1)
-
-        ctrl.undo
-        ctrl.state.players.head.hand.count should be(0)
-
-        ctrl.redo
-        ctrl.state.players.head.hand.count should be(1)
+        ctrl.state.players.head.prediction should be(Some(1))
       }
 
       "handle undo/redo new game" in {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
 
         ctrl.state.players should have length 1
@@ -121,7 +109,7 @@ class ControllerSpec extends AnyWordSpec {
 
         controller.newGame
 
-        observer.updated should be(1)
+        observer.updated should be(2)
         controller.state.round should be(0)
       }
 
@@ -130,45 +118,13 @@ class ControllerSpec extends AnyWordSpec {
         controller.add(observer)
 
         controller.newGame
+        controller.setPlayerLimit(2)
         controller.addPlayer("foo")
+        controller.addPlayer("bar")
 
-        observer.updated should be(2)
-        controller.state.players should have length 1
+        observer.updated should be(8)
+        controller.state.players should have length 2
         controller.state.players.head.name should be("foo")
-      }
-
-      "prepare round" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.prepareRound
-
-        observer.updated should be(2)
-        controller.state.round should be(1)
-      }
-
-      "deal cards" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.addPlayer("foo")
-        controller.prepareRound
-        controller.dealCards
-
-        observer.updated should be(4)
-        controller.state.players.head.hand.count should be(1)
-      }
-
-      "start a new trick" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.startTrick
-        observer.updated should be(2)
-        assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
       }
 
       "set prediction" in {
@@ -176,14 +132,14 @@ class ControllerSpec extends AnyWordSpec {
         controller.add(observer)
 
         controller.newGame
+        controller.setPlayerLimit(2)
         controller.addPlayer("foo")
-        controller.prepareRound
+        controller.addPlayer("bar")
         controller.setPrediction(controller.state.players.head, 3)
 
-        observer.updated should be(4)
-        controller.state.players.head.prediction should be(3)
+        observer.updated should be(10)
+        controller.state.players.head.prediction should be(Some(3))
       }
-
     }
   }
 }

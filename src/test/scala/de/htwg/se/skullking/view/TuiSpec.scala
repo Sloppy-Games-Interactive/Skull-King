@@ -88,7 +88,7 @@ class TuiSpec extends AnyWordSpec {
   }
 
   "pt" should {
-    "set prediction" in {
+    "set valid prediction" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
       val tui: Tui = Tui(controller)
 
@@ -101,13 +101,12 @@ class TuiSpec extends AnyWordSpec {
       controller.state.players.head.prediction should be(3)
     }
 
-    "set prediction with to great round (invalid) input" in {
+    "reject prediction greater than round number" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
       val tui: Tui = Tui(controller)
 
       controller.prepareRound
       controller.state.players.head.prediction should be(0)
-      // 7 because round is 5 + prepareRound increments round by 1
       val input = ByteArrayInputStream("7\n3\n".getBytes(StandardCharsets.UTF_8))
       Console.withIn(input) {
         tui.processInputLine("pt")
@@ -115,13 +114,26 @@ class TuiSpec extends AnyWordSpec {
       controller.state.players.head.prediction should be(3)
     }
 
-    "set prediction with to small round (invalid) input" in {
+    "reject negative prediction" in {
       val controller = Controller(GameState(List(Player("foo")), 5))
       val tui: Tui = Tui(controller)
 
       controller.prepareRound
       controller.state.players.head.prediction should be(0)
       val input = ByteArrayInputStream("-1\n3\n".getBytes(StandardCharsets.UTF_8))
+      Console.withIn(input) {
+        tui.processInputLine("pt")
+      }
+      controller.state.players.head.prediction should be(3)
+    }
+
+    "reject non-integer prediction" in {
+      val controller = Controller(GameState(List(Player("foo")), 5))
+      val tui: Tui = Tui(controller)
+
+      controller.prepareRound
+      controller.state.players.head.prediction should be(0)
+      val input = ByteArrayInputStream("abc\n3\n".getBytes(StandardCharsets.UTF_8))
       Console.withIn(input) {
         tui.processInputLine("pt")
       }

@@ -1,6 +1,5 @@
 package de.htwg.se.skullking.controller
 
-import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
@@ -9,10 +8,26 @@ class ControllerSpec extends AnyWordSpec {
 
   "Controller" when {
     "doing undo/redo" should {
+      "handle undo/redo player limit" in {
+        val ctrl = Controller()
+
+        ctrl.newGame
+        ctrl.setPlayerLimit(2)
+
+        ctrl.state.playerLimit should be(2)
+
+        ctrl.undo
+        ctrl.state.playerLimit should be(0)
+
+        ctrl.redo
+        ctrl.state.playerLimit should be(2)
+      }
+
       "handle undo/redo player" in {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
         ctrl.addPlayer("bar")
 
@@ -32,7 +47,9 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
-        ctrl.prepareRound
+        ctrl.setPlayerLimit(2)
+        ctrl.addPlayer("foo")
+        ctrl.addPlayer("bar")
 
         ctrl.state.round should be(1)
 
@@ -47,40 +64,25 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
-        ctrl.prepareRound
-        ctrl.setPrediction(ctrl.state.players.head, 3)
+        ctrl.addPlayer("bar")
+        ctrl.setPrediction(ctrl.state.players.head, 1)
 
-        ctrl.state.players.head.prediction should be(3)
+        ctrl.state.players.head.prediction should be(Some(1))
 
         ctrl.undo
-        ctrl.state.players.head.prediction should be(0)
+        ctrl.state.players.head.prediction should be(None)
 
         ctrl.redo
-        ctrl.state.players.head.prediction should be(3)
-      }
-
-      "handle undo/redo cards" in {
-        val ctrl = Controller()
-
-        ctrl.newGame
-        ctrl.addPlayer("foo")
-        ctrl.prepareRound
-        ctrl.dealCards
-
-        ctrl.state.players.head.hand.count should be(1)
-
-        ctrl.undo
-        ctrl.state.players.head.hand.count should be(0)
-
-        ctrl.redo
-        ctrl.state.players.head.hand.count should be(1)
+        ctrl.state.players.head.prediction should be(Some(1))
       }
 
       "handle undo/redo new game" in {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
 
         ctrl.state.players should have length 1
@@ -111,10 +113,15 @@ class ControllerSpec extends AnyWordSpec {
         val ctrl = Controller()
 
         ctrl.newGame
+        ctrl.setPlayerLimit(2)
         ctrl.addPlayer("foo")
-        ctrl.prepareRound
-        ctrl.dealCards
-        ctrl.playCard(ctrl.state.players.head, 0)
+        ctrl.addPlayer("bar")
+        ctrl.setPrediction(ctrl.state.activePlayer.get, 1)
+        ctrl.setPrediction(ctrl.state.activePlayer.get, 1)
+
+        ctrl.state.players.head.hand.count should be(1)
+
+        ctrl.playCard(ctrl.state.activePlayer.get, 0)
 
         ctrl.state.players.head.hand.count should be(0)
 
@@ -139,7 +146,7 @@ class ControllerSpec extends AnyWordSpec {
 
         controller.newGame
 
-        observer.updated should be(1)
+        observer.updated should be(2)
         controller.state.round should be(0)
       }
 
@@ -148,45 +155,13 @@ class ControllerSpec extends AnyWordSpec {
         controller.add(observer)
 
         controller.newGame
+        controller.setPlayerLimit(2)
         controller.addPlayer("foo")
+        controller.addPlayer("bar")
 
-        observer.updated should be(2)
-        controller.state.players should have length 1
+        observer.updated should be(8)
+        controller.state.players should have length 2
         controller.state.players.head.name should be("foo")
-      }
-
-      "prepare round" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.prepareRound
-
-        observer.updated should be(2)
-        controller.state.round should be(1)
-      }
-
-      "deal cards" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.addPlayer("foo")
-        controller.prepareRound
-        controller.dealCards
-
-        observer.updated should be(4)
-        controller.state.players.head.hand.count should be(1)
-      }
-
-      "start a new trick" in {
-        val observer = TestObserver()
-        controller.add(observer)
-
-        controller.newGame
-        controller.startTrick
-        observer.updated should be(2)
-        assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
       }
 
       "set prediction" in {
@@ -194,12 +169,13 @@ class ControllerSpec extends AnyWordSpec {
         controller.add(observer)
 
         controller.newGame
+        controller.setPlayerLimit(2)
         controller.addPlayer("foo")
-        controller.prepareRound
+        controller.addPlayer("bar")
         controller.setPrediction(controller.state.players.head, 3)
 
-        observer.updated should be(4)
-        controller.state.players.head.prediction should be(3)
+        observer.updated should be(10)
+        controller.state.players.head.prediction should be(Some(3))
       }
 
       "quit" in {
@@ -209,7 +185,7 @@ class ControllerSpec extends AnyWordSpec {
         controller.newGame
         controller.quit
 
-        observer.updated should be(2)
+        observer.updated should be(3)
         assert(true) // TODO implement actual test - assert(true) == BÖÖÖÖÖÖÖSE
       }
 
@@ -218,12 +194,14 @@ class ControllerSpec extends AnyWordSpec {
         controller.add(observer)
 
         controller.newGame
+        controller.setPlayerLimit(2)
         controller.addPlayer("foo")
-        controller.prepareRound
-        controller.dealCards
-        controller.playCard(controller.state.players.head, 0)
+        controller.addPlayer("bar")
+        controller.setPrediction(controller.state.activePlayer.get, 1)
+        controller.setPrediction(controller.state.activePlayer.get, 1)
+        controller.playCard(controller.state.activePlayer.get, 0)
 
-        observer.updated should be(5)
+        observer.updated should be(14)
         controller.state.players.head.hand.count should be(0)
       }
     }

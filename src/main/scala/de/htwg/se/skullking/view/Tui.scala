@@ -2,9 +2,15 @@ package de.htwg.se.skullking.view
 
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
 import de.htwg.se.skullking.util.{ObservableEvent, Observer, Prompter, PromptStrategy}
+import de.htwg.se.skullking.util.TuiKeys
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
+
+  println("Welcome to Skull King!")
+  TuiKeys.values.foreach { key =>
+    println(s"${key.productPrefix}, Key: ${key.key}")
+  }
 
   val prompter = new Prompter(PromptStrategy.TUI)
   
@@ -39,10 +45,10 @@ class Tui(controller: Controller) extends Observer {
 
   def processInputLine(input: String): Unit = {
     input match {
-      case "q" => controller.quit
-      case "n" => controller.newGame
-      case "z" => controller.undo
-      case "y" => controller.redo
+      case TuiKeys.Quit.key => controller.quit
+      case TuiKeys.Undo.key => controller.undo
+      case TuiKeys.Redo.key => controller.redo
+      case TuiKeys.NewGame.key => controller.newGame
       case _ =>  println("Invalid input.")
     }
   }

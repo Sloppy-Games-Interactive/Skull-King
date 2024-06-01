@@ -48,6 +48,11 @@ class Controller(var state: GameState = GameState()) extends Observable {
     notifyObservers(ControllerEvents.PlayerAdded)
     handleState()
   }
+
+  def playCard(player: Player, cardIndex: Int): Unit = {
+    undoManager.doStep(new PlayCard(this, player, cardIndex))
+    notifyObservers(ControllerEvents.CardPlayed)
+  }
   
   def setPrediction(player: Player, prediction: Int): Unit = {
     undoManager.doStep(new SetPredictionCommand(this, player, prediction))
@@ -81,4 +86,5 @@ enum ControllerEvents extends ObservableEvent {
   case Quit
   case Undo
   case Redo
+  case CardPlayed
 }

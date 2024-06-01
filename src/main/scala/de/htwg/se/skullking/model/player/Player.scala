@@ -26,5 +26,5 @@ case class Player(
     val (card, newHand) = hand.play(idx)
     (card, this.copy(hand = newHand))
   }
-  override def toString: String = s"$name: $score, $hand, $prediction"
+  override def toString: String = s"$name: $score, $hand, prediction: ${prediction.getOrElse("-")}"
 }

@@ -15,7 +15,6 @@ class Controller(var state: GameState = GameState()) extends Observable {
       case Phase.PrepareTricks => notifyObservers(ControllerEvents.PromptPrediction)
       case Phase.PlayTricks =>  notifyObservers(ControllerEvents.PromptCardPlay)
       case Phase.EndGame =>  notifyObservers(ControllerEvents.PromptNewGame)
-      case _ =>
     }
   }
 
@@ -50,19 +49,14 @@ class Controller(var state: GameState = GameState()) extends Observable {
   }
 
   def playCard(player: Player, cardIndex: Int): Unit = {
-    undoManager.doStep(new PlayCard(this, player, cardIndex))
+    undoManager.doStep(new PlayCardCommand(this, player, cardIndex))
     notifyObservers(ControllerEvents.CardPlayed)
+    handleState()
   }
   
   def setPrediction(player: Player, prediction: Int): Unit = {
     undoManager.doStep(new SetPredictionCommand(this, player, prediction))
     notifyObservers(ControllerEvents.PredictionSet)
-    handleState()
-  }
-
-  def playCard(player: Player, card: Int): Unit = {
-    undoManager.doStep(new PlayCardCommand(this, card))
-    notifyObservers(ControllerEvents.CardPlayed)
     handleState()
   }
   
@@ -81,7 +75,6 @@ enum ControllerEvents extends ObservableEvent {
   case PromptPrediction
   case PredictionSet
   case PromptCardPlay
-  case CardPlayed
   case PromptNewGame
   case Quit
   case Undo

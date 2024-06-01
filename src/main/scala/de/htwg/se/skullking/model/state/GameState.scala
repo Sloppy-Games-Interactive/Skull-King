@@ -11,6 +11,12 @@ enum Phase {
   case EndGame
 }
 
+trait GameStateEvent()
+case class SetPlayerLimitEvent(n: Int) extends GameStateEvent
+case class AddPlayerEvent(player: Player) extends GameStateEvent
+case class SetPredictionEvent(player: Player, prediction: Int) extends GameStateEvent
+case class PlayCardEvent(player: Player, cardIdx: Int) extends GameStateEvent
+
 case class GameState(
   phase: Phase = Phase.PrepareGame,
   playerLimit: Int = 0,
@@ -18,14 +24,24 @@ case class GameState(
   round: Int = 0,
   tricks: List[Trick] = List(),
   deck: Deck = Deck(),
+  roundLimit: Int = 10
 ) {
-  private def changePhase(nextPhase: Phase): GameState = this.copy(phase = nextPhase)
+  def handleEvent(event: GameStateEvent): GameState = event match {
+    case SetPlayerLimitEvent(n) if phase == Phase.PrepareGame && players.isEmpty => setPlayerLimit(n)
+    case AddPlayerEvent(player) if phase == Phase.PrepareGame && playerLimit > 0 => addPlayer(player)
+    case SetPredictionEvent(player, prediction) if phase == Phase.PrepareTricks => setPrediction(player, prediction)
+    case PlayCardEvent(player, cardIdx) if phase == Phase.PlayTricks => playCard(player, cardIdx)
+    case _ => this
+  }
 
   def activePlayer: Option[Player] = players.find(_.active)
+  def activeTrick: Option[Trick] = tricks.headOption
 
-  def setPlayerLimit(n: Int): GameState = this.copy(playerLimit = n)
+  private def changePhase(nextPhase: Phase): GameState = this.copy(phase = nextPhase)
 
-  def addPlayer(player: Player): GameState = {
+  private def setPlayerLimit(n: Int): GameState = this.copy(playerLimit = n)
+
+  private def addPlayer(player: Player): GameState = {
     val nextState = this.copy(players = players :+ player)
     if (players.length < playerLimit - 1) {
       nextState
@@ -35,7 +51,7 @@ case class GameState(
   }
 
   private def prepareRound: GameState = {
-    val updatedPlayers = setFirstActive(players).map(_.resetHand).map(_.resetPrediction)
+    val updatedPlayers = setFirstActive(players).map(_.resetHand.resetPrediction)
 
     this.copy(
         round = round + 1,
@@ -55,17 +71,15 @@ case class GameState(
     this.copy(players = updatedPlayers.reverse, deck = newDeck)
   }
 
-  def setPrediction(player: Player, newPrediction: Int): GameState = {
-    val updatedPlayers = setNextActive(players.map {
-      case p if p.name == player.name => p.copy(prediction = Some(newPrediction), active = true)
-      case p => p.copy(active = false)
-    })
+  private def setPrediction(player: Player, newPrediction: Int): GameState = {
+    val updatedPlayers = players.map {
+      case p if p.name == player.name => p.copy(prediction = Some(newPrediction))
+      case p => p
+    }
 
-    val nextState = this.copy(players = updatedPlayers)
-    if (nextActive(updatedPlayers).isEmpty) {
-      nextState.startTrick
-    } else {
-      nextState
+    nextActive(updatedPlayers) match {
+      case Some(nextPlayer) => this.copy(players = setNextActive(updatedPlayers))
+      case None => this.copy(players = updatedPlayers).startTrick
     }
   }
 
@@ -76,8 +90,30 @@ case class GameState(
     ).changePhase(Phase.PlayTricks)
   }
 
-  def playCard(cardIdx: Int): GameState = {
-    this
+  private def playCard(player: Player, cardIdx: Int): GameState = {
+    val nextState = {
+      for {
+        _ <- players.find(_ == player)
+        trick <- tricks.headOption
+      } yield {
+        val (card, updatedPlayer) = player.playCard(cardIdx)
+        val updatedTrick = trick.play(card, updatedPlayer)
+        val updatedPlayers = players.map {
+          case p if p.name == updatedPlayer.name => updatedPlayer
+          case p => p
+        }
+
+        this.copy(
+          tricks = tricks.updated(0, updatedTrick),
+          players = setNextActive(updatedPlayers)
+        )
+      }
+    }.getOrElse(this)
+
+    nextState.activeTrick match {
+      case Some(trick) if trick.players.length == players.length => nextState.endTrick
+      case _ => nextState
+    }
   }
 
   private def endTrick: GameState = {
@@ -90,9 +126,10 @@ case class GameState(
 
   private def endRound: GameState = {
     val updatedPlayers = players.map { player =>
-      val wonTricks = tricks.collect {
-        case trick if trick.winner.contains(player) => trick
-      }
+      val wonTricks = for {
+        trick <- tricks
+        winner <- trick.winner if winner.name == player.name
+      } yield trick
 
       val numTricksWon = wonTricks.length
 
@@ -112,7 +149,7 @@ case class GameState(
       tricks = List()
     )
 
-    if (round == 10) {
+    if (round == roundLimit) {
       nextState.changePhase(Phase.EndGame)
     } else {
       nextState.prepareRound
@@ -124,12 +161,7 @@ case class GameState(
   }
 
   private def setNextActive(players: List[Player]): List[Player] = {
-    val nextPlayer = activePlayer match {
-      case Some(player) =>
-        val nextIndex = players.indexOf(player) + 1
-        players.lift(nextIndex)
-      case None => None
-    }
+    val nextPlayer = nextActive(players)
     players.map {
       case p if nextPlayer.isDefined && p.name == nextPlayer.get.name => p.copy(active = true)
       case p => p.copy(active = false)

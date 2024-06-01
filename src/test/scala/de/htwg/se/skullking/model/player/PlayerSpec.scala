@@ -6,7 +6,6 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec {
   "Player" should {
-
     "have defaults" in {
       val p1 = Player("")
       p1.name should be("")
@@ -32,22 +31,27 @@ class PlayerSpec extends AnyWordSpec {
       p1.name should be("p1")
       p1reset.name should be("p1")
     }
-  }
 
-  "Player" should {
     "have a score" in {
       val p1 = Player("p1", Hand(List()), 9)
       p1.score should be(9)
     }
-  }
 
-  "Player" should {
     "have a resettable prediction" in {
       val p1 = Player("p1", Hand(List()), 9, Some(0))
       val p1reset = p1.resetPrediction
 
       p1.prediction should be(Some(0))
       p1reset.prediction should be(None)
+    }
+
+    "have a toString" in {
+      val hand = Hand(List(Card(Suit.Red, 1), Card(Suit.Blue, 2), Card(Suit.Red, 3)))
+      val p1 = Player("p1", hand, 9, Some(0))
+      p1.toString should be(s"p1: 9, ${hand.toString}, prediction: 0")
+
+      val p2 = Player("p2", hand, 9)
+      p2.toString should be(s"p2: 9, ${hand.toString}, prediction: -")
     }
   }
 }

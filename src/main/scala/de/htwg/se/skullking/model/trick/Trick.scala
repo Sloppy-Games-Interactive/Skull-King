@@ -29,4 +29,8 @@ class Trick(val stack: List[(Card, Player)] = List()) {
 
     bonusHandlers.map(h => h.handle(this)).sum
   }
+
+  override def toString: String = {
+    "Trick: " + stack.map((card, player) => s"${player.name}: $card").mkString("; ")
+  }
 }

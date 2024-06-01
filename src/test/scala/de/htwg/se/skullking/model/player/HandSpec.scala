@@ -21,7 +21,7 @@ class HandSpec extends AnyWordSpec {
       val r2 = Card(Suit.Red, 2)
       val cards = List(r1, r2)
       val h = new Hand(cards)
-      val (playedCard, newHand) = h.play(2)
+      val (playedCard, newHand) = h.play(1)
 
       playedCard shouldEqual r2
       newHand.cards should not contain r2
@@ -40,7 +40,7 @@ class HandSpec extends AnyWordSpec {
       val cards = List(r1, r2)
       val h = new Hand(cards)
 
-      h.toString.replaceAll(" ", "") shouldEqual "1:\uD83D\uDFE51\n2:\uD83D\uDFE52"
+      h.toString.replaceAll(" ", "") shouldEqual "1:\uD83D\uDFE51;2:\uD83D\uDFE52"
     }
   }
 }

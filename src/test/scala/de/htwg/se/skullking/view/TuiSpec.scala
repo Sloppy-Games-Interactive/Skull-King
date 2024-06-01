@@ -10,68 +10,82 @@ import java.io.ByteArrayInputStream
 import java.nio.charset.StandardCharsets
 
 class TuiSpec extends AnyWordSpec {
-  // TODO: fix tui tests whenever regular tui commands work again
-//  "z" should {
-//    "undo" in {
-//      val controller = Controller(GameState(Phase.PrepareGame, List(Player("foo")), 5))
-//      val tui: Tui = Tui(controller)
+//  "A Tui" when {
+//    val initialGameState = GameState(
+//      phase = Phase.PrepareGame,
+//      players = List(),
+//      playerLimit = 2
+//    )
 //
-//      controller.state.round should be(5)
-//      controller.prepareRound
-//      controller.state.round should be(6)
-//      tui.processInputLine("z")
-//      controller.state.round should be(5)
-//    }
-//  }
+//    "using :undo" should {
+//      "undo the last step" in {
+//        val controller = Controller(initialGameState)
+//        val tui: Tui = Tui(controller)
 //
-//  "y" should {
-//    "redo" in {
-//      val controller = Controller(GameState(Phase.PrepareGame, List(Player("foo")), 5))
-//      val tui: Tui = Tui(controller)
-//
-//      controller.state.round should be(5)
-//      controller.prepareRound
-//      controller.state.round should be(6)
-//      tui.processInputLine("z")
-//      controller.state.round should be(5)
-//      tui.processInputLine("y")
-//      controller.state.round should be(6)
-//    }
-//  }
-//
-//  "n" should {
-//    "start new game" in {
-//      val controller = Controller(GameState(Phase.PrepareGame, List(Player("foo")), 5))
-//      val tui: Tui = Tui(controller)
-//
-//      controller.state.round should be(5)
-//      tui.processInputLine("n")
-//      controller.state.round should be(0)
-//    }
-//  }
-//
-//  "q" should {
-//    "quit" in {
-//      val controller = Controller(GameState(Phase.PrepareGame, List(Player("foo")), 5))
-//      val tui: Tui = Tui(controller)
-//
-//      val out = new java.io.ByteArrayOutputStream()
-//      Console.withOut(out) {
-//        tui.processInputLine("q")
+//        controller.state.players.length should be(0)
+//        controller.addPlayer("foo")
+//        controller.state.players.length should be(1)
+//        tui.processInputLine(":undo")
+//        controller.state.players.length should be(0)
 //      }
-//
-//      out.toString() should include("Goodbye")
 //    }
-//  }
 //
-//  "_" should {
-//    val controller = Controller(GameState(Phase.PrepareGame, List(Player("foo")), 5))
-//    val tui: Tui = Tui(controller)
+//    "using :redo" should {
+//      "redo the last undone step" in {
+//        val controller = Controller(initialGameState)
+//        val tui: Tui = Tui(controller)
 //
-//    "parse player input" in { // TODO
-//      val initialState = GameState(Phase.PrepareGame, List(), 5)
-//      val state = tui.processInputLine("TODO")
-//      assert(true)
+//        controller.state.players.length should be(0)
+//        controller.addPlayer("foo")
+//        controller.state.players.length should be(1)
+//        tui.processInputLine(":undo")
+//        controller.state.players.length should be(0)
+//        tui.processInputLine(":redo")
+//        controller.state.players.length should be(1)
+//      }
+//    }
+//
+//    "using :new game" should {
+//      "start new game" in {
+//        val controller = Controller(initialGameState)
+//        val tui: Tui = Tui(controller)
+//
+//        controller.state.playerLimit should be(2)
+//        controller.state.players.length should be(0)
+//        controller.addPlayer("foo")
+//        controller.state.players.length should be(1)
+//        tui.processInputLine(":new game")
+//        controller.state.playerLimit should be(0)
+//        controller.state.players.length should be(0)
+//      }
+//    }
+//
+//    "using :quit" should {
+//      "quit" in {
+//        val controller = Controller(initialGameState)
+//        val tui: Tui = Tui(controller)
+//
+//        val out = new java.io.ByteArrayOutputStream()
+//        Console.withOut(out) {
+//          tui.processInputLine(":quit")
+//        }
+//
+//        out.toString() should include("Goodbye")
+//      }
+//    }
+//
+//    "typing an unknown command" should {
+//      "print input error" in {
+//        val controller = Controller(initialGameState)
+//        val tui: Tui = Tui(controller)
+//
+//        val out = new java.io.ByteArrayOutputStream()
+//        Console.withOut(out) {
+//          tui.processInputLine(":unknown command")
+//        }
+//
+//        out.toString() should include("Invalid input.")
+//      }
 //    }
 //  }
 }

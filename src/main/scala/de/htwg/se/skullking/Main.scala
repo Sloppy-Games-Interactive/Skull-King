@@ -8,7 +8,7 @@ import scala.io.StdIn.readLine
 
   var input: String = ""
 
-  while (input != "q") {
+  while (input != ":quit") {
     input = readLine()
     tui.processInputLine(input)
   }

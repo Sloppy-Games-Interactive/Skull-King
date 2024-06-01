@@ -1,116 +1,129 @@
-import de.htwg.se.skullking.model.GameState
+import de.htwg.se.skullking.model.deck.{Deck, DeckContent, DeckFactory}
 import de.htwg.se.skullking.model.player.Player
-//import de.htwg.se.skullking.model._
-//
-//val state = GameState()
+import de.htwg.se.skullking.model.trick.Trick
 
-// that's one way to sort cards when printing a player hand...
-//state.startNewRound.deck.shuffle().cards.sortBy(_.value).groupBy(_.suit).foreach(println)
+enum Phase {
+  case PrepareGame
+  case PrepareTricks
+  case PlayTricks
+  case EndGame
+}
 
+case class State(
+  phase: Phase = Phase.PrepareGame,
+  playerLimit: Int = 0,
+  players: List[Player] = List(),
+  round: Int = 0,
+  tricks: List[Trick] = List(),
+  activePlayer: Option[Player] = None,
+  deck: Deck = Deck(),
+) {
+  private def changePhase(nextPhase: Phase): State = this.copy(phase = nextPhase)
 
-class UndoManager(controller: Controller) {
-  private var undoStack: List[Command] = Nil
-  private var redoStack: List[Command] = Nil
-  def doStep(command: Command) = {
-    undoStack = command :: undoStack
-    controller.state = command.doStep
-  }
-  def undoStep = {
-    undoStack match {
-      case Nil =>
-      case head :: stack => {
-        controller.state = head.undoStep
-        undoStack = stack
-        redoStack = head :: redoStack
-      }
+  def setPlayerLimit(n: Int): State = this.copy(playerLimit = n)
+
+  def addPlayer(player: Player): State = {
+    if (players.length < playerLimit) {
+      this.copy(players = player :: players)
+    } else {
+      prepareRound
     }
   }
-  def redoStep = {
-    redoStack match {
-      case Nil =>
-      case head :: stack => {
-        controller.state = head.redoStep
-        redoStack = stack
-        undoStack = head :: undoStack
+
+  private def prepareRound: State = {
+    this.copy(
+        round = round + 1,
+        deck = DeckFactory(DeckContent.full).shuffle()
+      ).dealCards
+      .changePhase(Phase.PrepareTricks)
+  }
+
+  private def dealCards: State = {
+    val (newDeck, updatedPlayers) = players.foldLeft((deck, List[Player]())) {
+      case ((currentDeck, playerList), player) =>
+        val (newDeck, newHand) = player.hand.drawFromDeck(currentDeck, round)
+        (newDeck, player.copy(hand = newHand) :: playerList)
+    }
+
+    this.copy(players = updatedPlayers.reverse, deck = newDeck)
+  }
+
+  def setPrediction(player: Player, newPrediction: Int): State = {
+    val updatedPlayers = players.collect {
+      case p if p.name == player.name => p.copy(prediction = Some(newPrediction))
+      case p => p
+    }
+
+    val nextState = this.copy(players = updatedPlayers)
+
+    if (updatedPlayers.forall(_.prediction.isDefined)) {
+      nextState.startTrick
+    } else {
+      nextState
+    }
+  }
+
+  private def startTrick: State = {
+    this.copy(
+      tricks = Trick() :: tricks,
+      activePlayer = Some(players.head)
+    ).changePhase(Phase.PlayTricks)
+  }
+
+  private def findNextPlayer: Option[Player] = {
+    activePlayer match {
+      case Some(player) =>
+        val nextIndex = players.indexOf(player) + 1
+        players.lift(nextIndex)
+      case None => None
+    }
+  }
+
+  def playCard: State = { // todo: implement actually playing cards
+    val nextPlayer = findNextPlayer
+    if (nextPlayer.isEmpty) {
+      endTrick
+    } else {
+      this.copy(activePlayer = nextPlayer)
+    }
+  }
+
+  private def endTrick: State = {
+    if (tricks.length == round) {
+      endRound
+    } else {
+      startTrick
+    }
+  }
+
+  private def endRound: State = {
+    val updatedPlayers = players.map { player =>
+      val wonTricks = tricks.collect {
+        case trick if trick.winner.contains(player) => trick
       }
+
+      val numTricksWon = wonTricks.length
+
+      player.prediction.fold(player) { prediction =>
+        val scoreChange = prediction match {
+          case 0 if numTricksWon == 0 => 10 * round
+          case 0 => -10 * round
+          case _ if prediction == numTricksWon => 20 * numTricksWon + wonTricks.map(_.calculateBonusPoints).sum
+          case _ => -10 * Math.abs(numTricksWon - prediction)
+        }
+        player.copy(score = player.score + scoreChange)
+      }
+    }
+
+    val nextState = this.copy(
+      players = updatedPlayers,
+      tricks = List()
+    )
+
+    if (round == 10) {
+      nextState.changePhase(Phase.EndGame)
+    } else {
+      nextState.prepareRound
     }
   }
 }
-
-trait Command {
-  def doStep: GameState
-  def undoStep: GameState
-  def redoStep: GameState
-}
-
-class NewGameCommand(val state: GameState) extends Command {
-  override def doStep: GameState = GameState()
-  override def undoStep: GameState = state
-  override def redoStep: GameState = doStep
-}
-
-class AddPlayerCommand(val state: GameState, player: Player) extends Command {
-  override def doStep: GameState = state.addPlayer(player)
-  override def undoStep: GameState = state
-  override def redoStep: GameState = doStep
-}
-
-class PrepareRoundCommand(val state: GameState) extends Command {
-  override def doStep: GameState = state.startNewRound
-  override def undoStep: GameState = state
-  override def redoStep: GameState = doStep
-}
-
-class DealCardsCommand(val state: GameState) extends Command {
-  override def doStep: GameState = state.dealCards
-  override def undoStep: GameState = state
-  override def redoStep: GameState = doStep
-}
-
-class SetPredictionCommand(val state: GameState, player: Player, prediction: Int) extends Command {
-  override def doStep: GameState = state.setPrediction(player, prediction)
-  override def undoStep: GameState = state
-  override def redoStep: GameState = doStep
-}
-
-class Controller {
-  val undoManager = new UndoManager(this)
-  var state = GameState()
-  def newGame = undoManager.doStep(new NewGameCommand(state))
-  def addPlayer(name: String) = undoManager.doStep(new AddPlayerCommand(state, Player(name)))
-  def prepareRound = undoManager.doStep(new PrepareRoundCommand(state))
-  def dealCards = undoManager.doStep(new DealCardsCommand(state))
-  def setPrediction(player: Player, prediction: Int) = undoManager.doStep(new SetPredictionCommand(state, player, prediction))
-  def undo = undoManager.undoStep
-  def redo = undoManager.redoStep
-}
-//   def newGame: Unit = {
-//    state = GameState()
-//    notifyObservers(ControllerEvents.NewGame)
-//  }
-//
-//  def addPlayer(name: String): Unit = {
-//    state = state.addPlayer(Player(name))
-//    notifyObservers(ControllerEvents.PlayerAdded)
-//  }
-//
-//  def prepareRound: Unit = {
-//    state = state.startNewRound
-//    notifyObservers(ControllerEvents.RoundPrepared)
-//  }
-//
-//  def dealCards: Unit = {
-//    state = state.dealCards
-//    notifyObservers(ControllerEvents.CardsDealt)
-//  }
-//
-//  def startTrick: Unit = {
-//    //TODO: implement
-//    notifyObservers(ControllerEvents.TrickStarted)
-//
-//  }
-//
-//  def setPrediction(player: Player, prediction: Int): Unit = {
-//    state = state.setPrediction(player, prediction)
-//    notifyObservers(ControllerEvents.PredictionSet)
-//  }

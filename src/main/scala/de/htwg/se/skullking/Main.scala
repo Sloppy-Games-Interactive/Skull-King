@@ -1,5 +1,5 @@
 import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.view.Tui
+import de.htwg.se.skullking.view.tui.Tui
 import scala.io.StdIn.readLine
 
 @main def run(): Unit = {

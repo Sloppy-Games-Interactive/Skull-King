@@ -3,6 +3,22 @@
     -fx-background-size: cover;
 }
 
+Label {
+    -fx-font-size: 64;
+    -fx-text-fill: #fff;
+    -fx-min-width: 450;
+    -fx-alignment: center;
+    -fx-min-height: 100;
+    -fx-background-image: url("/images/overlay/wood_title.png");
+    -fx-background-size: stretch;
+}
+
+/*HBox, VBox {*/
+/*    -fx-alignment: center;*/
+/*    -fx-spacing: 10;*/
+/*}*/
+
+
 HBox, VBox {
     -fx-alignment: center;
     -fx-spacing: 10;

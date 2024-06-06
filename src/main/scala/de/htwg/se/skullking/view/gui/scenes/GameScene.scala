@@ -7,8 +7,8 @@ import de.htwg.se.skullking.controller.Controller
 import de.htwg.se.skullking.view.gui.components.gameScene.AddPredictionPanel
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
-import scalafx.scene.control.Button
-import scalafx.scene.layout.{HBox, Pane, Priority, StackPane, VBox}
+import scalafx.scene.control.{Button, Label}
+import scalafx.scene.layout.{HBox, Priority, Region, StackPane, VBox}
 import scalafx.Includes.*
 import scalafx.animation.Timeline
 import scalafx.geometry.Pos
@@ -22,8 +22,8 @@ case class GameScene(
   windowWidth: Double,
   windowHeight: Double,
   onClickQuitBtn: () => Unit = () => println("Quit Game"),
-) extends Scene(windowWidth, windowHeight
-) {
+) extends Scene(windowWidth, windowHeight) {
+
   private val quitGameBtn: Button = new GameButton(medium) {
     text = "Quit Game"
     onAction = onClickQuitBtn
@@ -47,11 +47,6 @@ case class GameScene(
       },
       new VBox {
         children = Seq(
-          new HBox {
-            children = Seq(
-              new PlayerListRow("Player 1", 0)
-            )
-          },
           new HBox {
             children = Seq(quitGameBtn)
           },

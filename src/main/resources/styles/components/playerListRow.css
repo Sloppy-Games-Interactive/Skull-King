@@ -1,6 +1,28 @@
 
-HBox {
-    -fx-background-color: #3d2217;
-    -fx-min-width: 200;
-    -fx-min-height: 100;
+
+Label {
+    -fx-font-size: 46;
+    -fx-text-fill: #fff;
+}
+
+#score-label {
+    -fx-background-color: #3D2217;
+    -fx-background-radius: 100;
+    -fx-padding: 20, 30;
+    -fx-border-color: #B4801C;
+    -fx-border-radius: 100;
+    -fx-border-width: 3;
+}
+
+#player-name {
+    -fx-font-size: 24;
+    -fx-text-fill: #fff;
+}
+
+ImageView {
+    -fx-border-color: #B4801C;
+    -fx-border-width: 3;
+    -fx-border-radius: 100;
+    -fx-min-height: 10;
+    -fx-min-width: 10;
 }

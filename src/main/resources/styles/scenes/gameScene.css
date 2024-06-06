@@ -3,7 +3,7 @@
     -fx-background-size: cover;
 }
 
-/*HBox, VBox {*/
-/*    -fx-alignment: center;*/
-/*    -fx-spacing: 10;*/
-/*}*/
+HBox, VBox {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}

@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.view.gui.components.preGame
+package de.htwg.se.skullking.view.gui.components.gameScene
 
 import de.htwg.se.skullking.controller.Controller
 import de.htwg.se.skullking.view.gui.Styles
@@ -12,25 +12,20 @@ import scalafx.scene.control.Button
 import scalafx.event.ActionEvent
 import scalafx.Includes.*
 
-class AddPlayersPanel(controller: Controller) extends VBox {
-  prefHeight = 4000
-  prefWidth = 1191
+class AddPredictionPanel(controller: Controller, height: Int = 3000, width: Int = 1191) extends VBox {
+  prefHeight = height
+  prefWidth = width
   fillWidth = false
   alignment = Pos.Center
   styleClass.add("panel")
 
   val title: Text = new Text {
-    text = "Add Players"
+    text = "Set Prediction"
     styleClass.add("title")
     fill = Color.White
   }
 
   private val players = 4
-  private val playerInputFields: Seq[InputField] = for (player <- 1 to players) yield new InputField {
-    prefWidth = 577
-    prefHeight = 70
-    promptText = "Enter Name"
-  }
   private val playerFields = for (player <- 1 to players) yield new HBox {
     style = "-fx-spacing: 70;"
     children = Seq(
@@ -39,8 +34,7 @@ class AddPlayersPanel(controller: Controller) extends VBox {
         style = "-fx-font-size: 64px;"
         fill = Color.White
         prefHeight = 76
-      },
-      playerInputFields(player - 1)
+      }
     )
   }
 
@@ -50,12 +44,10 @@ class AddPlayersPanel(controller: Controller) extends VBox {
     children = playerFields
   }
 
-  def getPlayerNames: Seq[String] = playerInputFields.map(_.text.value).filterNot(_.isEmpty)
-
   children = Seq(
     title,
     inputFields
   )
-  
+
   this.getStylesheets.add(Styles.panelCss)
 }

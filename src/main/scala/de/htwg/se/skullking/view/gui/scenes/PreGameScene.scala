@@ -20,7 +20,6 @@ case class PreGameScene(
 ) extends Scene(windowWidth, windowHeight
 ) {
   private val addPlayersPanel: AddPlayersPanel = AddPlayersPanel(controller)
-  addPlayersPanel.styleClass.add("panel")
 
   val startGameBtn: GameButton = new GameButton(BtnSize.medium) {
     text = "Start Game"
@@ -30,6 +29,7 @@ case class PreGameScene(
         controller.setPlayerLimit(playerNames.length)
         playerNames.foreach(controller.addPlayer)
       }
+      // TODO error handling, + only go to next scene when enough players are added
       onClickStartGameButton()
     }
   }

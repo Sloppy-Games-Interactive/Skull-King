@@ -64,6 +64,7 @@ class Tui(controller: Controller) extends Observer {
     e match {
       case ControllerEvents.Quit => {
         println("Goodbye!")
+        System.exit(0)
       }
       case ControllerEvents.PromptPlayerLimit => {
         promptState = PromptState.PlayerLimit

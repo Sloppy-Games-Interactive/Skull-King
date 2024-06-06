@@ -3,8 +3,9 @@ package de.htwg.se.skullking.view.gui.scenes
 import scalafx.scene.Scene
 import scalafx.scene.control.Button
 import scalafx.scene.layout.VBox
-import scalafx.Includes._
+import scalafx.Includes.*
 import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.view.gui.Styles
 
 case class TitleScene(
   controller: Controller,
@@ -37,4 +38,6 @@ case class TitleScene(
         quitBtn
     )
   }
+  this.getStylesheets.add(Styles.mainCss)
+
 }

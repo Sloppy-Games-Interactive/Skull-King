@@ -16,8 +16,16 @@ import scalafx.scene.text.Font
 import scalafx.application.Platform
 import scalafx.application.JFXApp3.PrimaryStage
 
-class Gui(controller: Controller) extends JFXApp3 with Observer {
+object Styles {
+  val mainCss: String = getClass.getResource("/styles/main.css").toExternalForm
+  val gameButtonCss: String = getClass.getResource("/styles/components/gameButton.css").toExternalForm
+  val gameSceneCss: String = getClass.getResource("/styles/scenes/gameScene.css").toExternalForm
+  val titleSceneCss: String = getClass.getResource("/styles/scenes/titleScene.css").toExternalForm
+  val preGameSceneCss: String = getClass.getResource("/styles/scenes/preGameScene.css").toExternalForm
+  val settingsSceneCss: String = getClass.getResource("/styles/scenes/settingsScene.css").toExternalForm
+}
 
+class Gui(controller: Controller) extends JFXApp3 with Observer {
   controller.add(this)
 
   private var titleScene: TitleScene = uninitialized
@@ -28,6 +36,8 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
 
   private val windowWidth = 1440
   private val windowHeight = 1024
+
+  Font.loadFont(getClass.getResourceAsStream("/fonts/Pieces_of_Eight.ttf"), 50)
 
   override def start(): Unit = {
     titleScene = TitleScene(

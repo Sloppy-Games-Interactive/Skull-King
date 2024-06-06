@@ -14,13 +14,13 @@ Button:hover {
 }
 
 #small-button {
-    -fx-min-width: 100%;
+    -fx-min-width: 20;
 }
 
 #medium-button {
-    -fx-min-width: 245;
+    -fx-min-width: 358;
 }
 
 #large-button {
-    -fx-min-width: 500;
+    -fx-min-width: 765;
 }

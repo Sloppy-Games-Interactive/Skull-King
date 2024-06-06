@@ -18,11 +18,14 @@ import scalafx.application.JFXApp3.PrimaryStage
 
 object Styles {
   val mainCss: String = getClass.getResource("/styles/main.css").toExternalForm
-  val gameButtonCss: String = getClass.getResource("/styles/components/gameButton.css").toExternalForm
   val gameSceneCss: String = getClass.getResource("/styles/scenes/gameScene.css").toExternalForm
   val titleSceneCss: String = getClass.getResource("/styles/scenes/titleScene.css").toExternalForm
   val preGameSceneCss: String = getClass.getResource("/styles/scenes/preGameScene.css").toExternalForm
   val settingsSceneCss: String = getClass.getResource("/styles/scenes/settingsScene.css").toExternalForm
+  
+  // components
+  val gameButtonCss: String = getClass.getResource("/styles/components/gameButton.css").toExternalForm
+  val playerListRowCss: String = getClass.getResource("/styles/components/playerListRow.css").toExternalForm
 }
 
 class Gui(controller: Controller) extends JFXApp3 with Observer {

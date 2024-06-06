@@ -1,0 +1,26 @@
+
+Button {
+    -fx-background-image: url("/images/components/GameButton/wood2.png");
+    -fx-background-size: stretch;
+    -fx-min-width: 20%;
+    -fx-text-fill: #fff;
+    -fx-background-color: transparent;
+    /* font-size*/
+    -fx-font-size: 50;
+}
+
+Button:hover {
+    -fx-text-fill: #9c9c9c;
+}
+
+#small-button {
+    -fx-min-width: 100%;
+}
+
+#medium-button {
+    -fx-min-width: 245;
+}
+
+#large-button {
+    -fx-min-width: 500;
+}

@@ -37,6 +37,9 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
   private val windowWidth = 1440
   private val windowHeight = 1024
 
+  private val minWindowWidth = 500
+  private val minWindowHeight = 300
+
   Font.loadFont(getClass.getResourceAsStream("/fonts/Pieces_of_Eight.ttf"), 50)
 
   override def start(): Unit = {
@@ -69,8 +72,11 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
 
 
     stage = new JFXApp3.PrimaryStage {
-      title = "Hello"
+      title = "Skull King - Card Game"
       scene = titleScene
+      minWidth = minWindowWidth
+      minHeight = minWindowHeight
+      icons. += (new Image(getClass.getResourceAsStream("/images/icon.png")))
 
       // override close button function
       onCloseRequest = () => {

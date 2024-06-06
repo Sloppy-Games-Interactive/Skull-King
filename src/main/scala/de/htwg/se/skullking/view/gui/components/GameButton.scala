@@ -1,24 +1,17 @@
 package de.htwg.se.skullking.view.gui.components
 
+import de.htwg.se.skullking.view.gui.Styles
 import scalafx.scene.control.Button
 
-class GameButton extends Button{
+enum BtnSize:
+  case small, medium, large
 
-  style = "-fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 20px; -fx-font-weight: bold; -fx-border-color: #ffffff; -fx-border-width: 2px;"
-
-  onMouseEntered = _ => {
-    style = "-fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-border-color: #000000; -fx-border-width: 2px;"
+class GameButton(size: BtnSize) extends Button {
+  size match {
+    case BtnSize.small => this.setId("small-button")
+    case BtnSize.medium => this.setId("medium-button")
+    case BtnSize.large => this.setId("large-button")
   }
+  this.getStylesheets.add(Styles.gameButtonCss)
 
-  onMouseExited = _ => {
-    style = "-fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 20px; -fx-font-weight: bold; -fx-border-color: #ffffff; -fx-border-width: 2px;"
-  }
-
-  onMousePressed = _ => {
-    style = "-fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-font-size: 20px; -fx-font-weight: bold; -fx-border-color: #000000; -fx-border-width: 2px;"
-  }
-
-  onMouseReleased = _ => {
-    style = "-fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-size: 20px; -fx-font-weight: bold; -fx-border-color: #ffffff; -fx-border-width: 2px;"
-  }
 }

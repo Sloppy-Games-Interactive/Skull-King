@@ -75,6 +75,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
 
 
     stage = new JFXApp3.PrimaryStage {
+      resizable = false
       title = "Skull King - Card Game"
       scene = titleScene
       minWidth = minWindowWidth
@@ -85,8 +86,6 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       onCloseRequest = () => {
         controller.quit
       }
-
-
     }
   }
 

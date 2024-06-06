@@ -30,6 +30,7 @@ case class PreGameScene(
         controller.setPlayerLimit(playerNames.length)
         playerNames.foreach(controller.addPlayer)
       }
+      onClickStartGameButton()
     }
   }
 

@@ -1,0 +1,21 @@
+.root {
+    -fx-background-image: url('/images/background/pre_game.jpeg');
+    -fx-background-size: cover;
+}
+
+HBox, VBox {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+.panel {
+    -fx-fill: #fff;
+    -fx-background-image: url("/images/components/panel/pre_game_panel.png");
+    -fx-background-size: stretch;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.panel .title {
+    -fx-font-size: 90;
+}

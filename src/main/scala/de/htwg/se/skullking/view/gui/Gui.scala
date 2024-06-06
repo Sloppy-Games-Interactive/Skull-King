@@ -53,18 +53,21 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
     )
 
     settingsScene = SettingsScene(
+      controller = controller,
       windowWidth = windowWidth,
       windowHeight = windowHeight,
       onClickBackButton = () => stage.setScene(titleScene)
     )
 
     preGameScene = PreGameScene(
+      controller = controller,
       windowWidth = windowWidth,
       windowHeight = windowHeight,
       onClickStartGameButton = () => stage.setScene(gameScene),
     )
 
     gameScene = GameScene(
+      controller = controller,
       windowWidth = windowWidth,
       windowHeight = windowHeight,
       onClickQuitBtn = () => stage.setScene(titleScene)

@@ -8,10 +8,14 @@ import scalafx.scene.transform.{Scale, Translate}
 import scalafx.Includes.*
 
 enum CardSize {
-  case Small, Medium, XXMedium, Large
+  case Mini, Small, Medium, XXMedium, Large
 }
 
-class CardPane(card: Card, size: CardSize, hoverEffect: Boolean = true) extends Pane {
+enum CardBack {
+  case Back
+}
+
+class CardPane(card: Card|CardBack, size: CardSize, hoverEffect: Boolean = true) extends Pane {
   def imagePathMap(card: SpecialCard): String = card.suit match {
     case Suit.Pirate => s"/images/cards/special/PirateCard.png"
     case Suit.Mermaid => s"/images/cards/special/MermaidCard.png"
@@ -26,22 +30,24 @@ class CardPane(card: Card, size: CardSize, hoverEffect: Boolean = true) extends 
     case (Suit.Yellow, value) if value >= 1 && value <= 14 => s"/images/cards/standard/treasure_chest/TreasureChestCard$value.png"
     case (Suit.Blue, value) if value >= 1 && value <= 14 => s"/images/cards/standard/octopus/OctopusCard$value.png"
     case (Suit.Black, value) if value >= 1 && value <= 14 => s"/images/cards/standard/jolly_roger/JollyRogerCard$value.png"
-    case _ => "/images/cards/back.png"
+    case _ => "/images/cards/_CardBackside.png"
   }
 
   val imagePath = card match {
     case card: StandardCard => imagePathMap(card)
     case card: SpecialCard => imagePathMap(card)
-    case _ => "/images/cards/back.png"
+    case _ => "/images/cards/_CardBackside.png"
   }
 
   val imgWidth = size match {
+    case CardSize.Mini => 88
     case CardSize.Small => 176
     case CardSize.Medium => 221
     case CardSize.XXMedium => 265
     case CardSize.Large => 399
   }
   val imgHeight = size match {
+    case CardSize.Mini => 130
     case CardSize.Small => 260
     case CardSize.Medium => 327
     case CardSize.XXMedium => 393

@@ -14,6 +14,8 @@ import scalafx.Includes.*
 
 class PauseMenuPanel (controller: Controller, toggleClick: () => Unit = () => println("toggle")) extends VBox{
 
+  val modalBox: ScoreboardPanel = new ScoreboardPanel(controller)
+  
   alignment = Pos.TopRight
 
   children = Seq(

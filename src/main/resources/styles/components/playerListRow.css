@@ -22,16 +22,15 @@ Label {
 ImageView {
     -fx-border-color: #B4801C;
     -fx-border-width: 3;
-    -fx-border-radius: 100;
-    -fx-min-height: 10;
-    -fx-min-width: 10;
+    -fx-border-radius: 50;
+
 }
 
 .player-row {
     -fx-background-color: #3D2217;
     -fx-background-radius: 10;
     -fx-padding: 10;
-    -fx-spacing: 10;
+    /*-fx-spacing: 10;*/
     -fx-border-color: #B4801C;
     -fx-border-width: 3;
     -fx-border-radius: 10;
@@ -39,8 +38,13 @@ ImageView {
 }
 
 .player-icon {
-    -fx-min-height: 70;
-    -fx-min-width: 70;
+
     -fx-background-radius: 100;
     -fx-border-radius: 100;
+}
+
+.active-player {
+   -fx-font-size: 64;
+    -fx-font-family: Arial;
+
 }

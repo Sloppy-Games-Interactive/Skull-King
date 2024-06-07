@@ -32,6 +32,8 @@ case class GameScene(
       event match {
         case ControllerEvents.PromptPrediction if (!predictionOverlay.modal.visible.value) => predictionOverlay.openModal()
         case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal()
+        case ControllerEvents.PlayerAdded => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
+        case ControllerEvents.PromptCardPlay => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
         case _ =>
       }
     }
@@ -48,15 +50,13 @@ case class GameScene(
   val predictionOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, predictionModalBox)
   val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
 
+  var playerList: Seq[PlayerListRow] = Seq()
   val leftColumn: VBox = new VBox {
     val title = new Label("Ye Olde Crew")
     title.getStyleClass.add("title")
+
     children = Seq(
       title,
-      new PlayerListRow("Player1", 0),
-      new PlayerListRow("Player1", 1),
-      new PlayerListRow("Player1", 2),
-
     )
   }
   leftColumn.spacing = 10
@@ -66,7 +66,7 @@ case class GameScene(
       leftColumn,
       new Region {
         // This region will expand and push the buttons to the edges
-        hgrow = javafx.scene.layout.Priority.ALWAYS
+        hgrow = Priority.Always
       },
 
       new GameButton(medium) {

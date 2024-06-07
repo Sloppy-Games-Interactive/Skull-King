@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.view.gui.components
 
+import de.htwg.se.skullking.model.player.Player
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{Background, BackgroundFill, CornerRadii, HBox, Pane, Region}
 import scalafx.scene.shape.Rectangle
@@ -9,14 +10,15 @@ import scalafx.scene.control.Label
 import scalafx.scene.effect.InnerShadow
 import scalafx.scene.layout.Priority.Always
 
-class PlayerListRow (playerName: String, playerScore: Int = 0) extends HBox{
-  val name: String = playerName
-  val score: Int = playerScore
+class PlayerListRow (player: Player) extends HBox{
+  private val name = player.name
+  private val score = player.score
+  private val isCurrentPlayer = player.active
 
   alignment = Pos.CenterLeft
   private val imageView = new ImageView("/images/icon.png") {
-    fitHeight = 110
-    fitWidth = 110
+    fitHeight = 90
+    fitWidth = 90
   }
 
   imageView.getStyleClass.add("player-icon")
@@ -34,6 +36,16 @@ class PlayerListRow (playerName: String, playerScore: Int = 0) extends HBox{
   scoreLabel.getStyleClass.add("score-label")
 
 
+  private val activePlayer: Label = new Label("☠\uFE0F") {
+    visible = isCurrentPlayer
+    effect = new InnerShadow {
+      color = Color.White
+      radius = 10
+      choke = 0.5
+    }
+  }
+  activePlayer.getStyleClass.add("active-player")
+
   // Main layout of the row (HBox)
   val mainLayout = children = Seq(
     imagePane,
@@ -41,7 +53,8 @@ class PlayerListRow (playerName: String, playerScore: Int = 0) extends HBox{
     new Region {
       hgrow = Always
     },
-    scoreLabel
+    scoreLabel,
+    activePlayer
   )
   this.getStyleClass.add("player-row")
 }

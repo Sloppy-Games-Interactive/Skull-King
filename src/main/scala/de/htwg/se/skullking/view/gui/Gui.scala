@@ -8,7 +8,7 @@ import scala.compiletime.uninitialized
 import scalafx.Includes.*
 import scalafx.application.JFXApp3
 import scalafx.geometry.Pos
-import scalafx.scene.Scene
+import scalafx.scene.{ImageCursor, Scene}
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.image.{Image, ImageView}
@@ -48,6 +48,9 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
   Font.loadFont(getClass.getResourceAsStream("/fonts/Pieces_of_Eight.ttf"), 50)
 
   override def start(): Unit = {
+    val customCursorImage = new Image("/images/cursor.png")
+    val customCursor = new ImageCursor(customCursorImage)
+
     titleScene = TitleScene(
       controller = controller,
       windowHeight = windowHeight,
@@ -56,6 +59,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       onClickSettingsButton = () => stage.setScene(settingsScene),
       onClickQuitButton = () => controller.quit
     )
+    titleScene.cursor = customCursor
 
     settingsScene = SettingsScene(
       controller = controller,
@@ -63,6 +67,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickBackButton = () => stage.setScene(titleScene)
     )
+    settingsScene.cursor = customCursor
 
     preGameScene = PreGameScene(
       controller = controller,
@@ -70,6 +75,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickStartGameButton = () => stage.setScene(gameScene),
     )
+    preGameScene.cursor = customCursor
 
     gameScene = GameScene(
       controller = controller,
@@ -77,7 +83,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickQuitBtn = () => stage.setScene(titleScene)
     )
-
+    gameScene.cursor = customCursor
 
     stage = new JFXApp3.PrimaryStage {
       resizable = false

@@ -40,13 +40,13 @@ case class GameScene(
     }
   }
 
-  private val quitGameBtn: Button = new GameButton(medium) {
-    text = "Quit Game"
-    onAction = onClickQuitBtn
-  }
+//  private val quitGameBtn: Button = new GameButton(medium) {
+//    text = "Quit Game"
+//    onAction = onClickQuitBtn
+//  }
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
-  var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal())
+  var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn)
 
   val predictionOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, predictionModalBox)
   val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
@@ -95,9 +95,9 @@ case class GameScene(
       new VBox {
         children = Seq(
           titleAndButton,
-          new HBox {
-            children = Seq(quitGameBtn)
-          },
+//          new HBox {
+//            children = Seq(quitGameBtn)
+//          },
           new PlayerHand(controller, handCardClicked),
         )
       },

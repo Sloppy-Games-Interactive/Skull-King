@@ -6,7 +6,7 @@ import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
 import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayerHand}
+import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
@@ -47,9 +47,11 @@ case class GameScene(
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
   var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn)
+  var playCardModal: PlayCardPanel = PlayCardPanel(controller, () => playCardOverlay.closeModal(), controller.playCard)
 
   val predictionOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, predictionModalBox)
   val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
+  val playCardOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, playCardModal)
 
   var playerList: Seq[PlayerListRow] = Seq()
   val leftColumn: VBox = new VBox {
@@ -80,7 +82,10 @@ case class GameScene(
   
   def handCardClicked(card: Card): Unit = {
     controller.state.activePlayer match {
-      case Some(player) => controller.playCard(player, card)
+      case Some(player) => {
+        playCardModal.openWithCard(card, player)
+        playCardOverlay.openModal()
+      }
       case None => println("No active player")
     }
   }
@@ -113,6 +118,8 @@ case class GameScene(
       predictionOverlay.modal,
       pauseMenuOverlay.imageView,
       pauseMenuOverlay.modal,
+      playCardOverlay.imageView,
+      playCardOverlay.modal,
     )
   }
 

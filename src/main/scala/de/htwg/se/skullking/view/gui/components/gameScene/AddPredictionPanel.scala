@@ -17,13 +17,13 @@ import scalafx.Includes.*
 
 class AddPredictionPanel(
   controller: Controller,
-  height: Int = 3000,
-  width: Int = 1191
+  panelHeight: Int = 1440,
+  panelWidth: Int = 1191
 ) extends VBox with Observer {
   controller.add(this)
 
-  prefHeight = height
-  prefWidth = width
+  prefHeight = panelHeight
+  prefWidth = panelWidth
   fillWidth = false
   alignment = Pos.Center
   styleClass.add("panel")
@@ -35,6 +35,7 @@ class AddPredictionPanel(
   }
 
   var activeHand = new HBox {
+    alignment = Pos.Center
     children = Seq()
   }
 
@@ -78,6 +79,8 @@ class AddPredictionPanel(
 
       predictionButtons.children = groupedPredictions.map { (predictions: List[Int]) =>
         new HBox {
+          style = "-fx-spacing: 20;"
+
           val predictionButtonGroup = predictions.map(prediction => new GameButton(BtnSize.micro) {
             text = prediction.toString
             onAction = (_: ActionEvent) => {
@@ -99,7 +102,11 @@ class AddPredictionPanel(
     text = "Confirm"
     onAction = (_: ActionEvent) => {
       controller.state.activePlayer match {
-        case Some(player) => controller.setPrediction(player, selectedPrediction)
+        case Some(player) => {
+          if (selectedPrediction != -1) {
+            controller.setPrediction(player, selectedPrediction)
+          }
+        }
         case None => println("No active player")
       }
     }
@@ -115,28 +122,37 @@ class AddPredictionPanel(
   }
 
   private val panelContent = new VBox {
-    style = "-fx-spacing: 45;"
-    alignment = Pos.Center
+    style = "-fx-spacing: 30;"
+    padding = Insets(180, 0, 0, 0)
+    alignment = Pos.TopCenter
     children = Seq(
       title,
       panelBody
     )
   }
 
-  private val confirmButtonBox = new HBox {
-    alignment = Pos.Center
+  private val confirmButtonBox = new VBox {
+    padding = Insets(0, 0, 10, 0)
+    alignment = Pos.BottomCenter
     children = Seq(
       confirmButton
     )
   }
 
   children = Seq(
-    new VBox {
-      style = "-fx-spacing: 100;"
-      alignment = Pos.Center
+    new StackPane {
+      alignment = Pos.BottomCenter
+      prefHeight = panelHeight
       children = Seq(
-        panelContent,
-        confirmButtonBox
+        new VBox {
+          alignment = Pos.TopCenter
+          children = Seq(panelContent)
+        },
+        new VBox {
+          style = "-fx-max-height: 100;"
+          alignment = Pos.BottomCenter
+          children = Seq(confirmButtonBox)
+        }
       )
     }
   )

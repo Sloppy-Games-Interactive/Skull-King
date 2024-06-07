@@ -121,7 +121,7 @@ class ControllerSpec extends AnyWordSpec {
 
         ctrl.state.players.head.hand.count should be(1)
 
-        ctrl.playCard(ctrl.state.activePlayer.get, 0)
+        ctrl.playCard(ctrl.state.activePlayer.get, ctrl.state.activePlayer.get.hand.cards.head)
 
         ctrl.state.players.head.hand.count should be(0)
 
@@ -199,7 +199,7 @@ class ControllerSpec extends AnyWordSpec {
         controller.addPlayer("bar")
         controller.setPrediction(controller.state.activePlayer.get, 1)
         controller.setPrediction(controller.state.activePlayer.get, 1)
-        controller.playCard(controller.state.activePlayer.get, 0)
+        controller.playCard(controller.state.activePlayer.get, controller.state.activePlayer.get.hand.cards.head)
 
         observer.updated should be(14)
         controller.state.players.head.hand.count should be(0)

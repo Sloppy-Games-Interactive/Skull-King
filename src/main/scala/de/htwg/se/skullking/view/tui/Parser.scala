@@ -55,12 +55,9 @@ class Parser {
 
     // return zero-indexed card index, one-indexed card index is just for user convenience
     val zeroIndexed = oneIndexed.map(_ - 1)
-    player.hand.cards(zeroIndexed.getOrElse(-1)) match {
-      case card: Card => Some(card)
-      case _ => {
-        println("Invalid card index.")
-        None
-      }
+    zeroIndexed match {
+      case Some(idx) if player.hand.cards.isDefinedAt(idx) => Some(player.hand.cards(idx))
+      case _ => None
     }
   }
 }

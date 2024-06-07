@@ -38,7 +38,7 @@ class GameStateSpec extends AnyWordSpec {
         round = 1,
         playerLimit = 2
       )
-      val updatedGameState = gameState.handleEvent(PlayCardEvent(player, 0))
+      val updatedGameState = gameState.handleEvent(PlayCardEvent(player, player.hand.cards.head))
       updatedGameState.tricks.head.cards.head.suit should be(Suit.Red)
     }
 
@@ -49,8 +49,10 @@ class GameStateSpec extends AnyWordSpec {
     }
 
     "end the round correctly when all tricks are played" in {
-      val player = Player("Alice", hand = Hand(List(Card(Suit.Red, 1))))
-      val player2 = Player("Bob", hand = Hand(List(Card(Suit.Red, 2))))
+      val r1 = Card(Suit.Red, 1)
+      val r2 = Card(Suit.Red, 2)
+      val player = Player("Alice", hand = Hand(List(r1)))
+      val player2 = Player("Bob", hand = Hand(List(r2)))
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
@@ -62,19 +64,21 @@ class GameStateSpec extends AnyWordSpec {
       gameState.tricks.length should be(1)
 
       gameState.players.head.hand.count should be(1)
-      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, 0))
+      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, r1))
       updatedGameState1.players.head.hand.count should be(0)
       updatedGameState1.tricks.head.cards.length should be(1)
       updatedGameState1.phase should be(Phase.PlayTricks)
 
-      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, 0))
+      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, r2))
       updatedGameState2.activeTrick should be(None)
       updatedGameState2.phase should be(Phase.PrepareTricks)
     }
 
     "play n tricks for round n" in {
-      val player = Player("Alice", hand = Hand(List(Card(Suit.Red, 1))), prediction = Some(1))
-      val player2 = Player("Bob", hand = Hand(List(Card(Suit.Red, 2))), prediction = Some(1))
+      val r1 = Card(Suit.Red, 1)
+      val r2 = Card(Suit.Red, 2)
+      val player = Player("Alice", hand = Hand(List(r1)), prediction = Some(1))
+      val player2 = Player("Bob", hand = Hand(List(r2)), prediction = Some(1))
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
@@ -87,7 +91,7 @@ class GameStateSpec extends AnyWordSpec {
       gameState.tricks.length should be(1)
 
       gameState.players.head.hand.count should be(1)
-      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, 0)).handleEvent(PlayCardEvent(player2, 0))
+      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, r1)).handleEvent(PlayCardEvent(player2, r2))
       updatedGameState1.tricks.length should be(2)
     }
 
@@ -106,12 +110,12 @@ class GameStateSpec extends AnyWordSpec {
       gameState.tricks.length should be(1)
 
       gameState.players.head.hand.count should be(1)
-      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, 0))
+      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, player.hand.cards.head))
       updatedGameState1.players.head.hand.count should be(0)
       updatedGameState1.tricks.head.cards.length should be(1)
       updatedGameState1.phase should be(Phase.PlayTricks)
 
-      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, 0))
+      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, player2.hand.cards.head))
       updatedGameState2.activeTrick should be(None)
       updatedGameState2.phase should be(Phase.EndGame)
       updatedGameState2.players.head.score should be(10)
@@ -133,12 +137,12 @@ class GameStateSpec extends AnyWordSpec {
       gameState.tricks.length should be(1)
 
       gameState.players.head.hand.count should be(1)
-      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, 0))
+      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, player.hand.cards.head))
       updatedGameState1.players.head.hand.count should be(0)
       updatedGameState1.tricks.head.cards.length should be(1)
       updatedGameState1.phase should be(Phase.PlayTricks)
 
-      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, 0))
+      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, player2.hand.cards.head))
       updatedGameState2.activeTrick should be(None)
       updatedGameState2.phase should be(Phase.EndGame)
       updatedGameState2.players.head.score should be(-10)
@@ -160,12 +164,12 @@ class GameStateSpec extends AnyWordSpec {
       gameState.tricks.length should be(1)
 
       gameState.players.head.hand.count should be(1)
-      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, 0))
+      val updatedGameState1 = gameState.handleEvent(PlayCardEvent(player, player.hand.cards.head))
       updatedGameState1.players.head.hand.count should be(0)
       updatedGameState1.tricks.head.cards.length should be(1)
       updatedGameState1.phase should be(Phase.PlayTricks)
 
-      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, 0))
+      val updatedGameState2 = updatedGameState1.handleEvent(PlayCardEvent(player2, player2.hand.cards.head))
       updatedGameState2.activeTrick should be(None)
       updatedGameState2.phase should be(Phase.EndGame)
     }

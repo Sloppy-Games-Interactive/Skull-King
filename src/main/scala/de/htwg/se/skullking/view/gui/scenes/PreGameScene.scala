@@ -28,6 +28,7 @@ case class PreGameScene(
       if (playerNames.length >= 2) {
         controller.setPlayerLimit(playerNames.length)
         playerNames.foreach(controller.addPlayer)
+        addPlayersPanel.resetPlayerNames
         onClickStartGameButton()
       }
       // TODO more error handling

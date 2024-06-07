@@ -51,6 +51,8 @@ class AddPlayersPanel(controller: Controller) extends VBox {
   }
 
   def getPlayerNames: Seq[String] = playerInputFields.map(_.text.value).filterNot(_.isEmpty)
+  
+  def resetPlayerNames: Unit = playerInputFields.foreach(_.text.value = "")
 
   children = Seq(
     title,

@@ -40,7 +40,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
 
 
   private val windowWidth = 1440
-  private val windowHeight = 1024
+  private val windowHeight = 960
 
   private val minWindowWidth = 500
   private val minWindowHeight = 300
@@ -59,7 +59,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       onClickSettingsButton = () => stage.setScene(settingsScene),
       onClickQuitButton = () => controller.quit
     )
-    titleScene.cursor = customCursor
+//    titleScene.cursor = customCursor
 
     settingsScene = SettingsScene(
       controller = controller,
@@ -67,7 +67,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickBackButton = () => stage.setScene(titleScene)
     )
-    settingsScene.cursor = customCursor
+//    settingsScene.cursor = customCursor
 
     preGameScene = PreGameScene(
       controller = controller,
@@ -75,7 +75,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickStartGameButton = () => stage.setScene(gameScene),
     )
-    preGameScene.cursor = customCursor
+//    preGameScene.cursor = customCursor
 
     gameScene = GameScene(
       controller = controller,
@@ -83,7 +83,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       windowHeight = windowHeight,
       onClickQuitBtn = () => stage.setScene(titleScene)
     )
-    gameScene.cursor = customCursor
+//    gameScene.cursor = customCursor
 
     stage = new JFXApp3.PrimaryStage {
       resizable = false

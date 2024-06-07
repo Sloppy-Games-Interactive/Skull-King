@@ -44,7 +44,7 @@ class ParserSpec extends AnyWordSpec {
     "parsing card play" should {
       "return Some value for valid input" in {
         val player = Player("Bob", Hand(List(Card(Suit.Pirate), Card(Suit.Red, 2))))
-        parser.parseCardPlay("1", player) shouldEqual Some(0)
+        parser.parseCardPlay("1", player) shouldEqual Some(player.hand.cards.head)
       }
 
       "return None for invalid input" in {

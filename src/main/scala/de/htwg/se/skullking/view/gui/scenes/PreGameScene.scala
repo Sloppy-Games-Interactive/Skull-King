@@ -34,6 +34,12 @@ case class PreGameScene(
     }
   }
 
+  onKeyPressed = (event) => {
+    if (event.code.toString == "ENTER") {
+      startGameBtn.fire()
+    }
+  }
+
   root = new VBox {
     style = "-fx-spacing: -100;"
     padding = Insets(0, 0, 40, 0)

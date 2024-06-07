@@ -6,7 +6,7 @@ import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
 import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand}
+import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, TrickStack}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
@@ -71,7 +71,9 @@ case class GameScene(
         // This region will expand and push the buttons to the edges
         hgrow = Priority.Always
       },
-
+      new TrickStack(controller) {
+        alignment = Pos.Center
+      },
       new GameButton(medium) {
         text = "Menu"
         onAction = () => pauseMenuOverlay.toggleModal()

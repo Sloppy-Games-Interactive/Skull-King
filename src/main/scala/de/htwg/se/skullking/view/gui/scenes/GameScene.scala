@@ -4,7 +4,7 @@ import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.view.gui.components.gameScene.AddPredictionPanel
+import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
@@ -29,14 +29,45 @@ case class GameScene(
     onAction = onClickQuitBtn
   }
 
-  var modalBox = AddPredictionPanel(controller)
+  var modalBox: AddPredictionPanel = AddPredictionPanel(controller)
+  var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal())
 
   val overlay = new Overlay(windowWidth, windowHeight, () => sceneContent, modalBox)
+  val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
 
   var someBtn: Button = new Button {
     text = "Some Button"
     onAction = () => overlay.toggleModal()
   }
+
+  val leftColumn: VBox = new VBox {
+    val title = new Label("Ye Olde Crew")
+    title.getStyleClass.add("title")
+    children = Seq(
+      title,
+      new PlayerListRow("Player1", 0),
+      new PlayerListRow("Player1", 1),
+      new PlayerListRow("Player1", 2),
+
+    )
+  }
+  leftColumn.spacing = 10
+
+  val titleAndButton = new HBox {
+    children = Seq(
+      leftColumn,
+      new Region {
+        // This region will expand and push the buttons to the edges
+        hgrow = javafx.scene.layout.Priority.ALWAYS
+      },
+
+      new GameButton(medium) {
+        text = "Menu"
+        onAction = () => pauseMenuOverlay.toggleModal()
+      },
+    )
+  }
+  titleAndButton.getStyleClass.add("title-and-button")
 
   val sceneContent: StackPane = new StackPane {
     children = Seq(
@@ -47,6 +78,7 @@ case class GameScene(
       },
       new VBox {
         children = Seq(
+          titleAndButton,
           new HBox {
             children = Seq(quitGameBtn)
           },
@@ -54,7 +86,7 @@ case class GameScene(
             children = Seq(someBtn)
           }
         )
-      }
+      },
     )
   }
 
@@ -65,6 +97,8 @@ case class GameScene(
       sceneContent,
       overlay.imageView,
       overlay.modal,
+      pauseMenuOverlay.imageView,
+      pauseMenuOverlay.modal,
     )
   }
 

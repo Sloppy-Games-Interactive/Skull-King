@@ -1,9 +1,8 @@
 .root {
-    -fx-background-image: url("/images/background/tavern.jpeg");
-    -fx-background-size: cover;
+
 }
 
-Label {
+.title {
     -fx-font-size: 64;
     -fx-text-fill: #fff;
     -fx-min-width: 450;
@@ -16,10 +15,9 @@ Label {
 /*HBox, VBox {*/
 /*    -fx-alignment: center;*/
 /*    -fx-spacing: 10;*/
+/*    -fx-min-height: 320;*/
 /*}*/
 
-
-HBox, VBox {
-    -fx-alignment: center;
-    -fx-spacing: 10;
+.title-and-button {
+    -fx-padding: 20;
 }

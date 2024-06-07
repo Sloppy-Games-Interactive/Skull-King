@@ -27,6 +27,7 @@ object Styles {
   val gameButtonCss: String = getClass.getResource("/styles/components/gameButton.css").toExternalForm
   val playerListRowCss: String = getClass.getResource("/styles/components/playerListRow.css").toExternalForm
   val panelCss: String = getClass.getResource("/styles/components/panel.css").toExternalForm
+  val PauseMenuPanelCss: String = getClass.getResource("/styles/components/pauseMenu.css").toExternalForm
 }
 
 class Gui(controller: Controller) extends JFXApp3 with Observer {

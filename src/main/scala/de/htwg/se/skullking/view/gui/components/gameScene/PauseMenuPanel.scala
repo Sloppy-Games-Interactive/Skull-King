@@ -17,10 +17,8 @@ class PauseMenuPanel(
   controller: Controller,
   toggleClick: () => Unit = () => println("toggle"),
   onClickQuitBtn: () => Unit = () => println("Quit Game"),
+  onClickScoreboardBtn: () => Unit = () => println("Scoreboard")
 ) extends VBox{
-
-  val modalBox: ScoreboardPanel = new ScoreboardPanel(controller)
-  val overlay: Overlay = new Overlay(1191, 1440, () => this, modalBox)
 
   alignment = Pos.TopRight
 
@@ -33,7 +31,10 @@ class PauseMenuPanel(
 
     new GameButton(medium) {
       text = "Scoreboard"
-      onAction = () => overlay.toggleModal()
+      onAction = () => {
+        toggleClick()
+        onClickScoreboardBtn()
+      }
     },
     new GameButton(medium) {
       text = "Undo"
@@ -56,10 +57,7 @@ class PauseMenuPanel(
         onClickQuitBtn()
       }
     },
-
-    // Breaks the Menu modal
-//    overlay.imageView,
-//    overlay.modal
+    
   )
 
   this.getStyleClass.add("pause-menu-panel")

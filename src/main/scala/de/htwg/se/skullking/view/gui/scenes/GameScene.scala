@@ -6,6 +6,7 @@ import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
 import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
+import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, ScoreboardPanel}
 import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, TrickStack}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
@@ -35,6 +36,7 @@ case class GameScene(
         case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal()
         case ControllerEvents.PlayerAdded => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
         case ControllerEvents.PromptCardPlay => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
+        case ControllerEvents.NewGame => println("New Game") //TODO: Show Player
         case _ =>
       }
     }
@@ -46,12 +48,14 @@ case class GameScene(
 //  }
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
-  var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn)
+  var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn, () => scoreboardOverlay.openModal())
   var playCardModal: PlayCardPanel = PlayCardPanel(controller, () => playCardOverlay.closeModal(), controller.playCard)
+  val scoreboardModal: ScoreboardPanel = ScoreboardPanel(controller, () => scoreboardOverlay.toggleModal())
 
   val predictionOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, predictionModalBox)
   val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
   val playCardOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, playCardModal)
+  val scoreboardOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, scoreboardModal)
 
   var playerList: Seq[PlayerListRow] = Seq()
   val leftColumn: VBox = new VBox {
@@ -127,6 +131,8 @@ case class GameScene(
       pauseMenuOverlay.modal,
       playCardOverlay.imageView,
       playCardOverlay.modal,
+      scoreboardOverlay.imageView,
+      scoreboardOverlay.modal,
     )
   }
 

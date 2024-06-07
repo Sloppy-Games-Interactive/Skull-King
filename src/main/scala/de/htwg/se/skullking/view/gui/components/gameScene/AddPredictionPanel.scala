@@ -47,7 +47,7 @@ class AddPredictionPanel(
   }
 
   var selectedPrediction: Int = -1
-  var allBPredictionButtons: List[GameButton] = List()
+  var allPredictionButtons: List[GameButton] = List()
 
   def update(event: ObservableEvent): Unit = {
     Platform.runLater {
@@ -84,13 +84,13 @@ class AddPredictionPanel(
           val predictionButtonGroup = predictions.map(prediction => new GameButton(BtnSize.micro) {
             text = prediction.toString
             onAction = (_: ActionEvent) => {
-              allBPredictionButtons.foreach(_.getStyleClass.removeAll("selected"))
+              allPredictionButtons.foreach(_.getStyleClass.removeAll("selected"))
               this.getStyleClass.add("selected")
               selectedPrediction = prediction
             }
           })
 
-          allBPredictionButtons = allBPredictionButtons ++ predictionButtonGroup
+          allPredictionButtons = allPredictionButtons ++ predictionButtonGroup
 
           children = predictionButtonGroup
         }

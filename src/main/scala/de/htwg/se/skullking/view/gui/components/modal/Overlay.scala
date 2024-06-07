@@ -37,14 +37,22 @@ class Overlay(windowWidth: Double, windowHeight: Double, sceneContent: () => Nod
       iterations = 3
     }
   }
+  
+  def openModal(): Unit = {
+    updateSnapshot()
+    modal.visible = true
+  }
+  
+  def closeModal(): Unit = {
+    modal.visible = false
+    imageView.image = null
+  }
 
   def toggleModal(): Unit = {
     if (modal.visible.value) {
-      modal.visible = false
-      imageView.image = null
+      closeModal()
     } else {
-      updateSnapshot()
-      modal.visible = true
+      openModal()
     }
   }
 

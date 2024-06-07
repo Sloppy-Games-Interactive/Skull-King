@@ -3,7 +3,8 @@ package de.htwg.se.skullking.view.gui.scenes
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
@@ -11,6 +12,7 @@ import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.{HBox, Priority, Region, StackPane, VBox}
 import scalafx.Includes.*
 import scalafx.animation.Timeline
+import scalafx.application.Platform
 import scalafx.geometry.Pos
 import scalafx.scene.effect.{BlendMode, BoxBlur, GaussianBlur}
 import scalafx.scene.image.{Image, ImageView, WritableImage}
@@ -22,23 +24,29 @@ case class GameScene(
   windowWidth: Double,
   windowHeight: Double,
   onClickQuitBtn: () => Unit = () => println("Quit Game"),
-) extends Scene(windowWidth, windowHeight) {
+) extends Scene(windowWidth, windowHeight) with Observer {
+  controller.add(this)
+
+  def update(event: ObservableEvent): Unit = {
+    Platform.runLater {
+      event match {
+        case ControllerEvents.PromptPrediction if (!predictionOverlay.modal.visible.value) => predictionOverlay.openModal()
+        case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal()
+        case _ =>
+      }
+    }
+  }
 
   private val quitGameBtn: Button = new GameButton(medium) {
     text = "Quit Game"
     onAction = onClickQuitBtn
   }
 
-  var modalBox: AddPredictionPanel = AddPredictionPanel(controller)
+  var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
   var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal())
 
-  val overlay = new Overlay(windowWidth, windowHeight, () => sceneContent, modalBox)
+  val predictionOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, predictionModalBox)
   val pauseMenuOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, PauseMenu)
-
-  var someBtn: Button = new Button {
-    text = "Some Button"
-    onAction = () => overlay.toggleModal()
-  }
 
   val leftColumn: VBox = new VBox {
     val title = new Label("Ye Olde Crew")
@@ -82,9 +90,6 @@ case class GameScene(
           new HBox {
             children = Seq(quitGameBtn)
           },
-          new HBox {
-            children = Seq(someBtn)
-          }
         )
       },
     )
@@ -95,8 +100,8 @@ case class GameScene(
     hgrow = Priority.Always
     children = Seq(
       sceneContent,
-      overlay.imageView,
-      overlay.modal,
+      predictionOverlay.imageView,
+      predictionOverlay.modal,
       pauseMenuOverlay.imageView,
       pauseMenuOverlay.modal,
     )

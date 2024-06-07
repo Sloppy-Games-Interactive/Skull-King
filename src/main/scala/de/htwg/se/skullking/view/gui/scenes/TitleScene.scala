@@ -26,7 +26,10 @@ case class TitleScene(
 
   private val playGameBtn: Button = new GameButton(large) {
     text = "Play"
-    onAction = onClickPlayButton
+    onAction = () => {
+      controller.newGame
+      onClickPlayButton()
+    }
   }
   playGameBtn.setId("large-button")
 

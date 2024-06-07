@@ -4,8 +4,9 @@ import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel}
+import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayerHand}
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
 import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
@@ -76,6 +77,13 @@ case class GameScene(
     )
   }
   titleAndButton.getStyleClass.add("title-and-button")
+  
+  def handCardClicked(card: Card): Unit = {
+    controller.state.activePlayer match {
+      case Some(player) => controller.playCard(player, card)
+      case None => println("No active player")
+    }
+  }
 
   val sceneContent: StackPane = new StackPane {
     children = Seq(
@@ -90,6 +98,7 @@ case class GameScene(
           new HBox {
             children = Seq(quitGameBtn)
           },
+          new PlayerHand(controller, handCardClicked),
         )
       },
     )

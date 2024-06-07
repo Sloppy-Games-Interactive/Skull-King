@@ -37,12 +37,12 @@ class CardPane(card: Card, size: CardSize, hoverEffect: Boolean = true) extends 
 
   val imgWidth = size match {
     case CardSize.Small => 176
-    case CardSize.Medium => 248
+    case CardSize.Medium => 221
     case CardSize.Large => 399
   }
   val imgHeight = size match {
     case CardSize.Small => 260
-    case CardSize.Medium => 368
+    case CardSize.Medium => 327
     case CardSize.Large => 590
   }
 

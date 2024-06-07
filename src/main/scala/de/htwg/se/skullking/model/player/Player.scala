@@ -22,9 +22,14 @@ case class Player(
    */
   def resetHand: Player = this.copy(hand = Hand())
   def resetPrediction: Player = this.copy(prediction = None)
-  def playCard(idx: Int): (Card, Player) = {
-    val (card, newHand) = hand.play(idx)
-    (card, this.copy(hand = newHand))
+  def playCard(card: Card): (Card, Player) = {
+    hand.indexOf(card) match {
+      case Some(idx) => {
+        val (card, newHand) = hand.play(idx)
+        (card, this.copy(hand = newHand))
+      }
+      case None => (card, this)
+    }
   }
   override def toString: String = s"$name: $score, $hand, prediction: ${prediction.getOrElse("-")}"
 }

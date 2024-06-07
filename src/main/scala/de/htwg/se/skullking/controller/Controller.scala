@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.controller
 
+import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.model.state.{GameState, Phase}
 import de.htwg.se.skullking.model.command.*
 import de.htwg.se.skullking.model.player.Player
@@ -48,8 +49,8 @@ class Controller(var state: GameState = GameState()) extends Observable {
     handleState()
   }
 
-  def playCard(player: Player, cardIndex: Int): Unit = {
-    undoManager.doStep(new PlayCardCommand(this, player, cardIndex))
+  def playCard(player: Player, card: Card): Unit = {
+    undoManager.doStep(new PlayCardCommand(this, player, card))
     notifyObservers(ControllerEvents.CardPlayed)
     handleState()
   }

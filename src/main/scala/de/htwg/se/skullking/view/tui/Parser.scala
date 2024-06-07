@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.view.tui
 
+import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.model.player.Player
 
 import scala.util.{Success, Try}
@@ -41,7 +42,7 @@ class Parser {
     }
   }
 
-  def parseCardPlay(input: String, player: Player): Option[Int] = {
+  def parseCardPlay(input: String, player: Player): Option[Card] = {
     val tryPrediction = Try(input.toInt)
 
     val oneIndexed = tryPrediction match {
@@ -53,6 +54,13 @@ class Parser {
     }
 
     // return zero-indexed card index, one-indexed card index is just for user convenience
-    oneIndexed.map(_ - 1)
+    val zeroIndexed = oneIndexed.map(_ - 1)
+    player.hand.cards(zeroIndexed.getOrElse(-1)) match {
+      case card: Card => Some(card)
+      case _ => {
+        println("Invalid card index.")
+        None
+      }
+    }
   }
 }

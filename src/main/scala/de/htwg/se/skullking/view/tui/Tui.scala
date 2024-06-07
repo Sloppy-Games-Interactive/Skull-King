@@ -116,7 +116,7 @@ class Tui(controller: Controller) extends Observer {
           case None => prompter.promptPrediction(controller.state.activePlayer.get.name, controller.state.round)
         }
         case PromptState.CardPlay => parser.parseCardPlay(input, controller.state.activePlayer.get) match {
-          case Some(cardIndex) => controller.playCard(controller.state.activePlayer.get, cardIndex)
+          case Some(card) => controller.playCard(controller.state.activePlayer.get, card)
           case None => prompter.promptCardPlay(controller.state.activePlayer.get)
         }
         case _ => println("Invalid input.")

@@ -55,7 +55,7 @@ case class GameState(
 
     this.copy(
         round = round + 1,
-        deck = DeckFactory(DeckContent.full).shuffle(),
+        deck = DeckFactory(DeckContent.specials).shuffle(), // TODO use full deck once playing joker is fully implemented
         players = updatedPlayers
       ).dealCards
       .changePhase(Phase.PrepareTricks)

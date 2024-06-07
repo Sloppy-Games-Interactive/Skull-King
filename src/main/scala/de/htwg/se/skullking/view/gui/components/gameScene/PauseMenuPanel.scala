@@ -13,7 +13,11 @@ import scalafx.scene.control.Button
 import scalafx.event.ActionEvent
 import scalafx.Includes.*
 
-class PauseMenuPanel (controller: Controller, toggleClick: () => Unit = () => println("toggle"), onClickQuitBtn: () => Unit = () => println("Quit Game")) extends VBox{
+class PauseMenuPanel(
+  controller: Controller,
+  toggleClick: () => Unit = () => println("toggle"),
+  onClickQuitBtn: () => Unit = () => println("Quit Game"),
+) extends VBox{
 
   val modalBox: ScoreboardPanel = new ScoreboardPanel(controller)
   val overlay: Overlay = new Overlay(1191, 1440, () => this, modalBox)
@@ -33,15 +37,24 @@ class PauseMenuPanel (controller: Controller, toggleClick: () => Unit = () => pr
     },
     new GameButton(medium) {
       text = "Undo"
-      onAction = () => controller.undo
+      onAction = () => {
+        toggleClick()
+        controller.undo
+      }
     },
     new GameButton(medium) {
       text = "Redo"
-      onAction = () => controller.redo
+      onAction = () => {
+        toggleClick()
+        controller.redo
+      }
     },
     new GameButton(medium) {
       text = "Quit"
-      onAction = () => onClickQuitBtn()
+      onAction = () => {
+        toggleClick()
+        onClickQuitBtn()
+      }
     },
 
     // Breaks the Menu modal

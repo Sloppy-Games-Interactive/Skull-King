@@ -20,22 +20,26 @@ class PlayCardPanel(
   var currentCard: Option[Card] = None
   var currentPlayer: Option[Player] = None
 
+  var cardPreview: HBox = new HBox {
+    alignment = Pos.Center
+    children = Seq()
+  }
+
   def openWithCard(card: Card, player: Player): Unit = {
     currentCard = Some(card)
     currentPlayer = Some(player)
+
+    cardPreview.children = (currentCard, currentPlayer) match {
+      case (Some(card), Some(player)) => Seq(new CardPane(card, CardSize.Large, hoverEffect = false))
+      case _ => Seq()
+    }
   }
 
   children = Seq(
-    new HBox {
-      alignment = Pos.Center
-      children = (currentCard, currentPlayer) match {
-        case (Some(card), Some(player)) => Seq(new CardPane(card, CardSize.Large))
-        case _ => Seq()
-      }
-    },
+    cardPreview,
     new HBox {
       children = Seq(
-        new GameButton(BtnSize.large) {
+        new GameButton(BtnSize.medium) {
           text = "Play Card"
           onAction = _ => {
             (currentCard, currentPlayer) match {
@@ -46,7 +50,7 @@ class PlayCardPanel(
             onClose()
           }
         },
-        new GameButton(BtnSize.large) {
+        new GameButton(BtnSize.medium) {
           text = "Cancel"
           onAction = _ => {
             onClose()

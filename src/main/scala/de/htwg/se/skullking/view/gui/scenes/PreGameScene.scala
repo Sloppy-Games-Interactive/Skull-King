@@ -28,9 +28,9 @@ case class PreGameScene(
       if (playerNames.length >= 2) {
         controller.setPlayerLimit(playerNames.length)
         playerNames.foreach(controller.addPlayer)
+        onClickStartGameButton()
       }
-      // TODO error handling, + only go to next scene when enough players are added
-      onClickStartGameButton()
+      // TODO more error handling
     }
   }
 

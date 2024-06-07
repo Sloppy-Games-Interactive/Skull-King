@@ -91,6 +91,7 @@ case class GameScene(
   }
 
   val sceneContent: StackPane = new StackPane {
+    alignment = Pos.BottomCenter
     children = Seq(
       new ImageView {
         image = new Image("/images/background/tavern.jpeg")
@@ -103,9 +104,13 @@ case class GameScene(
 //          new HBox {
 //            children = Seq(quitGameBtn)
 //          },
-          new PlayerHand(controller, handCardClicked),
         )
       },
+      new VBox {
+        style = "-fx-max-height: 400;"
+        alignment = Pos.BottomCenter
+        children = Seq(new PlayerHand(controller, handCardClicked))
+      }
     )
   }
 

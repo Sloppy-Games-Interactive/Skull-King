@@ -105,6 +105,7 @@ class AddPredictionPanel(
         case Some(player) => {
           if (selectedPrediction != -1) {
             controller.setPrediction(player, selectedPrediction)
+            selectedPrediction = -1
           }
         }
         case None => println("No active player")
@@ -113,10 +114,15 @@ class AddPredictionPanel(
   }
 
   private val panelBody = new VBox {
-    style = "-fx-spacing: 45;"
+    style = "-fx-spacing: 30;"
     alignment = Pos.Center
     children = Seq(
       activeHand,
+      new Text {
+        text = "How many Tricks will you win this round?"
+        style = "-fx-font-size: 46;"
+        fill = Color.White
+      },
       predictionButtons,
     )
   }

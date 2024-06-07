@@ -36,7 +36,7 @@ class PlayerListRow (player: Player) extends HBox{
   scoreLabel.getStyleClass.add("score-label")
 
 
-  private val activePlayer: Label = new Label("☠\uFE0F") {
+  private val activePlayer: Label = new Label("☠") {
     visible = isCurrentPlayer
     effect = new InnerShadow {
       color = Color.White

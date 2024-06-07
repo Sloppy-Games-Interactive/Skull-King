@@ -10,7 +10,17 @@ Button {
 }
 
 Button:hover {
-    -fx-text-fill: #9c9c9c;
+    -fx-text-fill: #ccc;
+    -fx-effect: innershadow(gaussian, rgba(255, 255, 255, 0.35), 20, 0, 0, 0);
+}
+
+Button.selected {
+    -fx-effect: innershadow(gaussian, #fff, 20, 0, 0, 0);
+}
+
+#micro-button {
+    -fx-padding: 22 30;
+    -fx-pref-width: 120;
 }
 
 #small-button {

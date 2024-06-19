@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.gui.components
 
 import scalafx.scene.layout.Pane
-import de.htwg.se.skullking.model.card.*
+import de.htwg.se.skullking.model.CardComponent.*
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.transform.{Scale, Translate}
@@ -15,7 +15,7 @@ enum CardBack {
   case Back
 }
 
-class CardPane(card: Card|CardBack, size: CardSize, hoverEffect: Boolean = true) extends Pane {
+class CardPane(card: ICard|CardBack, size: CardSize, hoverEffect: Boolean = true) extends Pane {
   def imagePathMap(card: SpecialCard): String = card.suit match {
     case Suit.Pirate => s"/images/cards/special/PirateCard.png"
     case Suit.Mermaid => s"/images/cards/special/MermaidCard.png"

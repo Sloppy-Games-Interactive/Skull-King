@@ -3,7 +3,7 @@ package de.htwg.se.skullking.view.gui.scenes
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
-import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
 import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, ScoreboardPanel}
@@ -22,7 +22,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 
 case class GameScene(
-  controller: Controller,
+  controller: IController,
   windowWidth: Double,
   windowHeight: Double,
   onClickQuitBtn: () => Unit = () => println("Quit Game"),

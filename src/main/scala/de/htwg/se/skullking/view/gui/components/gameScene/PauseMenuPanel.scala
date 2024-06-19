@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
@@ -14,7 +14,7 @@ import scalafx.event.ActionEvent
 import scalafx.Includes.*
 
 class PauseMenuPanel(
-  controller: Controller,
+  controller: IController,
   toggleClick: () => Unit = () => println("toggle"),
   onClickQuitBtn: () => Unit = () => println("Quit Game"),
   onClickScoreboardBtn: () => Unit = () => println("Scoreboard")

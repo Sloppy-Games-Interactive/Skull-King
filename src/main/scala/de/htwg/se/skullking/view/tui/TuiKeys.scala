@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.util
+package de.htwg.se.skullking.view.tui
 
 enum TuiKeys(val key: String) {
   case NewGame extends TuiKeys(":new game")

@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{Controller, ControllerEvents}
 import de.htwg.se.skullking.model.state.{GameState, Phase}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec

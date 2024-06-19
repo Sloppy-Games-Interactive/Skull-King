@@ -1,9 +1,8 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
 import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.util.TuiKeys
 
 import scala.util.{Success, Try}
 
@@ -16,7 +15,7 @@ enum PromptState {
   case NewGame
 }
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: IController) extends Observer {
   var promptState: PromptState = PromptState.None
   
   val prompter = new Prompter

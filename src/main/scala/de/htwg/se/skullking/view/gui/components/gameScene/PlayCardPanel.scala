@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
@@ -9,7 +9,7 @@ import scalafx.geometry.Pos
 import scalafx.scene.layout.{HBox, VBox}
 
 class PlayCardPanel(
-  controller: Controller,
+  controller: IController,
   onClose: () => Unit,
   onCardPlayed: (Player, Card) => Unit
 ) extends VBox {

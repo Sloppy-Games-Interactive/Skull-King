@@ -1,12 +1,11 @@
-package de.htwg.se.skullking.controller
+package de.htwg.se.skullking.controller.ControllerComponent
 
 import de.htwg.se.skullking.model.card.Card
-import de.htwg.se.skullking.model.state.{GameState, Phase}
-import de.htwg.se.skullking.model.command.*
 import de.htwg.se.skullking.model.player.Player
-import de.htwg.se.skullking.util.{Observable, ObservableEvent, UndoManager}
+import de.htwg.se.skullking.model.state.{GameState, Phase}
+import de.htwg.se.skullking.util.UndoManager
 
-class Controller(var state: GameState = GameState()) extends Observable {
+class Controller(var state: GameState = GameState()) extends IController {
   private val undoManager = new UndoManager
 
   def handleState(): Unit = {
@@ -14,8 +13,8 @@ class Controller(var state: GameState = GameState()) extends Observable {
       case Phase.PrepareGame if state.playerLimit == 0 => notifyObservers(ControllerEvents.PromptPlayerLimit)
       case Phase.PrepareGame => notifyObservers(ControllerEvents.PromptPlayerName)
       case Phase.PrepareTricks => notifyObservers(ControllerEvents.PromptPrediction)
-      case Phase.PlayTricks =>  notifyObservers(ControllerEvents.PromptCardPlay)
-      case Phase.EndGame =>  notifyObservers(ControllerEvents.PromptNewGame)
+      case Phase.PlayTricks => notifyObservers(ControllerEvents.PromptCardPlay)
+      case Phase.EndGame => notifyObservers(ControllerEvents.PromptNewGame)
     }
   }
 
@@ -42,7 +41,7 @@ class Controller(var state: GameState = GameState()) extends Observable {
     notifyObservers(ControllerEvents.PlayerLimitSet)
     handleState()
   }
-  
+
   def addPlayer(name: String): Unit = {
     undoManager.doStep(new AddPlayerCommand(this, Player(name)))
     notifyObservers(ControllerEvents.PlayerAdded)
@@ -54,31 +53,15 @@ class Controller(var state: GameState = GameState()) extends Observable {
     notifyObservers(ControllerEvents.CardPlayed)
     handleState()
   }
-  
+
   def setPrediction(player: Player, prediction: Int): Unit = {
     undoManager.doStep(new SetPredictionCommand(this, player, prediction))
     notifyObservers(ControllerEvents.PredictionSet)
     handleState()
   }
-  
+
   def quit: Unit = {
     // TODO: implement save game state to file
     notifyObservers(ControllerEvents.Quit)
   }
-}
-
-enum ControllerEvents extends ObservableEvent {
-  case NewGame
-  case PromptPlayerLimit
-  case PromptPlayerName
-  case PlayerAdded
-  case PlayerLimitSet
-  case PromptPrediction
-  case PredictionSet
-  case PromptCardPlay
-  case PromptNewGame
-  case Quit
-  case Undo
-  case Redo
-  case CardPlayed
 }

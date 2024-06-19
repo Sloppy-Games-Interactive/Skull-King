@@ -8,7 +8,7 @@ import de.htwg.se.skullking.view.gui.Gui
 
 @main def run(): Unit = {
   val injector: Injector = Guice.createInjector(SkullKingModule())
-  
+
   val controller = injector.getInstance(classOf[IController])
   val gui = Gui(controller)
   val tui = Tui(controller)

@@ -2,8 +2,6 @@ package de.htwg.se.skullking.model.DeckComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
 
-import scala.util.Random
-
 trait IDeck(cards: List[ICard] = List()) {
   /**
    * shuffle cards in the card list

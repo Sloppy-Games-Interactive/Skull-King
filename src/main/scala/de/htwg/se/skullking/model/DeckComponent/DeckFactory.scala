@@ -1,7 +1,5 @@
 package de.htwg.se.skullking.model.DeckComponent
 
-import de.htwg.se.skullking.model.CardComponent.{ICard, JokerCard, Suit}
-
 enum DeckContent {
   case specials
   case normal

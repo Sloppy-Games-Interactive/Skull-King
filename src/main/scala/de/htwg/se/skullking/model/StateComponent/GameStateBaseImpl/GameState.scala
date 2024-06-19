@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.model.StateComponent
 
+import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{Deck, DeckContent, DeckFactory, IDeck}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer

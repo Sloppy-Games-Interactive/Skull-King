@@ -1,13 +1,12 @@
 package de.htwg.se.skullking.controller.ControllerComponent
 
-import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, Player}
 import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
-class Controller @Inject (var state: IGameState) extends IController {
-  private val undoManager = new UndoManager
+class Controller(using var state: IGameState) extends IController {
+  private val undoManager = UndoManager()
 
   def handleState(): Unit = {
     state.phase match {

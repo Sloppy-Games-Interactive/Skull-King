@@ -25,7 +25,3 @@ class Hand(val cards: List[ICard] = List()) extends IHand {
     cards.zipWithIndex.map { case (card, idx) => s"${idx + 1}: $card" }.mkString("; ")
   }
 }
-
-object Hand {
-  def apply(cards: List[ICard] = List()): Hand = new Hand(cards)
-}

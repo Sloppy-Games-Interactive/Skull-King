@@ -1,0 +1,36 @@
+
+Button {
+    -fx-background-image: url("/images/components/GameButton/wood2.png");
+    -fx-background-size: stretch;
+    -fx-min-width: 20;
+    -fx-text-fill: #fff;
+    -fx-background-color: transparent;
+    /* font-size*/
+    -fx-font-size: 64;
+}
+
+Button:hover {
+    -fx-text-fill: #ccc;
+    -fx-effect: innershadow(gaussian, rgba(255, 255, 255, 0.35), 20, 0, 0, 0);
+}
+
+Button.selected {
+    -fx-effect: innershadow(gaussian, #fff, 20, 0, 0, 0);
+}
+
+#micro-button {
+    -fx-padding: 22 30;
+    -fx-pref-width: 120;
+}
+
+#small-button {
+    -fx-min-width: 20;
+}
+
+#medium-button {
+    -fx-min-width: 358;
+}
+
+#large-button {
+    -fx-min-width: 765;
+}

@@ -1,0 +1,9 @@
+.root {
+    -fx-background-image: url('/images/background/pre_game.jpeg');
+    -fx-background-size: cover;
+}
+
+HBox, VBox {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}

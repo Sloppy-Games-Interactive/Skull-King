@@ -1,31 +1,31 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.model.card.Card
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.controller.ControllerComponent.IController
+import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{BtnSize, CardPane, CardSize, GameButton}
 import scalafx.geometry.Pos
 import scalafx.scene.layout.{HBox, VBox}
 
 class PlayCardPanel(
-  controller: Controller,
+  controller: IController,
   onClose: () => Unit,
-  onCardPlayed: (Player, Card) => Unit
+  onCardPlayed: (IPlayer, ICard) => Unit
 ) extends VBox {
   fillWidth = false
   alignment = Pos.Center
   styleClass.add("panel")
 
-  var currentCard: Option[Card] = None
-  var currentPlayer: Option[Player] = None
+  var currentCard: Option[ICard] = None
+  var currentPlayer: Option[IPlayer] = None
 
   var cardPreview: HBox = new HBox {
     alignment = Pos.Center
     children = Seq()
   }
 
-  def openWithCard(card: Card, player: Player): Unit = {
+  def openWithCard(card: ICard, player: IPlayer): Unit = {
     currentCard = Some(card)
     currentPlayer = Some(player)
 

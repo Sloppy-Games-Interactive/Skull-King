@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui
 
-import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.scenes.{GameScene, PreGameScene, SettingsScene, TitleScene}
 
@@ -30,7 +30,7 @@ object Styles {
   val PauseMenuPanelCss: String = getClass.getResource("/styles/components/pauseMenu.css").toExternalForm
 }
 
-class Gui(controller: Controller) extends JFXApp3 with Observer {
+class Gui(controller: IController) extends JFXApp3 with Observer {
   controller.add(this)
 
   private var titleScene: TitleScene = uninitialized
@@ -55,7 +55,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
       controller = controller,
       windowHeight = windowHeight,
       windowWidth = windowWidth,
-      onClickPlayButton = () => stage.setScene(preGameScene),
+      onClickPlayButton = () => controller.newGame,
       onClickSettingsButton = () => stage.setScene(settingsScene),
       onClickQuitButton = () => controller.quit
     )
@@ -102,6 +102,7 @@ class Gui(controller: Controller) extends JFXApp3 with Observer {
 
   override def update(event: ObservableEvent): Unit = {
     event match {
+      case ControllerEvents.NewGame => stage.setScene(gameScene)
       case ControllerEvents.Quit => Platform.exit()
       case _ => println("Update")
     }

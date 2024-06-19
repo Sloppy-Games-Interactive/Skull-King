@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
-import de.htwg.se.skullking.model.card.Card
+import de.htwg.se.skullking.controller.ControllerComponent.IController
+import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
 import scalafx.application.Platform
@@ -9,8 +9,8 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{HBox, VBox}
 
 class PlayerHand(
-  controller: Controller,
-  onCardClicked: (card: Card) => Unit
+  controller: IController,
+  onCardClicked: (card: ICard) => Unit
 ) extends VBox with Observer {
   controller.add(this)
 

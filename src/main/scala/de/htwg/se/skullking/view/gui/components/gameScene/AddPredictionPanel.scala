@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
@@ -16,7 +16,7 @@ import scalafx.application.Platform
 import scalafx.Includes.*
 
 class AddPredictionPanel(
-  controller: Controller,
+  controller: IController,
   panelHeight: Int = 1440,
   panelWidth: Int = 1191
 ) extends VBox with Observer {

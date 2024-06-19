@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.scenes
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.{BtnSize, GameButton, InputField}
 import de.htwg.se.skullking.view.gui.components.preGame.AddPlayersPanel
@@ -13,7 +13,7 @@ import scalafx.geometry.Insets
 
 
 case class PreGameScene(
-  controller: Controller,
+  controller: IController,
   windowWidth: Double,
   windowHeight: Double,
   onClickStartGameButton: () => Unit = () => println("Start Game"),

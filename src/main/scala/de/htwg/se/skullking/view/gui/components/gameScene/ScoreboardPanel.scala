@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
@@ -12,7 +12,7 @@ import scalafx.geometry.Pos
 import scala.collection.immutable.List
 
 class ScoreboardPanel(
-  controller: Controller,
+  controller: IController,
   onClickQuitBtn: () => Unit,
   height: Int = 3000,
   width: Int = 1191

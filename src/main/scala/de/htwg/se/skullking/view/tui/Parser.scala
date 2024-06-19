@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.model.card.Card
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 
 import scala.util.{Success, Try}
 
@@ -42,7 +42,7 @@ class Parser {
     }
   }
 
-  def parseCardPlay(input: String, player: Player): Option[Card] = {
+  def parseCardPlay(input: String, player: IPlayer): Option[ICard] = {
     val tryPrediction = Try(input.toInt)
 
     val oneIndexed = tryPrediction match {

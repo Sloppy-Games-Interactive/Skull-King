@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.scenes
 
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.{large, medium, small}
 import de.htwg.se.skullking.view.gui.components.GameButton
@@ -12,7 +12,7 @@ import scalafx.scene.text.Text
 
 
 case class TitleScene(
-  controller: Controller,
+  controller: IController,
   windowWidth: Double,
   windowHeight: Double,
   onClickPlayButton: () => Unit = () => println("Play"),

@@ -1,5 +1,6 @@
-import de.htwg.se.skullking.controller.Controller
+import de.htwg.se.skullking.controller.ControllerComponent.Controller
 import de.htwg.se.skullking.view.tui.Tui
+
 import scala.io.StdIn.readLine
 import de.htwg.se.skullking.view.gui.Gui
 

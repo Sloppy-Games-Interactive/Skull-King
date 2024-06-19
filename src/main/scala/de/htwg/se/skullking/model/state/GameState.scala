@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.model.state
 
+import de.htwg.se.skullking.model.card.Card
 import de.htwg.se.skullking.model.deck.{Deck, DeckContent, DeckFactory}
 import de.htwg.se.skullking.model.player.Player
 import de.htwg.se.skullking.model.trick.Trick
@@ -15,7 +16,7 @@ trait GameStateEvent()
 case class SetPlayerLimitEvent(n: Int) extends GameStateEvent
 case class AddPlayerEvent(player: Player) extends GameStateEvent
 case class SetPredictionEvent(player: Player, prediction: Int) extends GameStateEvent
-case class PlayCardEvent(player: Player, cardIdx: Int) extends GameStateEvent
+case class PlayCardEvent(player: Player, card: Card) extends GameStateEvent
 
 case class GameState(
   phase: Phase = Phase.PrepareGame,
@@ -30,7 +31,7 @@ case class GameState(
     case SetPlayerLimitEvent(n) if phase == Phase.PrepareGame && players.isEmpty => setPlayerLimit(n)
     case AddPlayerEvent(player) if phase == Phase.PrepareGame && playerLimit > 0 => addPlayer(player)
     case SetPredictionEvent(player, prediction) if phase == Phase.PrepareTricks => setPrediction(player, prediction)
-    case PlayCardEvent(player, cardIdx) if phase == Phase.PlayTricks => playCard(player, cardIdx)
+    case PlayCardEvent(player, card) if phase == Phase.PlayTricks => playCard(player, card)
     case _ => this
   }
 
@@ -55,7 +56,7 @@ case class GameState(
 
     this.copy(
         round = round + 1,
-        deck = DeckFactory(DeckContent.full).shuffle(),
+        deck = DeckFactory(DeckContent.specials).shuffle(), // TODO use full deck once playing joker is fully implemented
         players = updatedPlayers
       ).dealCards
       .changePhase(Phase.PrepareTricks)
@@ -90,14 +91,14 @@ case class GameState(
     ).changePhase(Phase.PlayTricks)
   }
 
-  private def playCard(player: Player, cardIdx: Int): GameState = {
+  private def playCard(player: Player, card: Card): GameState = {
     val nextState = {
       for {
         _ <- players.find(_ == player)
         trick <- tricks.headOption
       } yield {
-        val (card, updatedPlayer) = player.playCard(cardIdx)
-        val updatedTrick = trick.play(card, updatedPlayer)
+        val (playedCard, updatedPlayer) = player.playCard(card)
+        val updatedTrick = trick.play(playedCard, updatedPlayer)
         val updatedPlayers = players.map {
           case p if p.name == updatedPlayer.name => updatedPlayer
           case p => p

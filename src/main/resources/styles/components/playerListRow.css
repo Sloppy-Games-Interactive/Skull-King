@@ -1,0 +1,50 @@
+
+
+Label {
+    -fx-font-size: 46;
+    -fx-text-fill: #fff;
+}
+
+.score-label {
+    -fx-padding: 20, 10;
+    /*-fx-background-color: #3D2217;*/
+    /*-fx-border-color: #B4801C;*/
+    /*-fx-background-radius: 50%;*/
+    /*-fx-border-radius: 50%;*/
+    /*-fx-border-width: 3;*/
+}
+
+.player-name {
+    -fx-font-size: 24;
+    -fx-text-fill: #fff;
+}
+
+ImageView {
+    -fx-border-color: #B4801C;
+    -fx-border-width: 3;
+    -fx-border-radius: 50;
+
+}
+
+.player-row {
+    -fx-background-color: #3D2217;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    /*-fx-spacing: 10;*/
+    -fx-border-color: #B4801C;
+    -fx-border-width: 3;
+    -fx-border-radius: 10;
+    -fx-alignment: center;
+}
+
+.player-icon {
+
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+}
+
+.active-player {
+   -fx-font-size: 64;
+    -fx-font-family: Arial;
+
+}

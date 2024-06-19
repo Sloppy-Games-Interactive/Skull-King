@@ -10,6 +10,11 @@ import de.htwg.se.skullking.model.card.Card
  */
 class Hand(val cards: List[Card] = List()) {
   def count: Int = cards.length
+  
+  def indexOf(card: Card): Option[Int] = cards.indexOf(card) match {
+    case -1 => None
+    case idx => Some(idx)
+  }
 
   def play(idx: Int): (Card, Hand) = {
     val (before, after) = cards.splitAt(idx)

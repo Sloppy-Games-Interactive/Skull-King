@@ -1,12 +1,12 @@
 package de.htwg.se.skullking.controller.ControllerComponent
 
-import de.htwg.se.skullking.model.card.Card
-import de.htwg.se.skullking.model.state.{GameState, Phase}
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{Observable, ObservableEvent, UndoManager}
 
 trait IController() extends Observable {
-  var state: GameState
+  var state: IGameState
 
   def handleState(): Unit
 
@@ -20,9 +20,9 @@ trait IController() extends Observable {
   
   def addPlayer(name: String): Unit
 
-  def playCard(player: Player, card: Card): Unit
+  def playCard(player: IPlayer, card: ICard): Unit
   
-  def setPrediction(player: Player, prediction: Int): Unit
+  def setPrediction(player: IPlayer, prediction: Int): Unit
   
   def quit: Unit
 }

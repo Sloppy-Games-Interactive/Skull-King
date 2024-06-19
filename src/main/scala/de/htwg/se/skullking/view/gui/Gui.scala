@@ -55,7 +55,7 @@ class Gui(controller: IController) extends JFXApp3 with Observer {
       controller = controller,
       windowHeight = windowHeight,
       windowWidth = windowWidth,
-      onClickPlayButton = () => stage.setScene(preGameScene),
+      onClickPlayButton = () => controller.newGame,
       onClickSettingsButton = () => stage.setScene(settingsScene),
       onClickQuitButton = () => controller.quit
     )
@@ -102,6 +102,7 @@ class Gui(controller: IController) extends JFXApp3 with Observer {
 
   override def update(event: ObservableEvent): Unit = {
     event match {
+      case ControllerEvents.NewGame => stage.setScene(gameScene)
       case ControllerEvents.Quit => Platform.exit()
       case _ => println("Update")
     }

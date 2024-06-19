@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.tui
 
 import de.htwg.se.skullking.controller.ControllerComponent.{Controller, ControllerEvents}
-import de.htwg.se.skullking.model.state.{GameState, Phase}
+import de.htwg.se.skullking.model.StateComponent.{GameState, Phase}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -224,7 +224,7 @@ class TuiSpec extends AnyWordSpec {
         tui.update(ControllerEvents.PromptCardPlay)
         tui.promptState should be(PromptState.CardPlay)
         tui.processInputLine("1")
-        controller.state.players.head.hand.cards.length should be(0)
+        controller.state.players.head.hand.count should be(0)
       }
 
       "re-prompt for card play on invalid input" in {

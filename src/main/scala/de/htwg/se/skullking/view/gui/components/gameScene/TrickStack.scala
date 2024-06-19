@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
 import de.htwg.se.skullking.controller.ControllerComponent.IController
-import de.htwg.se.skullking.model.card.Card
+import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
 import scalafx.application.Platform
@@ -22,7 +22,7 @@ class TrickStack(controller: IController) extends HBox with Observer {
     children = Seq()
   }
 
-  var cardTransforms: Map[Card, (Rotate, Translate)] = Map()
+  var cardTransforms: Map[ICard, (Rotate, Translate)] = Map()
 
   def update(event: ObservableEvent): Unit = {
     Platform.runLater {

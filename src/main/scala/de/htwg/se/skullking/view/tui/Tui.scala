@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.view.tui
 
 import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 
 import scala.util.{Success, Try}

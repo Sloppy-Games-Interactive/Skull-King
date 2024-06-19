@@ -1,11 +1,11 @@
 package de.htwg.se.skullking.controller.ControllerComponent
 
-import de.htwg.se.skullking.model.card.Card
-import de.htwg.se.skullking.model.player.Player
-import de.htwg.se.skullking.model.state.{GameState, Phase}
+import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, Player}
+import de.htwg.se.skullking.model.StateComponent.{GameState, IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
-class Controller(var state: GameState = GameState()) extends IController {
+class Controller(var state: IGameState = GameState()) extends IController {
   private val undoManager = new UndoManager
 
   def handleState(): Unit = {
@@ -48,13 +48,13 @@ class Controller(var state: GameState = GameState()) extends IController {
     handleState()
   }
 
-  def playCard(player: Player, card: Card): Unit = {
+  def playCard(player: IPlayer, card: ICard): Unit = {
     undoManager.doStep(new PlayCardCommand(this, player, card))
     notifyObservers(ControllerEvents.CardPlayed)
     handleState()
   }
 
-  def setPrediction(player: Player, prediction: Int): Unit = {
+  def setPrediction(player: IPlayer, prediction: Int): Unit = {
     undoManager.doStep(new SetPredictionCommand(this, player, prediction))
     notifyObservers(ControllerEvents.PredictionSet)
     handleState()

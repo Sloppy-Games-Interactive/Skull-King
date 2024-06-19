@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components
 
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{Background, BackgroundFill, CornerRadii, HBox, Pane, Region}
 import scalafx.scene.shape.Rectangle
@@ -10,7 +10,7 @@ import scalafx.scene.control.Label
 import scalafx.scene.effect.InnerShadow
 import scalafx.scene.layout.Priority.Always
 
-class PlayerListRow (player: Player) extends HBox{
+class PlayerListRow (player: IPlayer) extends HBox{
   private val name = player.name
   private val score = player.score
   private val isCurrentPlayer = player.active

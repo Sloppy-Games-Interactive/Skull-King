@@ -1,7 +1,8 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.model.card.{Card, Suit}
-import de.htwg.se.skullking.model.player.{Hand, Player}
+import de.htwg.se.skullking.model.CardComponent.{Card, Suit}
+import de.htwg.se.skullking.model.HandComponent.Hand
+import de.htwg.se.skullking.model.PlayerComponent.Player
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 

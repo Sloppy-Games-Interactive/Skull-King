@@ -12,38 +12,28 @@ abstract class Card(val suit: Suit) extends ICard {
   }
 }
 
-case class StandardCard(override val suit: Suit, value: Int) extends Card(suit) {
+case class StandardCard(
+  override val suit: Suit,
+  override val value: Int
+) extends Card(suit) with IStandardCard(suit, value) {
   override def toString: String = s"${suit.readable} $value"
 }
 
-class SpecialCard(override val suit: Suit) extends Card(suit) {
+class SpecialCard(override val suit: Suit) extends Card(suit) with ISpecialCard {
   override def toString: String = s"${suit.readable}"
 }
 
-enum JokerBehaviour {
-  case Pirate
-  case Escape
-
-  override def toString: String = this match {
-    case Pirate => Suit.Pirate.readable
-    case Escape => Suit.Escape.readable
-  }
-}
-
-trait Joker {
-  val as: JokerBehaviour
+case class JokerCard(as: JokerBehaviour = JokerBehaviour.Pirate) extends SpecialCard(Suit.Joker) with IJokerCard {
   override def toString: String = s"${super.toString} as ${as}"
   def playAs(behaviour: JokerBehaviour): JokerCard = JokerCard(behaviour)
 }
 
-case class JokerCard(as: JokerBehaviour = JokerBehaviour.Pirate) extends SpecialCard(Suit.Joker) with Joker
-
-object Card {
-  def apply(suit: Suit, value: Int): StandardCard = suit match {
+object CardFactory extends ICardFactory {
+  def createCard(suit: Suit, value: Int): StandardCard = suit match {
     case s: Suit => StandardCard(s, value)
-
   }
-  def apply(suit: Suit): SpecialCard = suit match {
+  
+  def createCard(suit: Suit): SpecialCard = suit match {
     case s: Suit if s == Suit.Joker => JokerCard()
     case s: Suit => SpecialCard(s)
   }

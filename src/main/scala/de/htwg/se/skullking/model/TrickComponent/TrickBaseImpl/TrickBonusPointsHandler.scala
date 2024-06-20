@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.model.TrickComponent
 
-import de.htwg.se.skullking.model.CardComponent.{StandardCard, Suit}
+import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
 
 trait BonusPointsHandler {
   def handle(t: ITrick): Int
@@ -11,7 +11,7 @@ trait BonusPointsHandler {
  */
 class StandardBonusPointsHandler extends BonusPointsHandler {
   override def handle(t: ITrick): Int = t.cards.collect{
-    case c: StandardCard => c
+    case c: IStandardCard => c
   }.count(c => !c.isTrump && !c.isSpecial && c.value == 14) * 10
 }
 
@@ -20,7 +20,7 @@ class StandardBonusPointsHandler extends BonusPointsHandler {
  */
 class TrumpBonusPointsHandler extends BonusPointsHandler {
   override def handle(t: ITrick): Int = t.cards.collect{
-    case c: StandardCard => c
+    case c: IStandardCard => c
   }.count(c => c.isTrump && c.value == 14) * 20
 }
 

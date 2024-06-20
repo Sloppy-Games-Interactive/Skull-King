@@ -20,11 +20,14 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            osName: "linux"
             java: 17
-          #- os: macos-latest
-          #  java: 17
-          #- os: windows-latest
-          #  java: 17
+          - os: macos-latest
+            osName: "mac"
+            java: 17
+          - os: windows-latest
+            osName: "win"
+            java: 17
 
 
     steps:
@@ -39,7 +42,7 @@ jobs:
       - name: run tests
         run: sbt test
       - name: jar
-        run: sbt assembly
+        run: sbt -Dos.name=${{ matrix.osName }} assembly
 
       - name: Create release
         env:

@@ -39,7 +39,7 @@ jobs:
       - name: run tests
         run: sbt test
       - name: jar
-        run: sbt package
+        run: sbt assembly
 
       - name: Create release
         env:

@@ -1,7 +1,8 @@
 package de.htwg.se.skullking.model.PlayerComponent
 
-import de.htwg.se.skullking.model.CardComponent.{Card, Suit}
-import de.htwg.se.skullking.model.HandComponent.Hand
+import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
+import de.htwg.se.skullking.model.CardComponent.Suit
+import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -21,7 +22,7 @@ class PlayerSpec extends AnyWordSpec {
     }
 
     "have resettable hand" in {
-      val cards = List(Card(Suit.Red, 1), Card(Suit.Blue, 2), Card(Suit.Red, 3))
+      val cards = List(CardFactory(Suit.Red, 1), CardFactory(Suit.Blue, 2), CardFactory(Suit.Red, 3))
       val p1 = Player("p1", Hand(cards), 9)
       val p1reset = p1.resetHand
 
@@ -47,7 +48,7 @@ class PlayerSpec extends AnyWordSpec {
     }
 
     "have a toString" in {
-      val hand = Hand(List(Card(Suit.Red, 1), Card(Suit.Blue, 2), Card(Suit.Red, 3)))
+      val hand = Hand(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Blue, 2), CardFactory(Suit.Red, 3)))
       val p1 = Player("p1", hand, 9, Some(0))
       p1.toString should be(s"p1: 9, ${hand.toString}, prediction: 0")
 

@@ -1,12 +1,14 @@
-package de.htwg.se.skullking.controller.ControllerComponent
+package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
+import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.controller.ControllerComponent._
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, Player}
-import de.htwg.se.skullking.model.StateComponent.{GameState, IGameState, Phase}
+import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, IPlayerFactory}
+import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
-class Controller(var state: IGameState = GameState()) extends IController {
-  private val undoManager = new UndoManager
+class Controller(var state: IGameState = summon[IGameState]) extends IController {
+  private val undoManager = UndoManager()
 
   def handleState(): Unit = {
     state.phase match {
@@ -43,7 +45,7 @@ class Controller(var state: IGameState = GameState()) extends IController {
   }
 
   def addPlayer(name: String): Unit = {
-    undoManager.doStep(new AddPlayerCommand(this, Player(name)))
+    undoManager.doStep(new AddPlayerCommand(this, summon[IPlayerFactory].create(name)))
     notifyObservers(ControllerEvents.PlayerAdded)
     handleState()
   }

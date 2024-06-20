@@ -1,7 +1,8 @@
-package de.htwg.se.skullking.model.TrickComponent
+package de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl
 
-import de.htwg.se.skullking.model.CardComponent.{StandardCard, Suit}
+import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
+import de.htwg.se.skullking.model.TrickComponent._
 
 trait WinnerHandler {
   def handle(t: ITrick): Option[IPlayer]
@@ -52,7 +53,7 @@ class winnerTrumpWinnerHandler extends WinnerHandler {
   override def handle(t: ITrick): Option[IPlayer] = t.stack match {
     case withTrump if withTrump.exists((c, p) => c.isTrump) => {
       Some(withTrump.collect{
-        case (c: StandardCard, p) => (c, p)
+        case (c: IStandardCard, p) => (c, p)
       }.filter((c, p) => c.isTrump).maxBy((c, p) => c.value)._2)
     }
     case _ => None
@@ -66,9 +67,15 @@ class winnerLeadSuitWinnerHandler extends WinnerHandler {
   override def handle(t: ITrick): Option[IPlayer] = t.stack match {
     case withLeadSuit if withLeadSuit.exists((c, p) => c.suit == t.leadSuit) => {
       Some(withLeadSuit.collect{
-        case (c: StandardCard, p) => (c, p)
+        case (c: IStandardCard, p) => (c, p)
       }.filter((c, p) => c.suit == t.leadSuit).maxBy((c, p) => c.value)._2)
     }
     case _ => None
   }
+}
+
+val winnerHandlers = List(winnerAllEscapeWinnerHandler(), winnerSpecialWinnerHandler(), winnerTrumpWinnerHandler(), winnerLeadSuitWinnerHandler())
+
+class TrickWinnerHandler extends ITrickWinnerHandler {
+  override def handle(t: ITrick): Option[IPlayer] = winnerHandlers.collectFirst({ case h if h.handle(t).isDefined => h.handle(t).get })
 }

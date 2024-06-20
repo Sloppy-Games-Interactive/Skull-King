@@ -1,7 +1,8 @@
-package de.htwg.se.skullking.model.HandComponent
+package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.IDeck
+import de.htwg.se.skullking.model.PlayerComponent._
 
 class Hand(val cards: List[ICard] = List()) extends IHand {
   def count: Int = cards.length

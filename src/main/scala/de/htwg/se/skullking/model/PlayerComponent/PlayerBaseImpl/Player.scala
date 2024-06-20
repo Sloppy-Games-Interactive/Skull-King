@@ -1,7 +1,7 @@
-package de.htwg.se.skullking.model.PlayerComponent
+package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.HandComponent.{Hand, IHand}
+import de.htwg.se.skullking.model.PlayerComponent._
 
 case class Player(
   name: String,
@@ -34,3 +34,7 @@ case class Player(
   
   override def toString: String = s"$name: $score, $hand, prediction: ${prediction.getOrElse("-")}"
 }
+
+object PlayerFactory extends IPlayerFactory {
+  def create(name: String): IPlayer = Player(name)
+} 

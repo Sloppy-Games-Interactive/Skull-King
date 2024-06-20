@@ -16,7 +16,7 @@ enum CardBack {
 }
 
 class CardPane(card: ICard|CardBack, size: CardSize, hoverEffect: Boolean = true) extends Pane {
-  def imagePathMap(card: SpecialCard): String = card.suit match {
+  def imagePathMap(card: ISpecialCard): String = card.suit match {
     case Suit.Pirate => s"/images/cards/special/PirateCard.png"
     case Suit.Mermaid => s"/images/cards/special/MermaidCard.png"
     case Suit.SkullKing => s"/images/cards/special/SkullKingCard.png"
@@ -25,7 +25,7 @@ class CardPane(card: ICard|CardBack, size: CardSize, hoverEffect: Boolean = true
     case _ => "/images/cards/back.png"
   }
 
-  def imagePathMap(card: StandardCard): String = (card.suit, card.value) match {
+  def imagePathMap(card: IStandardCard): String = (card.suit, card.value) match {
     case (Suit.Red, value) if value >= 1 && value <= 14 => s"/images/cards/standard/parrot/ParrotCard$value.png"
     case (Suit.Yellow, value) if value >= 1 && value <= 14 => s"/images/cards/standard/treasure_chest/TreasureChestCard$value.png"
     case (Suit.Blue, value) if value >= 1 && value <= 14 => s"/images/cards/standard/octopus/OctopusCard$value.png"
@@ -34,8 +34,8 @@ class CardPane(card: ICard|CardBack, size: CardSize, hoverEffect: Boolean = true
   }
 
   val imagePath = card match {
-    case card: StandardCard => imagePathMap(card)
-    case card: SpecialCard => imagePathMap(card)
+    case card: IStandardCard => imagePathMap(card)
+    case card: ISpecialCard => imagePathMap(card)
     case _ => "/images/cards/_CardBackside.png"
   }
 

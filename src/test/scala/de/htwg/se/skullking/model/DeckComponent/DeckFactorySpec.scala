@@ -1,5 +1,6 @@
 package de.htwg.se.skullking.model.DeckComponent
 
+import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.DeckFactory
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 

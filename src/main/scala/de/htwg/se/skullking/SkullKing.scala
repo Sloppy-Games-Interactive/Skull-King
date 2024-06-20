@@ -1,4 +1,4 @@
-import de.htwg.se.skullking.SkullKingModule.given
+import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.tui.Tui
 

@@ -1,17 +1,16 @@
-package de.htwg.se.skullking.model.PlayerComponent
+package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
-import de.htwg.se.skullking.SkullKingModule.given
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.HandComponent.IHand
+import de.htwg.se.skullking.model.PlayerComponent._
 
 case class Player(
   name: String,
-  hand: IHand = summon[IHand],
+  hand: IHand = Hand(),
   score: Int = 0,
   prediction: Option[Int] = None,
   active: Boolean = false
 ) extends IPlayer {
-  def resetHand: IPlayer = this.copy(hand = summon[IHand])
+  def resetHand: IPlayer = this.copy(hand = Hand())
   
   def resetPrediction: IPlayer = this.copy(prediction = None)
   

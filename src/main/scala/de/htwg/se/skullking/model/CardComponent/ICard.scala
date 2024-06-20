@@ -8,7 +8,9 @@ trait ICard {
   def isTrump: Boolean
 }
 
-trait IStandardCard(val suit: Suit, val value: Int) extends ICard
+trait IStandardCard extends ICard {
+  val value: Int
+}
 trait ISpecialCard extends ICard
 
 enum JokerBehaviour {
@@ -27,6 +29,6 @@ trait IJokerCard extends ISpecialCard {
 }
 
 trait ICardFactory {
-  def createCard(suit: Suit, value: Int): ICard
-  def createCard(suit: Suit): ICard
+  def apply(suit: Suit, value: Int): ICard
+  def apply(suit: Suit): ICard
 }

@@ -20,3 +20,14 @@ trait IDeck(cards: List[ICard] = List()) {
    */
   def draw(n: Int = 1): (List[ICard], IDeck)
 }
+
+enum DeckContent {
+  case specials
+  case normal
+  case full
+  case empty
+}
+
+trait IDeckFactory {
+  def apply(kind: DeckContent = DeckContent.empty): IDeck
+}

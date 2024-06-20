@@ -1,7 +1,6 @@
 package de.htwg.se.skullking.model.PlayerComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.HandComponent.IHand
 
 trait IPlayer {
   val name: String

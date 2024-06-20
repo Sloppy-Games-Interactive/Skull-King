@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.StateComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent.{DeckContent, DeckFactory, IDeck}
+import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.TrickComponent.ITrick
 

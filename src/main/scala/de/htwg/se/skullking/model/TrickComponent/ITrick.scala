@@ -24,3 +24,11 @@ trait ITrick {
 
   def calculateBonusPoints: Int
 }
+
+trait ITrickWinnerHandler {
+  def handle(t: ITrick): Option[IPlayer]
+}
+
+trait ITrickBonusPointsHandler {
+  def handle(t: ITrick): Int
+}

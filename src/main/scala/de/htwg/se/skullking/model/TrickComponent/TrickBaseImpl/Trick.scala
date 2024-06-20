@@ -1,7 +1,9 @@
-package de.htwg.se.skullking.model.TrickComponent
+package de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl
 
+import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.{ICard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
+import de.htwg.se.skullking.model.TrickComponent._
 
 class Trick(
   val stack: List[(ICard, IPlayer)] = List()
@@ -27,17 +29,9 @@ class Trick(
   
   def play(card: ICard, player: IPlayer): ITrick = Trick(stack :+ (card, player))
   
-  def winner: Option[IPlayer] = {
-    val handlers = List(winnerAllEscapeWinnerHandler(), winnerSpecialWinnerHandler(), winnerTrumpWinnerHandler(), winnerLeadSuitWinnerHandler())
-
-    handlers.collectFirst({ case h if h.handle(this).isDefined => h.handle(this).get })
-  }
+  def winner: Option[IPlayer] = summon[ITrickWinnerHandler].handle(this)
   
-  def calculateBonusPoints: Int = {
-    val bonusHandlers = List(StandardBonusPointsHandler(), TrumpBonusPointsHandler(), SpecialBonusPointsHandler())
-
-    bonusHandlers.map(h => h.handle(this)).sum
-  }
+  def calculateBonusPoints: Int = summon[ITrickBonusPointsHandler].handle(this)
 
   override def toString: String = {
     "Trick: " + stack.map((card, player) => s"${player.name}: $card").mkString("; ")

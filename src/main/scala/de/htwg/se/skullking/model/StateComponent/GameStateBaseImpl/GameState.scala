@@ -1,9 +1,10 @@
-package de.htwg.se.skullking.model.StateComponent
+package de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl
 
-import de.htwg.se.skullking.SkullKingModule.given
+import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent.{DeckContent, DeckFactory, IDeck}
+import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
+import de.htwg.se.skullking.model.StateComponent.*
 import de.htwg.se.skullking.model.TrickComponent.ITrick
 
 case class GameState(
@@ -45,7 +46,7 @@ case class GameState(
 
     this.copy(
         round = round + 1,
-        deck = DeckFactory(DeckContent.specials).shuffle(), // TODO use full deck once playing joker is fully implemented
+        deck = summon[IDeckFactory](DeckContent.specials).shuffle(),
         players = updatedPlayers
       ).dealCards
       .changePhase(Phase.PrepareTricks)

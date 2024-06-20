@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.controller
 
-import de.htwg.se.skullking.controller.ControllerComponent.Controller
-import de.htwg.se.skullking.model.StateComponent.GameState
+import de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl.Controller
+import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec

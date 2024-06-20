@@ -1,6 +1,8 @@
-package de.htwg.se.skullking.model.CardComponent
+package de.htwg.se.skullking.model.CardComponent.CardBaseImpl
 
-abstract class Card(val suit: Suit) extends ICard {
+import de.htwg.se.skullking.model.CardComponent._
+
+abstract class Card extends ICard {
   def isSpecial: Boolean = suit.cardType match {
     case CardType.Special => true
     case _ => false
@@ -13,13 +15,13 @@ abstract class Card(val suit: Suit) extends ICard {
 }
 
 case class StandardCard(
-  override val suit: Suit,
-  override val value: Int
-) extends Card(suit) with IStandardCard(suit, value) {
+  suit: Suit,
+  value: Int
+) extends Card with IStandardCard {
   override def toString: String = s"${suit.readable} $value"
 }
 
-class SpecialCard(override val suit: Suit) extends Card(suit) with ISpecialCard {
+class SpecialCard(val suit: Suit) extends Card with ISpecialCard {
   override def toString: String = s"${suit.readable}"
 }
 
@@ -29,11 +31,11 @@ case class JokerCard(as: JokerBehaviour = JokerBehaviour.Pirate) extends Special
 }
 
 object CardFactory extends ICardFactory {
-  def createCard(suit: Suit, value: Int): StandardCard = suit match {
+  def apply(suit: Suit, value: Int): StandardCard = suit match {
     case s: Suit => StandardCard(s, value)
   }
   
-  def createCard(suit: Suit): SpecialCard = suit match {
+  def apply(suit: Suit): SpecialCard = suit match {
     case s: Suit if s == Suit.Joker => JokerCard()
     case s: Suit => SpecialCard(s)
   }

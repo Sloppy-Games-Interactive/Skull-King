@@ -1,6 +1,7 @@
-package de.htwg.se.skullking.controller.ControllerComponent
+package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
-import de.htwg.se.skullking.SkullKingModule.given
+import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.controller.ControllerComponent._
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, IPlayerFactory}
 import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}

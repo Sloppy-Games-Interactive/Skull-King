@@ -1,7 +1,8 @@
-package de.htwg.se.skullking.model.TrickComponent
+package de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
+import de.htwg.se.skullking.model.TrickComponent._
 
 trait WinnerHandler {
   def handle(t: ITrick): Option[IPlayer]
@@ -71,4 +72,10 @@ class winnerLeadSuitWinnerHandler extends WinnerHandler {
     }
     case _ => None
   }
+}
+
+val winnerHandlers = List(winnerAllEscapeWinnerHandler(), winnerSpecialWinnerHandler(), winnerTrumpWinnerHandler(), winnerLeadSuitWinnerHandler())
+
+class TrickWinnerHandler extends ITrickWinnerHandler {
+  override def handle(t: ITrick): Option[IPlayer] = winnerHandlers.collectFirst({ case h if h.handle(t).isDefined => h.handle(t).get })
 }

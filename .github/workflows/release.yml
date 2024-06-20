@@ -21,9 +21,6 @@ jobs:
           - os: ubuntu-latest
             osName: "linux"
             java: 17
-#          - os: macos-latest
-#            osName: "mac"
-#            java: 17
           - os: windows-latest
             osName: "Windows"
             java: 17
@@ -52,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,3 +69,4 @@ jobs:
           for file in *.jar; do
             gh release upload "$tag" "$file"
           done
+        working-directory: ${{ github.workspace }}

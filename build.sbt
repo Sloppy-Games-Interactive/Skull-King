@@ -30,9 +30,9 @@ lazy val root = project
 
     assembly / assemblyJarName := {
       lazy val osName = sys.props("os.name").toLowerCase match {
-        case n if n.contains("linux") => "Linux"
-        case n if n.contains("mac") => "Mac"
-        case n if n.contains("win") => "Windows"
+        case n if n.contains("linux") => "linux"
+        case n if n.contains("mac") => "mac"
+        case n if n.contains("win") => "win"
         case _ => throw new Exception("Unknown platform!")
       }
       s"SkullKing-${osName}.jar"

@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.PlayerComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.HandComponent.{Hand, IHand}
+import de.htwg.se.skullking.model.HandComponent.IHand
 
 trait IPlayer {
   val name: String
@@ -23,4 +23,8 @@ trait IPlayer {
   def setScore(score: Int): IPlayer
   
   def setActive(active: Boolean): IPlayer
+}
+
+trait IPlayerFactory {
+  def create(name: String): IPlayer
 }

@@ -1,16 +1,17 @@
 package de.htwg.se.skullking.model.PlayerComponent
 
+import de.htwg.se.skullking.SkullKingModule.given
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.HandComponent.{Hand, IHand}
+import de.htwg.se.skullking.model.HandComponent.IHand
 
 case class Player(
   name: String,
-  hand: IHand = Hand(),
+  hand: IHand = summon[IHand],
   score: Int = 0,
   prediction: Option[Int] = None,
   active: Boolean = false
 ) extends IPlayer {
-  def resetHand: IPlayer = this.copy(hand = Hand())
+  def resetHand: IPlayer = this.copy(hand = summon[IHand])
   
   def resetPrediction: IPlayer = this.copy(prediction = None)
   
@@ -34,3 +35,7 @@ case class Player(
   
   override def toString: String = s"$name: $score, $hand, prediction: ${prediction.getOrElse("-")}"
 }
+
+object PlayerFactory extends IPlayerFactory {
+  def create(name: String): IPlayer = Player(name)
+} 

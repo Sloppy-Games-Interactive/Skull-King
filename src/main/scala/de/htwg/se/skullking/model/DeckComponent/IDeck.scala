@@ -2,8 +2,6 @@ package de.htwg.se.skullking.model.DeckComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
 
-import scala.util.Random
-
 trait IDeck(cards: List[ICard] = List()) {
   /**
    * shuffle cards in the card list
@@ -21,4 +19,15 @@ trait IDeck(cards: List[ICard] = List()) {
    * @return the drawn cards and the remaining deck
    */
   def draw(n: Int = 1): (List[ICard], IDeck)
+}
+
+enum DeckContent {
+  case specials
+  case normal
+  case full
+  case empty
+}
+
+trait IDeckFactory {
+  def apply(kind: DeckContent = DeckContent.empty): IDeck
 }

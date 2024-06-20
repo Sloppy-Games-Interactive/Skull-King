@@ -1,10 +1,15 @@
-package de.htwg.se.skullking.model.DeckComponent
+package de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl
 
-import de.htwg.se.skullking.model.CardComponent.{Card, JokerCard, Suit}
+import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.model.CardComponent.{ICardFactory, IJokerCard, Suit}
+import de.htwg.se.skullking.model.DeckComponent._
 
 import scala.collection.immutable.List
 
-class DeckBaseFactory extends IDeckFactory {
+val CardFactory = summon[ICardFactory]
+
+object DeckFactory extends IDeckFactory {
+  
   private val amountOfNormalCards = List.range(1, 15)
   private val amountOfJoker: Int = 1
   private val amountOfPirate: Int = 5
@@ -13,11 +18,11 @@ class DeckBaseFactory extends IDeckFactory {
   private val amountOfEscape: Int = 5
 
   private val normalSuits = List(Suit.Red, Suit.Blue, Suit.Yellow, Suit.Black)
-  private val jokerCards = List.fill(amountOfJoker)(JokerCard())
-  private val specialCards = List.fill(amountOfPirate)(Card(Suit.Pirate)) ++
-    List.fill(amountOfMermaid)(Card(Suit.Mermaid)) ++
-    List.fill(amountOfSkullKing)(Card(Suit.SkullKing)) ++
-    List.fill(amountOfEscape)(Card(Suit.Escape))
+  private val jokerCards = List.fill(amountOfJoker)(summon[IJokerCard])
+  private val specialCards = List.fill(amountOfPirate)(CardFactory(Suit.Pirate)) ++
+    List.fill(amountOfMermaid)(CardFactory(Suit.Mermaid)) ++
+    List.fill(amountOfSkullKing)(CardFactory(Suit.SkullKing)) ++
+    List.fill(amountOfEscape)(CardFactory(Suit.Escape))
 
   def apply(kind: DeckContent = DeckContent.empty): IDeck = kind match {
     case DeckContent.specials => withSpecials
@@ -30,7 +35,7 @@ class DeckBaseFactory extends IDeckFactory {
     val cards = for {
       suit <- normalSuits
       value <- amountOfNormalCards
-    } yield Card(suit, value)
+    } yield CardFactory(suit, value)
     Deck(cards)
   }
 
@@ -38,7 +43,7 @@ class DeckBaseFactory extends IDeckFactory {
     val normalCards = for {
       suit <- normalSuits
       value <- amountOfNormalCards
-    } yield Card(suit, value)
+    } yield CardFactory(suit, value)
 
     Deck(normalCards ++ specialCards)
   }
@@ -47,7 +52,7 @@ class DeckBaseFactory extends IDeckFactory {
     val normalCards = for {
       suit <- normalSuits
       value <- amountOfNormalCards
-    } yield Card(suit, value)
+    } yield CardFactory(suit, value)
 
     Deck(normalCards ++ jokerCards ++ specialCards)
   }

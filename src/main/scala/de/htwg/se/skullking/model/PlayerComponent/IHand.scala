@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.model.HandComponent
+package de.htwg.se.skullking.model.PlayerComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.IDeck

@@ -1,8 +1,8 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.model.CardComponent.{Card, Suit}
-import de.htwg.se.skullking.model.HandComponent.Hand
-import de.htwg.se.skullking.model.PlayerComponent.Player
+import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
+import de.htwg.se.skullking.model.CardComponent.Suit
+import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -44,12 +44,12 @@ class ParserSpec extends AnyWordSpec {
 
     "parsing card play" should {
       "return Some value for valid input" in {
-        val player = Player("Bob", Hand(List(Card(Suit.Pirate), Card(Suit.Red, 2))))
+        val player = Player("Bob", Hand(List(CardFactory(Suit.Pirate), CardFactory(Suit.Red, 2))))
         parser.parseCardPlay("1", player) shouldEqual Some(player.hand.cards.head)
       }
 
       "return None for invalid input" in {
-        val player = Player("Bob", Hand(List(Card(Suit.Pirate), Card(Suit.Red, 2))))
+        val player = Player("Bob", Hand(List(CardFactory(Suit.Pirate), CardFactory(Suit.Red, 2))))
         parser.parseCardPlay("3", player) shouldBe None
         parser.parseCardPlay("abc", player) shouldBe None
       }

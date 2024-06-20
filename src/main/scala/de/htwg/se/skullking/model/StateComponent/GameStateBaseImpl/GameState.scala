@@ -1,9 +1,11 @@
-package de.htwg.se.skullking.model.StateComponent
+package de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl
 
+import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent.{Deck, DeckContent, DeckFactory, IDeck}
+import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent.{ITrick, Trick}
+import de.htwg.se.skullking.model.StateComponent.*
+import de.htwg.se.skullking.model.TrickComponent.ITrick
 
 case class GameState(
   phase: Phase = Phase.PrepareGame,
@@ -11,7 +13,7 @@ case class GameState(
   players: List[IPlayer] = List(),
   round: Int = 0,
   tricks: List[ITrick] = List(),
-  deck: IDeck = Deck(),
+  deck: IDeck = summon[IDeck],
   roundLimit: Int = 10
 ) extends IGameState {
   def handleEvent(event: GameStateEvent): IGameState = event match {
@@ -44,7 +46,7 @@ case class GameState(
 
     this.copy(
         round = round + 1,
-        deck = DeckFactory(DeckContent.specials).shuffle(), // TODO use full deck once playing joker is fully implemented
+        deck = summon[IDeckFactory](DeckContent.specials).shuffle(),
         players = updatedPlayers
       ).dealCards
       .changePhase(Phase.PrepareTricks)
@@ -74,7 +76,7 @@ case class GameState(
 
   private def startTrick: GameState = {
     this.copy(
-      tricks = Trick() :: tricks,
+      tricks = summon[ITrick] :: tricks,
       players = setFirstActive(players)
     ).changePhase(Phase.PlayTricks)
   }

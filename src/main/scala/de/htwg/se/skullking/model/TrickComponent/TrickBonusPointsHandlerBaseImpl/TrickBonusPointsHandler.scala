@@ -1,6 +1,7 @@
-package de.htwg.se.skullking.model.TrickComponent
+package de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerBaseImpl
 
-import de.htwg.se.skullking.model.CardComponent.{StandardCard, Suit}
+import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
+import de.htwg.se.skullking.model.TrickComponent._
 
 trait BonusPointsHandler {
   def handle(t: ITrick): Int
@@ -11,7 +12,7 @@ trait BonusPointsHandler {
  */
 class StandardBonusPointsHandler extends BonusPointsHandler {
   override def handle(t: ITrick): Int = t.cards.collect{
-    case c: StandardCard => c
+    case c: IStandardCard => c
   }.count(c => !c.isTrump && !c.isSpecial && c.value == 14) * 10
 }
 
@@ -20,7 +21,7 @@ class StandardBonusPointsHandler extends BonusPointsHandler {
  */
 class TrumpBonusPointsHandler extends BonusPointsHandler {
   override def handle(t: ITrick): Int = t.cards.collect{
-    case c: StandardCard => c
+    case c: IStandardCard => c
   }.count(c => c.isTrump && c.value == 14) * 20
 }
 
@@ -42,4 +43,10 @@ class SpecialBonusPointsHandler extends BonusPointsHandler {
     case withPirate if t.hasPirate => withPirate.count(c => c.suit == Suit.Mermaid) * 20
     case _ => 0
   }
+}
+
+val trickPointsHandlers = List(StandardBonusPointsHandler(), TrumpBonusPointsHandler(), SpecialBonusPointsHandler())
+
+class TrickBonusPointsHandler extends ITrickBonusPointsHandler {
+  def handle(t: ITrick): Int = trickPointsHandlers.map(_.handle(t)).sum
 }

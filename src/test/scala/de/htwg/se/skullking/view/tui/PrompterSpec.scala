@@ -37,7 +37,7 @@ class PrompterSpec extends AnyWordSpec {
 
     "prompt for card play" in {
       val prompter = new Prompter
-      val player = Player("Bob", Hand(List(CardFactory(Suit.Pirate), CardFactory(Suit.Red, 2))))
+      val player = Player("Bob", Hand(List(CardFactory()(Suit.Pirate), CardFactory()(Suit.Red, 2))))
       val output = new java.io.ByteArrayOutputStream
       Console.withOut(output) {
         prompter.promptCardPlay(player)

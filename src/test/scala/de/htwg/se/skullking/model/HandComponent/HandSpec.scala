@@ -11,16 +11,16 @@ import org.scalatest.wordspec.AnyWordSpec
 class HandSpec extends AnyWordSpec {
   "Hand" should {
     "have count" in {
-      val r1 = CardFactory(Suit.Red, 1)
-      val r2 = CardFactory(Suit.Red, 2)
+      val r1 = CardFactory()(Suit.Red, 1)
+      val r2 = CardFactory()(Suit.Red, 2)
       val cards = List(r1, r2)
       val h = new Hand(cards)
 
       h.count shouldEqual 2
     }
     "play a card" in {
-      val r1 = CardFactory(Suit.Red, 1)
-      val r2 = CardFactory(Suit.Red, 2)
+      val r1 = CardFactory()(Suit.Red, 1)
+      val r2 = CardFactory()(Suit.Red, 2)
       val cards = List(r1, r2)
       val h = new Hand(cards)
       val (playedCard, newHand) = h.play(1)
@@ -29,7 +29,7 @@ class HandSpec extends AnyWordSpec {
       newHand.cards should not contain r2
     }
     "draw from deck" in {
-      val deck: IDeck = Deck(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Red, 2), CardFactory(Suit.Red, 3), CardFactory(Suit.Red, 4), CardFactory(Suit.Red, 5)))
+      val deck: IDeck = Deck(List(CardFactory()(Suit.Red, 1), CardFactory()(Suit.Red, 2), CardFactory()(Suit.Red, 3), CardFactory()(Suit.Red, 4), CardFactory()(Suit.Red, 5)))
       val h = new Hand()
       val (newDeck, newHand) = h.drawFromDeck(deck.shuffle(), 2)
 
@@ -37,8 +37,8 @@ class HandSpec extends AnyWordSpec {
       newHand.cards should have length 2
     }
     "print hand" in {
-      val r1 = CardFactory(Suit.Red, 1)
-      val r2 = CardFactory(Suit.Red, 2)
+      val r1 = CardFactory()(Suit.Red, 1)
+      val r2 = CardFactory()(Suit.Red, 2)
       val cards = List(r1, r2)
       val h = new Hand(cards)
 

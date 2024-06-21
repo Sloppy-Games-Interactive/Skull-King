@@ -7,17 +7,17 @@ import org.scalatest.wordspec.AnyWordSpec
 class CardSpec extends AnyWordSpec {
   "Card" should {
     "have a readable" in {
-      val card = CardFactory(Suit.Red, 1)
+      val card = CardFactory()(Suit.Red, 1)
       card.suit.readable should be("\uD83D\uDFE5")
     }
 
     "correctly display its suit and value in its toString method" in {
-      val card = CardFactory(Suit.Red, 1)
+      val card = CardFactory()(Suit.Red, 1)
       card.toString should be("🟥 1")
     }
 
     "correctly display its suit when it is a special card" in {
-      val card = CardFactory(Suit.Joker)
+      val card = CardFactory()(Suit.Joker)
       card.toString should be("🃏 as 🏴‍☠️")
     }
 
@@ -28,9 +28,9 @@ class CardSpec extends AnyWordSpec {
     }
 
     "be identifiable as Trump" in {
-      val card = CardFactory(Suit.Black, 1)
-      val r1 = CardFactory(Suit.Red, 1)
-      val p = CardFactory(Suit.Pirate)
+      val card = CardFactory()(Suit.Black, 1)
+      val r1 = CardFactory()(Suit.Red, 1)
+      val p = CardFactory()(Suit.Pirate)
       
       card.isTrump should be(true)
       r1.isTrump should be(false)
@@ -38,9 +38,9 @@ class CardSpec extends AnyWordSpec {
     }
 
     "be identifiable as Special" in {
-      val p = CardFactory(Suit.Pirate)
-      val r1 = CardFactory(Suit.Red, 1)
-      val b1 = CardFactory(Suit.Black, 1)
+      val p = CardFactory()(Suit.Pirate)
+      val r1 = CardFactory()(Suit.Red, 1)
+      val b1 = CardFactory()(Suit.Black, 1)
       
       p.isSpecial should be(true)
       r1.isSpecial should be(false)

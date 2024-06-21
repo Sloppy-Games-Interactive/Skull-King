@@ -9,14 +9,14 @@ import org.scalatest.wordspec.AnyWordSpec
 class DeckSpec extends  AnyWordSpec{
   "Deck" should {
     "be shuffleable" in {
-      val deck: IDeck = Deck(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Red, 2), CardFactory(Suit.Red, 3), CardFactory(Suit.Red, 4), CardFactory(Suit.Red, 5)))
+      val deck: IDeck = Deck(List(CardFactory()(Suit.Red, 1), CardFactory()(Suit.Red, 2), CardFactory()(Suit.Red, 3), CardFactory()(Suit.Red, 4), CardFactory()(Suit.Red, 5)))
       val shuffled = deck.shuffle()
 
       deck.getCards should contain theSameElementsAs shuffled.getCards
       deck.getCards should not be shuffled.getCards
     }
     "be drawable" in {
-      val deck: IDeck = Deck(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Red, 2), CardFactory(Suit.Red, 3), CardFactory(Suit.Red, 4), CardFactory(Suit.Red, 5)))
+      val deck: IDeck = Deck(List(CardFactory()(Suit.Red, 1), CardFactory()(Suit.Red, 2), CardFactory()(Suit.Red, 3), CardFactory()(Suit.Red, 4), CardFactory()(Suit.Red, 5)))
       val (card, newDeck) = deck.draw()
       val (drawnCards, newDeck2) = deck.draw(5)
 
@@ -27,7 +27,7 @@ class DeckSpec extends  AnyWordSpec{
       newDeck2.getCards should not contain drawnCards
     }
     "be printable" in {
-      val card1 = CardFactory(Suit.Red, 1)
+      val card1 = CardFactory()(Suit.Red, 1)
       val printDeck = Deck(List(card1))
 
       printDeck.toString() should be ("[ \uD83D\uDFE5 1 ]")

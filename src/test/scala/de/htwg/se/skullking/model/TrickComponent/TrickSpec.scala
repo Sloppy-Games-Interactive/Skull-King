@@ -11,22 +11,22 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class TrickSpec extends AnyWordSpec {
   "A Trick" when {
-    val r1 = CardFactory(Suit.Red, 1)
-    val r2 = CardFactory(Suit.Red, 2)
-    val r14 = CardFactory(Suit.Red, 14)
+    val r1 = CardFactory()(Suit.Red, 1)
+    val r2 = CardFactory()(Suit.Red, 2)
+    val r14 = CardFactory()(Suit.Red, 14)
 
-    val y1 = CardFactory(Suit.Yellow, 1)
-    val y2 = CardFactory(Suit.Yellow, 2)
-    val y14 = CardFactory(Suit.Yellow, 14)
+    val y1 = CardFactory()(Suit.Yellow, 1)
+    val y2 = CardFactory()(Suit.Yellow, 2)
+    val y14 = CardFactory()(Suit.Yellow, 14)
 
-    val b1 = CardFactory(Suit.Black, 1)
-    val b2 = CardFactory(Suit.Black, 2)
-    val b14 = CardFactory(Suit.Black, 14)
+    val b1 = CardFactory()(Suit.Black, 1)
+    val b2 = CardFactory()(Suit.Black, 2)
+    val b14 = CardFactory()(Suit.Black, 14)
 
-    val e = CardFactory(Suit.Escape)
-    val p = CardFactory(Suit.Pirate)
-    val m = CardFactory(Suit.Mermaid)
-    val sk = CardFactory(Suit.SkullKing)
+    val e = CardFactory()(Suit.Escape)
+    val p = CardFactory()(Suit.Pirate)
+    val m = CardFactory()(Suit.Mermaid)
+    val sk = CardFactory()(Suit.SkullKing)
     
     "nobody plays" should {
       "have no winner" in {

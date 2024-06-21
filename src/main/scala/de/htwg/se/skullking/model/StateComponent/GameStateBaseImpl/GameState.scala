@@ -1,21 +1,42 @@
 package de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl
 
-import de.htwg.se.skullking.modules.Default.given
+import com.google.inject.Inject
+import com.google.inject.name.Named
+//import de.htwg.se.skullking.modules.Default.given
+
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.StateComponent.*
 import de.htwg.se.skullking.model.TrickComponent.ITrick
 
-case class GameState(
-  phase: Phase = Phase.PrepareGame,
-  playerLimit: Int = 0,
-  players: List[IPlayer] = List(),
-  round: Int = 0,
-  tricks: List[ITrick] = List(),
-  deck: IDeck = summon[IDeck],
-  roundLimit: Int = 10
+class GameState @Inject(defaultDeck: IDeck, deckFactory: IDeckFactory, defaultTrick: ITrick) (
+  val phase: Phase = Phase.PrepareGame,
+  val playerLimit: Int = 0,
+  val players: List[IPlayer] = List(),
+  val round: Int = 0,
+  val tricks: List[ITrick] = List(),
+  val deck: IDeck = defaultDeck,
+  @Named("roundLimit") val roundLimit: Int = 10
 ) extends IGameState {
+  def copy(
+    phase: Phase = phase,
+    playerLimit: Int = playerLimit,
+    players: List[IPlayer] = players,
+    round: Int = round,
+    tricks: List[ITrick] = tricks,
+    deck: IDeck = deck,
+    roundLimit: Int = roundLimit
+  ): GameState = GameState(defaultDeck, deckFactory, defaultTrick)(
+    phase,
+    playerLimit,
+    players,
+    round,
+    tricks,
+    deck,
+    roundLimit
+  )
+  
   def handleEvent(event: GameStateEvent): IGameState = event match {
     case SetPlayerLimitEvent(n) if phase == Phase.PrepareGame && players.isEmpty => setPlayerLimit(n)
     case AddPlayerEvent(player) if phase == Phase.PrepareGame && playerLimit > 0 => addPlayer(player)
@@ -28,12 +49,12 @@ case class GameState(
 
   def activeTrick: Option[ITrick] = tricks.headOption
 
-  private def changePhase(nextPhase: Phase): GameState = this.copy(phase = nextPhase)
+  private def changePhase(nextPhase: Phase): GameState = copy(phase = nextPhase)
 
-  private def setPlayerLimit(n: Int): GameState = this.copy(playerLimit = n)
+  private def setPlayerLimit(n: Int): GameState = copy(playerLimit = n)
 
   private def addPlayer(player: IPlayer): IGameState = {
-    val nextState = this.copy(players = players :+ player)
+    val nextState = copy(players = players :+ player)
     if (players.length < playerLimit - 1) {
       nextState
     } else {
@@ -46,7 +67,7 @@ case class GameState(
 
     this.copy(
         round = round + 1,
-        deck = summon[IDeckFactory](DeckContent.specials).shuffle(),
+        deck = deckFactory(DeckContent.specials).shuffle(),
         players = updatedPlayers
       ).dealCards
       .changePhase(Phase.PrepareTricks)
@@ -76,7 +97,7 @@ case class GameState(
 
   private def startTrick: GameState = {
     this.copy(
-      tricks = summon[ITrick] :: tricks,
+      tricks = defaultTrick :: tricks,
       players = setFirstActive(players)
     ).changePhase(Phase.PlayTricks)
   }

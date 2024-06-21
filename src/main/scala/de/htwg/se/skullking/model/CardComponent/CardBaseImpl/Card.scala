@@ -1,6 +1,7 @@
 package de.htwg.se.skullking.model.CardComponent.CardBaseImpl
 
-import de.htwg.se.skullking.model.CardComponent._
+import com.google.inject.Inject
+import de.htwg.se.skullking.model.CardComponent.*
 
 abstract class Card extends ICard {
   def isSpecial: Boolean = suit.cardType match {
@@ -25,12 +26,12 @@ class SpecialCard(val suit: Suit) extends Card with ISpecialCard {
   override def toString: String = s"${suit.readable}"
 }
 
-case class JokerCard(as: JokerBehaviour = JokerBehaviour.Pirate) extends SpecialCard(Suit.Joker) with IJokerCard {
+case class JokerCard @Inject (as: JokerBehaviour = JokerBehaviour.Pirate) extends SpecialCard(Suit.Joker) with IJokerCard {
   override def toString: String = s"${super.toString} as ${as}"
   def playAs(behaviour: JokerBehaviour): JokerCard = JokerCard(behaviour)
 }
 
-object CardFactory extends ICardFactory {
+class CardFactory @Inject extends ICardFactory {
   def apply(suit: Suit, value: Int): StandardCard = suit match {
     case s: Suit => StandardCard(s, value)
   }

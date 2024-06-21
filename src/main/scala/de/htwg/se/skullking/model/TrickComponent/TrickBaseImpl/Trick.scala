@@ -1,11 +1,13 @@
 package de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl
 
-import de.htwg.se.skullking.modules.Default.given
+//import de.htwg.se.skullking.modules.Default.given
+import com.google.inject.Inject
+
 import de.htwg.se.skullking.model.CardComponent.{ICard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent._
+import de.htwg.se.skullking.model.TrickComponent.*
 
-class Trick(
+class Trick @Inject(trickWinnerHandler: ITrickWinnerHandler, trickBonusPointsHandler: ITrickBonusPointsHandler) (
   val stack: List[(ICard, IPlayer)] = List()
 ) extends ITrick {
   def cards: List[ICard] = stack.map((card, player) => card)
@@ -27,11 +29,11 @@ class Trick(
   
   def hasMermaid: Boolean = cards.exists(c => c.suit == Suit.Mermaid)
   
-  def play(card: ICard, player: IPlayer): ITrick = Trick(stack :+ (card, player))
+  def play(card: ICard, player: IPlayer): ITrick = Trick(trickWinnerHandler, trickBonusPointsHandler)(stack :+ (card, player))
   
-  def winner: Option[IPlayer] = summon[ITrickWinnerHandler].handle(this)
+  def winner: Option[IPlayer] = trickWinnerHandler.handle(this)
   
-  def calculateBonusPoints: Int = summon[ITrickBonusPointsHandler].handle(this)
+  def calculateBonusPoints: Int = trickBonusPointsHandler.handle(this)
 
   override def toString: String = {
     "Trick: " + stack.map((card, player) => s"${player.name}: $card").mkString("; ")

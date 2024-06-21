@@ -1,6 +1,7 @@
 package de.htwg.se.skullking.controller
 
 import de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl.Controller
+import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.PlayerFactory
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import org.scalatest.matchers.should.Matchers.*
@@ -11,7 +12,7 @@ class ControllerSpec extends AnyWordSpec {
   "Controller" when {
     "doing undo/redo" should {
       "handle undo/redo player limit" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -26,7 +27,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo player" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -46,7 +47,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo round" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -63,7 +64,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo prediction" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -81,7 +82,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo new game" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -102,7 +103,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle empty undo/redo" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.undo
         ctrl.state.players should have length 0
@@ -112,7 +113,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo play card" in {
-        val ctrl = Controller(GameState())
+        val ctrl = Controller(GameState(), PlayerFactory)(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -141,7 +142,7 @@ class ControllerSpec extends AnyWordSpec {
         override def update(e: ObservableEvent): Unit = updated += 1
       }
 
-      val controller = Controller(GameState())
+      val controller = Controller(GameState(), PlayerFactory)(GameState())
       "start new game" in {
         val observer = TestObserver()
         controller.add(observer)

@@ -1,6 +1,8 @@
 package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
-import de.htwg.se.skullking.modules.Default.given
+//import de.htwg.se.skullking.modules.Default.given
+import com.google.inject.Inject
+
 import de.htwg.se.skullking.controller.ControllerComponent.*
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
@@ -17,9 +19,9 @@ class AddPlayerCommand(val controller: IController, player: IPlayer) extends Com
   }
 }
 
-class NewGameCommand(val controller: IController) extends Command {
+class NewGameCommand @Inject(state: IGameState) (val controller: IController) extends Command {
   var memento: IGameState = controller.state
-  override def doStep: Unit = controller.state = summon[IGameState]
+  override def doStep: Unit = controller.state = state
   override def undoStep: Unit = controller.state = memento
   override def redoStep: Unit = {
     memento = controller.state

@@ -5,6 +5,8 @@ import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, Player}
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerBaseImpl.TrickBonusPointsHandler
+import de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl.TrickWinnerHandler
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -35,7 +37,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 1,
         playerLimit = 2
       )
@@ -57,7 +59,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 1,
       )
       gameState.round should be(1)
@@ -83,7 +85,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 2,
         roundLimit = 2
       )
@@ -102,7 +104,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 1,
         roundLimit = 1
       )
@@ -129,7 +131,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 1,
         roundLimit = 1
       )
@@ -156,7 +158,7 @@ class GameStateSpec extends AnyWordSpec {
       val gameState = GameState(
         phase = Phase.PlayTricks,
         players = List(player, player2),
-        tricks = List(Trick()),
+        tricks = List(Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()),
         round = 1,
         roundLimit = 1
       )

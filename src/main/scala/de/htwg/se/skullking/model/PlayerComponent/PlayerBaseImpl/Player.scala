@@ -1,9 +1,10 @@
 package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.PlayerComponent._
+import de.htwg.se.skullking.model.PlayerComponent.*
 
-case class Player(
+case class Player @Inject (
   name: String,
   hand: IHand = Hand(),
   score: Int = 0,
@@ -35,6 +36,6 @@ case class Player(
   override def toString: String = s"$name: $score, $hand, prediction: ${prediction.getOrElse("-")}"
 }
 
-object PlayerFactory extends IPlayerFactory {
+class PlayerFactory @Inject extends IPlayerFactory {
   def create(name: String): IPlayer = Player(name)
 } 

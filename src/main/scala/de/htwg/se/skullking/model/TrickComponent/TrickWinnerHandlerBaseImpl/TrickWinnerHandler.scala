@@ -1,8 +1,9 @@
 package de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent._
+import de.htwg.se.skullking.model.TrickComponent.*
 
 trait WinnerHandler {
   def handle(t: ITrick): Option[IPlayer]
@@ -76,6 +77,6 @@ class winnerLeadSuitWinnerHandler extends WinnerHandler {
 
 val winnerHandlers = List(winnerAllEscapeWinnerHandler(), winnerSpecialWinnerHandler(), winnerTrumpWinnerHandler(), winnerLeadSuitWinnerHandler())
 
-class TrickWinnerHandler extends ITrickWinnerHandler {
+class TrickWinnerHandler @Inject extends ITrickWinnerHandler {
   override def handle(t: ITrick): Option[IPlayer] = winnerHandlers.collectFirst({ case h if h.handle(t).isDefined => h.handle(t).get })
 }

@@ -1,10 +1,11 @@
 package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.IDeck
-import de.htwg.se.skullking.model.PlayerComponent._
+import de.htwg.se.skullking.model.PlayerComponent.*
 
-class Hand(val cards: List[ICard] = List()) extends IHand {
+class Hand @Inject (val cards: List[ICard] = List()) extends IHand {
   def count: Int = cards.length
 
   def indexOf(card: ICard): Option[Int] = cards.indexOf(card) match {

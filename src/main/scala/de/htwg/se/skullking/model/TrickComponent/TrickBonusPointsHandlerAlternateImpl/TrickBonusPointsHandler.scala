@@ -1,6 +1,7 @@
 package de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerAlternateImpl
 
-import de.htwg.se.skullking.model.TrickComponent._
+import com.google.inject.Inject
+import de.htwg.se.skullking.model.TrickComponent.*
 
 trait BonusPointsHandler {
   def handle(t: ITrick): Int
@@ -22,6 +23,6 @@ class SpecialCardsHandler extends BonusPointsHandler {
 
 val trickPointsHandlers = List(TrumpCardsHandler(), SpecialCardsHandler())
 
-class TrickBonusPointsHandler extends ITrickBonusPointsHandler {
+class TrickBonusPointsHandler @Inject extends ITrickBonusPointsHandler {
   def handle(t: ITrick): Int = trickPointsHandlers.map(_.handle(t)).sum
 }

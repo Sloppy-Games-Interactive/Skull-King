@@ -1,11 +1,12 @@
 package de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent._
+import de.htwg.se.skullking.model.DeckComponent.*
 
 import scala.util.Random
 
-class Deck(cards: List[ICard] = List()) extends IDeck {
+class Deck @Inject (cards: List[ICard] = List()) extends IDeck {
   /**
    * shuffle cards in the card list
    *

@@ -4,6 +4,8 @@ import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
 import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.Player
 import de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerBaseImpl.TrickBonusPointsHandler
+import de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl.TrickWinnerHandler
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -28,14 +30,14 @@ class TrickSpec extends AnyWordSpec {
     
     "nobody plays" should {
       "have no winner" in {
-        Trick().winner should be(None)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().winner should be(None)
       }
     }
 
     "playing any card" should {
       val p1 = Player("p1")
       val p2 = Player("p2")
-      val t0 = Trick()
+      val t0 = Trick(TrickWinnerHandler(), TrickBonusPointsHandler())()
       val t1 = t0.play(r1, p1)
       val t2 = t1.play(r2, p2)
 
@@ -67,7 +69,7 @@ class TrickSpec extends AnyWordSpec {
     "playing only standard suits" should {
       val p1 = Player("p1")
       val p2 = Player("p2")
-      val trick = Trick().play(r1, p1)
+      val trick = Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(r1, p1)
 
       "be won by highest card of leading suit" in {
         trick.play(r2, p2).winner should be(Some(p2))
@@ -79,7 +81,7 @@ class TrickSpec extends AnyWordSpec {
       val p1 = Player("p1")
       val p2 = Player("p2")
       val p3 = Player("p3")
-      val trick = Trick().play(r1, p1)
+      val trick = Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(r1, p1)
 
       "be won by highest trump card" in {
         trick.play(b1, p2).winner should be(Some(p2))
@@ -94,7 +96,7 @@ class TrickSpec extends AnyWordSpec {
       val p3 = Player("p3")
       val p4 = Player("p4")
       val p5 = Player("p5")
-      val trick = Trick().play(r14, p1).play(b14, p2)
+      val trick = Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(r14, p1).play(b14, p2)
 
       "be won by skull king" in {
         trick.play(sk, p3).winner should be(Some(p3))
@@ -116,7 +118,7 @@ class TrickSpec extends AnyWordSpec {
     "playing escape cards" should {
       val p1 = Player("p1")
       val p2 = Player("p2")
-      val escapeTrick = Trick().play(e, p1)
+      val escapeTrick = Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(e, p1)
 
       "be won by escape" in {
         escapeTrick.play(e, p2).winner should be(Some(p1))
@@ -138,39 +140,39 @@ class TrickSpec extends AnyWordSpec {
       "give 10 points for each standard suit 14 card" in {
         val p1 = Player("p1")
         val p2 = Player("p2")
-        Trick().play(r14, p1).calculateBonusPoints should be(10)
-        Trick().play(r14, p1).play(y14, p2).calculateBonusPoints should be(20)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(r14, p1).calculateBonusPoints should be(10)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(r14, p1).play(y14, p2).calculateBonusPoints should be(20)
       }
       "give 20 points for trump 14 card" in {
         val p1 = Player("p1")
-        Trick().play(b14, p1).calculateBonusPoints should be(20)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(b14, p1).calculateBonusPoints should be(20)
       }
       "give 40 points for skull king + mermaid" in {
         val p1 = Player("p1")
         val p2 = Player("p2")
-        Trick().play(sk, p1).play(m, p2).calculateBonusPoints should be(40)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(sk, p1).play(m, p2).calculateBonusPoints should be(40)
       }
       "give 30 points per pirate if skull king present" in {
         val p1 = Player("p1")
         val p2 = Player("p2")
         val p3 = Player("p3")
-        Trick().play(sk, p1).play(p, p2).calculateBonusPoints should be(30)
-        Trick().play(sk, p1).play(p, p2).play(p, p3).calculateBonusPoints should be(60)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(sk, p1).play(p, p2).calculateBonusPoints should be(30)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(sk, p1).play(p, p2).play(p, p3).calculateBonusPoints should be(60)
       }
       "give 20 points per mermaid if at least one pirate present" in {
         val p1 = Player("p1")
         val p2 = Player("p2")
         val p3 = Player("p3")
-        Trick().play(p, p1).play(m, p2).calculateBonusPoints should be(20)
-        Trick().play(p, p1).play(m, p2).play(m, p3).calculateBonusPoints should be(40)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(p, p1).play(m, p2).calculateBonusPoints should be(20)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(p, p1).play(m, p2).play(m, p3).calculateBonusPoints should be(40)
       }
       "only give mermaid bonus if mermaid + skull king + pirate present" in {
         val p1 = Player("p1")
         val p2 = Player("p2")
         val p3 = Player("p3")
         val p4 = Player("p4")
-        Trick().play(p, p1).play(m, p2).play(sk, p3).calculateBonusPoints should be(40)
-        Trick().play(p, p1).play(m, p2).play(sk, p3).play(m, p4).calculateBonusPoints should be(40)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(p, p1).play(m, p2).play(sk, p3).calculateBonusPoints should be(40)
+        Trick(TrickWinnerHandler(), TrickBonusPointsHandler())().play(p, p1).play(m, p2).play(sk, p3).play(m, p4).calculateBonusPoints should be(40)
       }
     }
   }

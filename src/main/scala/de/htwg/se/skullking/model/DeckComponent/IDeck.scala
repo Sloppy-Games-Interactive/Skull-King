@@ -1,6 +1,7 @@
 package de.htwg.se.skullking.model.DeckComponent
 
-import de.htwg.se.skullking.model.CardComponent.ICard
+import com.google.inject.Inject
+import de.htwg.se.skullking.model.CardComponent.{ICard, ICardFactory, IJokerCard}
 
 trait IDeck(cards: List[ICard] = List()) {
   /**

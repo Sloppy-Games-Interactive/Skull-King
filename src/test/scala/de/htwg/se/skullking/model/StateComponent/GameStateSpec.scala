@@ -4,7 +4,7 @@ import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
 import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, Player}
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
-import de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl.Trick
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 

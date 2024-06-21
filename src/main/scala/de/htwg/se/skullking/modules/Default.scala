@@ -10,11 +10,13 @@ import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, PlayerFa
 import de.htwg.se.skullking.model.PlayerComponent.{IHand, IPlayerFactory}
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.model.StateComponent.IGameState
-import de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl.Trick
-import de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerAlternateImpl.TrickBonusPointsHandler as FunnyHahaTrickBonusPointsHandler
-import de.htwg.se.skullking.model.TrickComponent.TrickBonusPointsHandlerBaseImpl.TrickBonusPointsHandler as BaseImplTrickBonusPointsHandler
-import de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl.TrickWinnerHandler
-import de.htwg.se.skullking.model.TrickComponent.{ITrick, ITrickBonusPointsHandler, ITrickWinnerHandler}
+import de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.ITrickBonusPointsHandler
+import de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.TrickBonusPointsHandlerAlternateImpl.TrickBonusPointsHandler as FunnyHahaTrickBonusPointsHandler
+import de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.TrickBonusPointsHandlerBaseImpl.TrickBonusPointsHandler as BaseImplTrickBonusPointsHandler
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.ITrickWinnerHandler
+import de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.TrickWinnerHandlerBaseImpl.TrickWinnerHandler
 
 object Default {
   given IGameState = GameState()

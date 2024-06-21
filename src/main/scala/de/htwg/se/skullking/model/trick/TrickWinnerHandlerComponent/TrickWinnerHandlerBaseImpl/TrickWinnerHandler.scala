@@ -1,8 +1,10 @@
-package de.htwg.se.skullking.model.TrickComponent.TrickWinnerHandlerBaseImpl
+package de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.TrickWinnerHandlerBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.{IStandardCard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent._
+import de.htwg.se.skullking.model.trick.TrickComponent.*
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.ITrickWinnerHandler
 
 trait WinnerHandler {
   def handle(t: ITrick): Option[IPlayer]

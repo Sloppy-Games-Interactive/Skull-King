@@ -17,7 +17,7 @@ class TuiSpec extends AnyWordSpec {
 
     "using :undo" should {
       "undo the last step" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         controller.state.players.length should be(0)
@@ -30,7 +30,7 @@ class TuiSpec extends AnyWordSpec {
 
     "using :redo" should {
       "redo the last undone step" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         controller.state.players.length should be(0)
@@ -45,7 +45,7 @@ class TuiSpec extends AnyWordSpec {
 
     "using :new game" should {
       "start new game" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         controller.state.playerLimit should be(2)
@@ -60,7 +60,7 @@ class TuiSpec extends AnyWordSpec {
 
 //    "using :quit" should {
 //      "quit" in {
-//        val controller = Controller(initialGameState)
+//        val controller = Controller(using initialGameState)
 //        val tui: Tui = Tui(controller)
 //
 //        val out = new java.io.ByteArrayOutputStream()
@@ -74,7 +74,7 @@ class TuiSpec extends AnyWordSpec {
 
     "typing an unknown command" should {
       "print input error" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         val out = new java.io.ByteArrayOutputStream()
@@ -88,7 +88,7 @@ class TuiSpec extends AnyWordSpec {
 
     "receiving controller events" should {
       "update promptState for PlayerLimitEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerLimit)
@@ -96,7 +96,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "update promptState for PlayerNameEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerName)
@@ -104,7 +104,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "update promptState for PredictionEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")
@@ -114,7 +114,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "print error for no active players in PredictionEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         val out = new java.io.ByteArrayOutputStream()
@@ -126,7 +126,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "update promptState for CardPlayEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")
@@ -138,7 +138,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "print error for no active players in CardPlayEvent" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         val out = new java.io.ByteArrayOutputStream()
@@ -152,7 +152,7 @@ class TuiSpec extends AnyWordSpec {
 
     "parsing input" should {
       "parse player limit" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerLimit)
@@ -162,7 +162,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "re-prompt for player limit on invalid input" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerLimit)
@@ -172,7 +172,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "parse player name" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerName)
@@ -182,7 +182,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "re-prompt for player name on invalid input" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
 
         tui.update(ControllerEvents.PromptPlayerName)
@@ -192,7 +192,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "parse prediction" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")
@@ -204,7 +204,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "re-prompt for prediction on invalid input" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")
@@ -216,7 +216,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "parse card play" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")
@@ -230,7 +230,7 @@ class TuiSpec extends AnyWordSpec {
       }
 
       "re-prompt for card play on invalid input" in {
-        val controller = Controller(initialGameState)
+        val controller = Controller(using initialGameState)
         val tui: Tui = Tui(controller)
         controller.addPlayer("Alice")
         controller.addPlayer("Bob")

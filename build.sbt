@@ -8,10 +8,42 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
-    coverageExcludedPackages := "de\\.htwg\\.se\\.skullking\\.Main",
-      coverageExcludedPackages := ".*Main.scala",
+    coverageExcludedPackages := "de\\.htwg\\.se\\.skullking\\.SkullKing",
 
-    libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test,
-    libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.18",
-    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.18" % "test",
+    libraryDependencies ++= Seq(
+      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalactic" %% "scalactic" % "3.2.18",
+      "org.scalatest" %% "scalatest" % "3.2.18" % "test",
+      "org.scalafx" %% "scalafx" % "21.0.0-R32",
+      "net.codingwell" %% "scala-guice" % "7.0.0"
+    ) ++ {
+      // Determine OS version of JavaFX binaries
+      lazy val osName = sys.props("os.name").toLowerCase match {
+        case n if n.contains("linux") => "linux"
+        case n if n.contains("mac") => "mac"
+        case n if n.contains("win") => "win"
+        case _ => throw new Exception("Unknown platform!")
+      }
+      Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
+        .map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName)
+    },
+
+    assembly / assemblyJarName := {
+      lazy val osName = sys.props("os.name").toLowerCase match {
+        case n if n.contains("linux") => "linux"
+        case n if n.contains("mac") => "mac"
+        case n if n.contains("win") => "win"
+        case _ => throw new Exception("Unknown platform!")
+      }
+      s"SkullKing-${osName}.jar"
+    },
+    assembly / mainClass := Some("de.htwg.se.skullking.SkullKing"),
+    assembly / assemblyMergeStrategy := {
+      case PathList("META-INF", "substrate", "config", _*) => MergeStrategy.discard
+      case "module-info.class" => MergeStrategy.discard
+      case x => {
+        val oldStrategy = (assembly / assemblyMergeStrategy).value
+        oldStrategy(x)
+      }
+    },
   )

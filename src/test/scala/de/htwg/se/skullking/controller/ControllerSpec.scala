@@ -1,5 +1,7 @@
 package de.htwg.se.skullking.controller
 
+import de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl.Controller
+import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
@@ -9,7 +11,7 @@ class ControllerSpec extends AnyWordSpec {
   "Controller" when {
     "doing undo/redo" should {
       "handle undo/redo player limit" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -24,7 +26,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo player" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -44,7 +46,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo round" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -61,7 +63,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo prediction" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -79,7 +81,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo new game" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -100,7 +102,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle empty undo/redo" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.undo
         ctrl.state.players should have length 0
@@ -110,7 +112,7 @@ class ControllerSpec extends AnyWordSpec {
       }
 
       "handle undo/redo play card" in {
-        val ctrl = Controller()
+        val ctrl = Controller(GameState())
 
         ctrl.newGame
         ctrl.setPlayerLimit(2)
@@ -121,7 +123,7 @@ class ControllerSpec extends AnyWordSpec {
 
         ctrl.state.players.head.hand.count should be(1)
 
-        ctrl.playCard(ctrl.state.activePlayer.get, 0)
+        ctrl.playCard(ctrl.state.activePlayer.get, ctrl.state.activePlayer.get.hand.cards.head)
 
         ctrl.state.players.head.hand.count should be(0)
 
@@ -139,7 +141,7 @@ class ControllerSpec extends AnyWordSpec {
         override def update(e: ObservableEvent): Unit = updated += 1
       }
 
-      val controller = Controller()
+      val controller = Controller(GameState())
       "start new game" in {
         val observer = TestObserver()
         controller.add(observer)
@@ -199,7 +201,7 @@ class ControllerSpec extends AnyWordSpec {
         controller.addPlayer("bar")
         controller.setPrediction(controller.state.activePlayer.get, 1)
         controller.setPrediction(controller.state.activePlayer.get, 1)
-        controller.playCard(controller.state.activePlayer.get, 0)
+        controller.playCard(controller.state.activePlayer.get, controller.state.activePlayer.get.hand.cards.head)
 
         observer.updated should be(14)
         controller.state.players.head.hand.count should be(0)

@@ -8,11 +8,10 @@ on:
     tags:
       - '*'
 
-
 permissions: write-all
 
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -20,12 +19,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            osName: "linux"
             java: 17
-          #- os: macos-latest
-          #  java: 17
-          #- os: windows-latest
-          #  java: 17
-
+          - os: windows-latest
+            osName: "Windows"
+            java: 17
 
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +44,12 @@ jobs:
           name: SkullKing-${{ matrix.osName }}.jar
           path: ${{ github.workspace }}/target/scala-3.4.0/*.jar
 
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,6 +59,16 @@ jobs:
               --repo="$GITHUB_REPOSITORY" \
               --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
               --generate-notes
-          gh release upload "$tag" /home/runner/work/Skull-King/Skull-King/target/scala-3.4.0/*.jar
-          
-
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+      - name: Upload release assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          for directory in */; do
+            for file in "$directory"*.jar; do
+              gh release upload "$tag" "$file"
+            done
+          done
+        working-directory: ${{ github.workspace }}

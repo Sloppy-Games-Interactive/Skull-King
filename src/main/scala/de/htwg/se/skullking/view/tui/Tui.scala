@@ -1,9 +1,8 @@
 package de.htwg.se.skullking.view.tui
 
-import de.htwg.se.skullking.controller.{Controller, ControllerEvents}
-import de.htwg.se.skullking.model.player.Player
+import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.util.TuiKeys
 
 import scala.util.{Success, Try}
 
@@ -16,7 +15,7 @@ enum PromptState {
   case NewGame
 }
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: IController) extends Observer {
   var promptState: PromptState = PromptState.None
   
   val prompter = new Prompter
@@ -64,6 +63,7 @@ class Tui(controller: Controller) extends Observer {
     e match {
       case ControllerEvents.Quit => {
         println("Goodbye!")
+        System.exit(0)
       }
       case ControllerEvents.PromptPlayerLimit => {
         promptState = PromptState.PlayerLimit
@@ -115,7 +115,7 @@ class Tui(controller: Controller) extends Observer {
           case None => prompter.promptPrediction(controller.state.activePlayer.get.name, controller.state.round)
         }
         case PromptState.CardPlay => parser.parseCardPlay(input, controller.state.activePlayer.get) match {
-          case Some(cardIndex) => controller.playCard(controller.state.activePlayer.get, cardIndex)
+          case Some(card) => controller.playCard(controller.state.activePlayer.get, card)
           case None => prompter.promptCardPlay(controller.state.activePlayer.get)
         }
         case _ => println("Invalid input.")

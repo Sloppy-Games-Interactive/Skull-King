@@ -20,7 +20,7 @@ import de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.TrickWinnerH
 
 object Default {
   given IGameState = GameState()
-  given IController = Controller(summon[IGameState])
+  given IController = Controller(using summon[IGameState])
   given IHand = Hand()
   given IDeck = Deck()
   given IPlayerFactory = PlayerFactory

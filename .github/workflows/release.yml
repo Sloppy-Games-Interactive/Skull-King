@@ -39,7 +39,12 @@ jobs:
       - name: run tests
         run: sbt test
       - name: jar
-        run: sbt package
+        run: sbt "-Dos.name=${{ matrix.osName }}" assembly
+      - name: Upload JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: SkullKing-${{ matrix.osName }}.jar
+          path: ${{ github.workspace }}/target/scala-3.4.0/*.jar
 
       - name: Create release
         env:

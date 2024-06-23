@@ -11,11 +11,13 @@ lazy val root = project
     coverageExcludedPackages := "de\\.htwg\\.se\\.skullking\\.SkullKing",
 
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit" % "0.7.29" % Test,
+      "org.scalameta" %% "munit" % "1.0.0" % Test,
       "org.scalactic" %% "scalactic" % "3.2.18",
       "org.scalatest" %% "scalatest" % "3.2.18" % "test",
       "org.scalafx" %% "scalafx" % "21.0.0-R32",
-      "net.codingwell" %% "scala-guice" % "7.0.0"
+      "net.codingwell" %% "scala-guice" % "7.0.0",
+      "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
+      "org.playframework" %% "play-json" % "3.0.4"
     ) ++ {
       // Determine OS version of JavaFX binaries
       lazy val osName = sys.props("os.name").toLowerCase match {

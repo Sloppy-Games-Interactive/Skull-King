@@ -1,8 +1,9 @@
 package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
 import de.htwg.se.skullking.modules.Default.given
-import de.htwg.se.skullking.controller.ControllerComponent._
+import de.htwg.se.skullking.controller.ControllerComponent.*
 import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.FileIOComponent.IFileIO
 import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, IPlayerFactory}
 import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
@@ -62,6 +63,15 @@ class Controller(var state: IGameState = summon[IGameState]) extends IController
     handleState()
   }
 
+  def saveGame: Unit = {
+    summon[IFileIO].save(state)
+    notifyObservers(ControllerEvents.SaveGame)
+  }
+  
+  def loadGame: Unit = {
+    notifyObservers(ControllerEvents.LoadGame)
+  }
+  
   def quit: Unit = {
     // TODO: implement save game state to file
     notifyObservers(ControllerEvents.Quit)

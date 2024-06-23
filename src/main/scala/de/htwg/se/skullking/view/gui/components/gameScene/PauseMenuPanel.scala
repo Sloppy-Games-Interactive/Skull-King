@@ -31,6 +31,7 @@ class PauseMenuPanel(
 
     new GameButton(medium) {
       text = "Scoreboard"
+      disable = true
       onAction = () => {
         toggleClick()
         onClickScoreboardBtn()

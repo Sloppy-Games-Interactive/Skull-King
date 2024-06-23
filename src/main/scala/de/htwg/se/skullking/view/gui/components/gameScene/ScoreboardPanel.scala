@@ -33,10 +33,11 @@ class ScoreboardPanel(
 
 
   def update(event: ObservableEvent): Unit = {
+// TODO: Fix crash reason
 
-    children = Seq(
-      btn
-    )
+//    children = Seq(
+//      btn
+//    )
 
   }
 

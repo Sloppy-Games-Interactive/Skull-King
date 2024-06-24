@@ -36,6 +36,7 @@ enum ControllerEvents extends ObservableEvent {
   case PromptPlayerLimit
   case PromptPlayerName
   case PlayerAdded
+  case PlayerAddedFinished
   case PlayerLimitSet
   case PromptPrediction
   case PredictionSet

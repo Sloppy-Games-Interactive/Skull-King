@@ -104,9 +104,12 @@ class Gui(controller: IController) extends JFXApp3 with Observer {
   override def update(event: ObservableEvent): Unit = {
     event match {
       case ControllerEvents.Quit => Platform.exit()
-      case ControllerEvents.PlayerAdded =>
+      case ControllerEvents.PlayerAdded =>{
         if Phase.PrepareTricks == controller.state.phase then
           showGameScene()
+      }
+      case ControllerEvents.LoadGame =>
+        showGameScene()
       case _ => {
         println("Update")
       }

@@ -52,6 +52,20 @@ class PauseMenuPanel(
       }
     },
     new GameButton(medium) {
+      text = "Save Game"
+      onAction = () => {
+        toggleClick()
+        controller.saveGame
+      }
+    },
+    new GameButton(medium) {
+      text = "Load Game"
+      onAction = () => {
+        toggleClick()
+        controller.loadGame
+      }
+    },
+    new GameButton(medium) {
       text = "Quit"
       onAction = () => {
         toggleClick()

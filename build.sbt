@@ -17,7 +17,8 @@ lazy val root = project
       "org.scalafx" %% "scalafx" % "21.0.0-R32",
       "net.codingwell" %% "scala-guice" % "7.0.0",
       "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
-      "org.playframework" %% "play-json" % "3.0.4"
+      //"org.playframework" %% "play-json" % "3.0.4"
+      "com.typesafe.play" %% "play-json" % "2.10.5"
     ) ++ {
       // Determine OS version of JavaFX binaries
       lazy val osName = sys.props("os.name").toLowerCase match {

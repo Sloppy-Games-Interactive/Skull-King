@@ -91,6 +91,11 @@ class Tui(controller: IController) extends Observer {
           case None => println("No active player.")
         }
       }
+
+      case ControllerEvents.LoadGame => {
+        println("Game loaded.")
+        printStatusScreen()
+      }
       case _ => printStatusScreen()
     }
   }

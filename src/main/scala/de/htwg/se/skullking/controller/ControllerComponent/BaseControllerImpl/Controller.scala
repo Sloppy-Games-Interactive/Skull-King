@@ -66,10 +66,14 @@ class Controller(var state: IGameState = summon[IGameState]) extends IController
   def saveGame: Unit = {
     summon[IFileIO].save(state)
     notifyObservers(ControllerEvents.SaveGame)
+    handleState()
   }
   
   def loadGame: Unit = {
+    state = summon[IFileIO].load
+    undoManager.doStep(new LoadGameCommand(this, state))
     notifyObservers(ControllerEvents.LoadGame)
+    handleState()
   }
   
   def quit: Unit = {

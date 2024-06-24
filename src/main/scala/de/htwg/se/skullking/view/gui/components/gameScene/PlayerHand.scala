@@ -7,6 +7,8 @@ import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
 import scalafx.application.Platform
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{HBox, VBox}
+import scalafx.animation.TranslateTransition
+import scalafx.util.Duration
 
 class PlayerHand(
   controller: IController,
@@ -18,8 +20,19 @@ class PlayerHand(
   alignment = Pos.BottomCenter
   translateY = translateYValue
 
-  onMouseEntered = _ => translateY = 0
-  onMouseExited = _ => translateY = translateYValue
+  val transition = new TranslateTransition {
+    duration = Duration(200) // Duration of the animation in milliseconds
+    node = PlayerHand.this // The object to animate
+    toY = 0 // The final value of translateY
+  }
+
+  onMouseEntered = _ => transition.playFromStart()
+
+  transition.onFinished = _ => {
+    transition.toY = if (translateY.value == 0) translateYValue else 0
+  }
+
+  onMouseExited = _ => transition.playFromStart()
 
   var handCards: HBox = new HBox {
     alignment = Pos.Center

@@ -1,6 +1,7 @@
 package de.htwg.se.skullking.view.gui
 
-import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{ControllerEvents, IController}
+import de.htwg.se.skullking.model.StateComponent.Phase
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.scenes.{GameScene, PreGameScene, SettingsScene, TitleScene}
 
@@ -55,7 +56,7 @@ class Gui(controller: IController) extends JFXApp3 with Observer {
       controller = controller,
       windowHeight = windowHeight,
       windowWidth = windowWidth,
-      onClickPlayButton = () => stage.setScene(preGameScene),
+      onClickPlayButton = () => showPreGameScene(),
       onClickSettingsButton = () => stage.setScene(settingsScene),
       onClickQuitButton = () => controller.quit
     )
@@ -103,8 +104,21 @@ class Gui(controller: IController) extends JFXApp3 with Observer {
   override def update(event: ObservableEvent): Unit = {
     event match {
       case ControllerEvents.Quit => Platform.exit()
-      case _ => println("Update")
+      case ControllerEvents.PlayerAdded =>
+        if Phase.PrepareTricks == controller.state.phase then
+          showGameScene()
+      case _ => {
+        println("Update")
+      }
     }
+  }
+
+  private def showGameScene(): Unit = {
+    Platform.runLater(() => stage.setScene(gameScene))
+  }
+
+  private def showPreGameScene(): Unit = {
+    Platform.runLater(() => stage.setScene(preGameScene))
   }
 
 }

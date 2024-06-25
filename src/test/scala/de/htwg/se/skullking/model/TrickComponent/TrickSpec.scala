@@ -3,7 +3,7 @@ package de.htwg.se.skullking.model.TrickComponent
 import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
 import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.Player
-import de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl.Trick
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 

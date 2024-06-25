@@ -1,4 +1,4 @@
-package de.htwg.se.skullking.model.TrickComponent
+package de.htwg.se.skullking.model.trick.TrickComponent
 
 import de.htwg.se.skullking.model.CardComponent.{ICard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
@@ -25,10 +25,6 @@ trait ITrick {
   def calculateBonusPoints: Int
 }
 
-trait ITrickWinnerHandler {
-  def handle(t: ITrick): Option[IPlayer]
-}
 
-trait ITrickBonusPointsHandler {
-  def handle(t: ITrick): Int
-}
+
+

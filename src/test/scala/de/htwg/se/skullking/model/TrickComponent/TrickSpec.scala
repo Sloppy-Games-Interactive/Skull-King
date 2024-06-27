@@ -1,11 +1,14 @@
 package de.htwg.se.skullking.model.TrickComponent
 
 import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
-import de.htwg.se.skullking.model.CardComponent.Suit
+import de.htwg.se.skullking.model.CardComponent.{CardDeserializer, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.Player
+import de.htwg.se.skullking.model.PlayerComponent.PlayerDeserializer
 import de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl.Trick
+import de.htwg.se.skullking.model.trick.TrickComponent.TrickDeserializer
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.JsObject
 
 class TrickSpec extends AnyWordSpec {
   "A Trick" when {
@@ -171,6 +174,36 @@ class TrickSpec extends AnyWordSpec {
         val p4 = Player("p4")
         Trick().play(p, p1).play(m, p2).play(sk, p3).calculateBonusPoints should be(40)
         Trick().play(p, p1).play(m, p2).play(sk, p3).play(m, p4).calculateBonusPoints should be(40)
+      }
+    }
+
+    "serializing" should {
+      "be serializable as json" in {
+        val p1 = Player("p1")
+        val p2 = Player("p2")
+        val trick = Trick().play(r1, p1).play(r2, p2)
+        val json = trick.toJson
+
+        (json \ "stack").as[List[JsObject]].length should be(2)
+        val jsonStack = (json \ "stack").as[List[JsObject]].map { element =>
+          val card = CardDeserializer.fromJson((element \ "card").as[JsObject])
+          val player = PlayerDeserializer.fromJson((element \ "player").as[JsObject])
+          (card, player)
+        }
+
+        jsonStack.head._1.suit should be(Suit.Red)
+        jsonStack.head._2.name should be("p1")
+        jsonStack(1)._1.suit should be(Suit.Red)
+        jsonStack(1)._2.name should be("p2")
+        jsonStack.length should be(2)
+
+        val newTrick = TrickDeserializer.fromJson(json)
+
+        newTrick.stack.head._1.suit should be(Suit.Red)
+        newTrick.stack.head._2.name should be("p1")
+        newTrick.stack(1)._1.suit should be(Suit.Red)
+        newTrick.stack(1)._2.name should be("p2")
+        newTrick.stack.length should be(2)
       }
     }
   }

@@ -4,9 +4,11 @@ import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
 import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.Deck
 import de.htwg.se.skullking.model.DeckComponent.IDeck
+import de.htwg.se.skullking.model.PlayerComponent.HandDeserializer
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.Hand
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.JsObject
 
 class HandSpec extends AnyWordSpec {
   "Hand" should {
@@ -43,6 +45,20 @@ class HandSpec extends AnyWordSpec {
       val h = new Hand(cards)
 
       h.toString.replaceAll(" ", "") shouldEqual "1:\uD83D\uDFE51;2:\uD83D\uDFE52"
+    }
+
+    "be serializable as json" in {
+      val r1 = CardFactory(Suit.Red, 1)
+      val r2 = CardFactory(Suit.Red, 2)
+      val cards = List(r1, r2)
+      val h = Hand(cards)
+      val json = h.toJson
+
+      (json \ "cards").as[List[JsObject]] should contain theSameElementsAs cards.map(_.toJson)
+
+      val newHand = HandDeserializer.fromJson(json)
+
+      h.cards should contain theSameElementsAs newHand.cards
     }
   }
 }

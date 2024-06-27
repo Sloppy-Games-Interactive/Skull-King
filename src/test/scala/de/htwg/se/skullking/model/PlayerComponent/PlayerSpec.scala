@@ -5,6 +5,7 @@ import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.JsObject
 
 class PlayerSpec extends AnyWordSpec {
   "Player" should {
@@ -54,6 +55,26 @@ class PlayerSpec extends AnyWordSpec {
 
       val p2 = Player("p2", hand, 9)
       p2.toString should be(s"p2: 9, ${hand.toString}, prediction: -")
+    }
+
+    "be serializable as json" in {
+      val hand = Hand(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Blue, 2), CardFactory(Suit.Red, 3)))
+      val p1 = Player("p1", hand, 9, Some(0), true)
+      val json = p1.toJson
+
+      (json \ "name").as[String] should be("p1")
+      HandDeserializer.fromJson((json \ "hand").as[JsObject]).cards should contain theSameElementsAs hand.cards
+      (json \ "score").as[Int] should be(9)
+      (json \ "prediction").asOpt[Int] should be(Some(0))
+      (json \ "active").as[Boolean] should be(true)
+
+      val newPlayer = PlayerDeserializer.fromJson(json)
+
+      p1.name should be(newPlayer.name)
+      p1.hand.cards should contain theSameElementsAs newPlayer.hand.cards
+      p1.score should be(newPlayer.score)
+      p1.prediction should be(newPlayer.prediction)
+      p1.active should be(newPlayer.active)
     }
   }
 }

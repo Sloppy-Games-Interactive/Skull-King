@@ -109,7 +109,7 @@ enum JokerBehaviour {
   case Escape
   case None
 
-  override def toString: String = this match {
+  def readable: String = this match {
     case Pirate => Suit.Pirate.readable
     case Escape => Suit.Escape.readable
     case None => Suit.Joker.readable

@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.DeckComponent
 
 import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
-import de.htwg.se.skullking.model.CardComponent.Suit
+import de.htwg.se.skullking.model.CardComponent.{CardDeserializer, Suit}
 import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.Deck
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
@@ -45,5 +45,20 @@ class DeckSpec extends  AnyWordSpec{
 
       deck.getCards should contain theSameElementsAs newDeck.getCards
     }
+    
+    "be xml serializable" in {
+      val card1 = CardFactory(Suit.Red, 1)
+      val deck = Deck(List(card1))
+      val xmlDeck = deck.toXml
+      
+      deck.toXml should be(xmlDeck)
+
+      CardDeserializer.cardListFromXml(xmlDeck) should contain theSameElementsAs deck.getCards
+
+      val newDeck = DeckDeserializer.fromXml(xmlDeck)
+      deck.getCards should contain theSameElementsAs newDeck.getCards
+
+    }
+
   }
 }

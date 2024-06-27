@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.HandComponent
 
 import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
-import de.htwg.se.skullking.model.CardComponent.Suit
+import de.htwg.se.skullking.model.CardComponent.{CardDeserializer, Suit}
 import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.Deck
 import de.htwg.se.skullking.model.DeckComponent.IDeck
 import de.htwg.se.skullking.model.PlayerComponent.HandDeserializer
@@ -60,5 +60,20 @@ class HandSpec extends AnyWordSpec {
 
       h.cards should contain theSameElementsAs newHand.cards
     }
+    
+    "be serializable as xml" in {
+      val r1 = CardFactory(Suit.Red, 1)
+      val r2 = CardFactory(Suit.Red, 2)
+      val cards = List(r1, r2)
+      val h = Hand(cards)
+      val xml = h.toXml
+
+      CardDeserializer.cardListFromXml(xml) should contain theSameElementsAs cards
+    
+      val newHand = HandDeserializer.fromXml(xml)
+    
+      h.cards should contain theSameElementsAs newHand.cards
+}
+
   }
 }

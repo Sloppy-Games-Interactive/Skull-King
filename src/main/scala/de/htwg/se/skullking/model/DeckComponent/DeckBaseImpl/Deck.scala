@@ -5,7 +5,7 @@ import de.htwg.se.skullking.model.DeckComponent._
 
 import scala.util.Random
 
-class Deck(cards: List[ICard] = List()) extends IDeck {
+class Deck(val cards: List[ICard] = List()) extends IDeck {
   /**
    * shuffle cards in the card list
    *

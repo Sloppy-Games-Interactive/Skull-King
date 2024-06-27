@@ -164,3 +164,15 @@ case class GameState(
     players.lift(nextIndex)
   }
 }
+
+object GameStateFactory extends IGameStateFactory {
+  def apply(
+    round: Int,
+    phase: Phase,
+    playerLimit: Int,
+    roundLimit: Int,
+    deck: IDeck,
+    players: List[IPlayer],
+    tricks: List[ITrick]
+  ): IGameState = GameState(phase, playerLimit, players, round, tricks, deck, roundLimit)
+}

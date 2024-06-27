@@ -39,4 +39,6 @@ object CardFactory extends ICardFactory {
     case s: Suit if s == Suit.Joker => JokerCard()
     case s: Suit => SpecialCard(s)
   }
+  
+  def apply(jokerBehaviour: JokerBehaviour): JokerCard = JokerCard(jokerBehaviour)
 }

@@ -40,3 +40,7 @@ class Trick(
     "Trick: " + stack.map((card, player) => s"${player.name}: $card").mkString("; ")
   }
 }
+
+object TrickFactory extends ITrickFactory {
+  def apply(stack: List[(ICard, IPlayer)]): ITrick = Trick(stack)
+}

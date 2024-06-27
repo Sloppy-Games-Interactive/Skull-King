@@ -1,8 +1,8 @@
 package de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl
 
 import de.htwg.se.skullking.modules.Default.given
-import de.htwg.se.skullking.model.CardComponent.{ICardFactory, IJokerCard, Suit}
-import de.htwg.se.skullking.model.DeckComponent._
+import de.htwg.se.skullking.model.CardComponent.{ICard, ICardFactory, IJokerCard, Suit}
+import de.htwg.se.skullking.model.DeckComponent.*
 
 import scala.collection.immutable.List
 
@@ -23,6 +23,8 @@ object DeckFactory extends IDeckFactory {
     case DeckContent.empty => Deck()
   }
 
+  def apply(cards: List[ICard]): IDeck = Deck(cards)
+  
   private def normalCards(using cardFactory: ICardFactory): IDeck = {
     val cards = for {
       suit <- normalSuits

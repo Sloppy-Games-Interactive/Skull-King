@@ -5,6 +5,7 @@ import de.htwg.se.skullking.model.CardComponent.Suit
 import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.Deck
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.libs.json.JsObject
 
 class DeckSpec extends  AnyWordSpec{
   "Deck" should {
@@ -31,6 +32,18 @@ class DeckSpec extends  AnyWordSpec{
       val printDeck = Deck(List(card1))
 
       printDeck.toString() should be ("[ \uD83D\uDFE5 1 ]")
+    }
+
+    "be serializable as json" in {
+      val cards = List(CardFactory(Suit.Red, 1), CardFactory(Suit.Red, 2), CardFactory(Suit.Red, 3), CardFactory(Suit.Red, 4), CardFactory(Suit.Red, 5))
+      val deck: IDeck = Deck(cards)
+      val json = deck.toJson
+
+      (json \ "cards").as[List[JsObject]] should contain theSameElementsAs cards.map(_.toJson)
+
+      val newDeck = DeckDeserializer.fromJson(json)
+
+      deck.getCards should contain theSameElementsAs newDeck.getCards
     }
   }
 }

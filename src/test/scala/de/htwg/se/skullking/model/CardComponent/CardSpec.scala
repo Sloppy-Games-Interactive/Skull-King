@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.model.CardComponent
 
-import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.{CardFactory, JokerCard}
+import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.{CardFactory, JokerCard, StandardCard}
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -17,8 +17,10 @@ class CardSpec extends AnyWordSpec {
     }
 
     "correctly display its suit when it is a special card" in {
-      val card = CardFactory(Suit.Joker)
+      val pirate = CardFactory(Suit.Pirate)
+      val card = CardFactory(Suit.Joker).asInstanceOf[JokerCard].playAs(JokerBehaviour.Pirate)
       card.toString should be("🃏 as 🏴‍☠️")
+      pirate.toString should be("🏴‍☠️")
     }
 
     "joker should be playable as escape and pirate" in {
@@ -45,6 +47,46 @@ class CardSpec extends AnyWordSpec {
       p.isSpecial should be(true)
       r1.isSpecial should be(false)
       b1.isSpecial should be(false)
+    }
+
+    "be serializable as json" in {
+      val r1: StandardCard = CardFactory(Suit.Red, 1)
+      val pirate = CardFactory(Suit.Pirate)
+      val joker = JokerCard()
+      val jPirate = joker.playAs(JokerBehaviour.Pirate)
+      val jEscape = joker.playAs(JokerBehaviour.Escape)
+
+      val jsonR1 = r1.toJson
+      val jsonPirate = pirate.toJson
+      val jsonJoker = joker.toJson
+      val jsonJPirate = jPirate.toJson
+      val jsonJEscape = jEscape.toJson
+
+      (jsonR1 \ "suit").as[String] should be("Red")
+      (jsonR1 \ "value").asOpt[Int] should be(Some(1))
+
+      (jsonPirate \ "suit").as[String] should be("Pirate")
+
+      (jsonJoker \ "suit").as[String] should be("Joker")
+      (jsonJoker \ "as").as[String] should be("None")
+      (jsonJPirate \ "as").as[String] should be("Pirate")
+      (jsonJEscape \ "as").as[String] should be("Escape")
+
+      val r1Parsed: StandardCard = CardDeserializer.fromJson(jsonR1).asInstanceOf[StandardCard]
+      val pirateParsed = CardDeserializer.fromJson(jsonPirate)
+      val jokerParsed = CardDeserializer.fromJson(jsonJoker)
+      val jPirateParsed = CardDeserializer.fromJson(jsonJPirate)
+      val jEscapeParsed = CardDeserializer.fromJson(jsonJEscape)
+
+      r1Parsed.suit should be(Suit.Red)
+      r1Parsed.value should be(1)
+
+      pirateParsed.suit should be(Suit.Pirate)
+
+      jokerParsed.suit should be(Suit.Joker)
+      jokerParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.None)
+      jPirateParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Pirate)
+      jEscapeParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Escape)
     }
   }
 }

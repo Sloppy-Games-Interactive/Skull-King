@@ -25,8 +25,8 @@ class SpecialCard(val suit: Suit) extends Card with ISpecialCard {
   override def toString: String = s"${suit.readable}"
 }
 
-case class JokerCard(as: JokerBehaviour = JokerBehaviour.Pirate) extends SpecialCard(Suit.Joker) with IJokerCard {
-  override def toString: String = s"${super.toString} as ${as}"
+case class JokerCard(as: JokerBehaviour = JokerBehaviour.None) extends SpecialCard(Suit.Joker) with IJokerCard {
+  override def toString: String = s"${super.toString} as ${as.readable}"
   def playAs(behaviour: JokerBehaviour): JokerCard = JokerCard(behaviour)
 }
 

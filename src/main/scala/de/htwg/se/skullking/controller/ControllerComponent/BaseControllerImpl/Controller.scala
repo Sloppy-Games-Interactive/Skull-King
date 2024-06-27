@@ -8,7 +8,7 @@ import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, IPlayerFactory}
 import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
-class Controller(var state: IGameState = summon[IGameState]) extends IController {
+class Controller(using var state: IGameState) extends IController {
   private val undoManager = UndoManager()
 
   def handleState(): Unit = {

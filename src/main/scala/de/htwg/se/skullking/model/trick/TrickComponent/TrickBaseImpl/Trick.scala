@@ -1,9 +1,12 @@
-package de.htwg.se.skullking.model.TrickComponent.TrickBaseImpl
+package de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl
 
 import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.{ICard, Suit}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent._
+import de.htwg.se.skullking.model.trick.TrickComponent.*
+import de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.ITrickBonusPointsHandler
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickWinnerHandlerComponent.ITrickWinnerHandler
 
 class Trick(
   val stack: List[(ICard, IPlayer)] = List()

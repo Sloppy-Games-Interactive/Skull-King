@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: SkullKing-${{ matrix.osName }}.jar
-          path: /home/runner/work/Skull-King/Skull-King/target/scala-3.4.0/*.jar
+          path: ${{ github.workspace }}/target/scala-3.4.0/*.jar
 
   release:
     needs: build

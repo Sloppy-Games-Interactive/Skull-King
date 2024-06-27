@@ -3,7 +3,7 @@ package de.htwg.se.skullking.model.StateComponent
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
 
 enum Phase {
   case PrepareGame

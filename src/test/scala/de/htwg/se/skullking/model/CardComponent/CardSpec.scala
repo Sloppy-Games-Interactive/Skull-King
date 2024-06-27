@@ -88,5 +88,44 @@ class CardSpec extends AnyWordSpec {
       jPirateParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Pirate)
       jEscapeParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Escape)
     }
+
+
+    "be serializable as xml" in {
+      val r1: StandardCard = CardFactory(Suit.Red, 1)
+      val pirate = CardFactory(Suit.Pirate)
+      val joker = JokerCard()
+      val jPirate = joker.playAs(JokerBehaviour.Pirate)
+      val jEscape = joker.playAs(JokerBehaviour.Escape)
+
+      val xmlR1 = r1.toXml
+      val xmlPirate = pirate.toXml
+      val xmlJoker = joker.toXml
+      val xmlJPirate = jPirate.toXml
+      val xmlJEscape = jEscape.toXml
+
+      (xmlR1 \ "suit").text should be("Red")
+      (xmlR1 \ "value").text should be("1")
+      (xmlPirate \ "suit").text should be("Pirate")
+      (xmlJoker \ "suit").text should be("Joker")
+      (xmlJoker \ "as").text should be("None")
+      (xmlJPirate \ "as").text should be("Pirate")
+      (xmlJEscape \ "as").text should be("Escape")
+
+      val r1Parsed: StandardCard = CardDeserializer.fromXml(xmlR1).asInstanceOf[StandardCard]
+      val pirateParsed = CardDeserializer.fromXml(xmlPirate)
+      val jokerParsed = CardDeserializer.fromXml(xmlJoker)
+      val jPirateParsed = CardDeserializer.fromXml(xmlJPirate)
+      val jEscapeParsed = CardDeserializer.fromXml(xmlJEscape)
+
+      r1Parsed.suit should be(Suit.Red)
+      r1Parsed.value should be(1)
+      pirateParsed.suit should be(Suit.Pirate)
+      jokerParsed.suit should be(Suit.Joker)
+      jokerParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.None)
+      jPirateParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Pirate)
+      jEscapeParsed.asInstanceOf[JokerCard].as should be(JokerBehaviour.Escape)
+
+    }
+
   }
 }

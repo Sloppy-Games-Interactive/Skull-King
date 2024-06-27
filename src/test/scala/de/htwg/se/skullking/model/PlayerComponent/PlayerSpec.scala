@@ -7,6 +7,9 @@ import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.JsObject
 
+import scala.language.postfixOps
+import scala.xml.Elem
+
 class PlayerSpec extends AnyWordSpec {
   "Player" should {
     "have defaults" in {
@@ -69,6 +72,26 @@ class PlayerSpec extends AnyWordSpec {
       (json \ "active").as[Boolean] should be(true)
 
       val newPlayer = PlayerDeserializer.fromJson(json)
+
+      p1.name should be(newPlayer.name)
+      p1.hand.cards should contain theSameElementsAs newPlayer.hand.cards
+      p1.score should be(newPlayer.score)
+      p1.prediction should be(newPlayer.prediction)
+      p1.active should be(newPlayer.active)
+    }
+
+    "be serializable as xml" in {
+      val hand = Hand(List(CardFactory(Suit.Red, 1), CardFactory(Suit.Blue, 2), CardFactory(Suit.Red, 3)))
+      val p1 = Player("p1", hand, 9, Some(0), true)
+      val xml = p1.toXml
+
+      (xml \ "name").text should be("p1")
+      HandDeserializer.fromXml((xml \ "Hand").head.asInstanceOf[Elem]).cards should contain theSameElementsAs hand.cards
+      (xml \ "score").text.toInt should be(9)
+      
+      (xml \ "active").text.toBoolean should be(true)
+
+      val newPlayer = PlayerDeserializer.fromXml(xml)
 
       p1.name should be(newPlayer.name)
       p1.hand.cards should contain theSameElementsAs newPlayer.hand.cards

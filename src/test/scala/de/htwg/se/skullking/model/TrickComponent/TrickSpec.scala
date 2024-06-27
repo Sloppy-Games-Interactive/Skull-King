@@ -10,6 +10,8 @@ import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.libs.json.JsObject
 
+import scala.xml.Elem
+
 class TrickSpec extends AnyWordSpec {
   "A Trick" when {
     val r1 = CardFactory(Suit.Red, 1)
@@ -205,6 +207,34 @@ class TrickSpec extends AnyWordSpec {
         newTrick.stack(1)._2.name should be("p2")
         newTrick.stack.length should be(2)
       }
+
+      "be xml serializable" in {
+        val p1 = Player("p1")
+        val p2 = Player("p2")
+        val trick = Trick().play(r1, p1).play(r2, p2)
+        val xmlTrick = trick.toXml
+
+        trick.toXml should be(xmlTrick)
+
+        val stack = (xmlTrick \ "Stack" \ "Element").map { element =>
+          val card = CardDeserializer.fromXml((element \ "Card").head.asInstanceOf[Elem])
+          val player = PlayerDeserializer.fromXml((element \ "Player").head.asInstanceOf[Elem])
+          (card, player)
+        }.toList
+        stack.head._1.suit should be(Suit.Red)
+
+
+        val newTrick = TrickDeserializer.fromXml(xmlTrick)
+
+        newTrick.stack.head._1.suit should be(Suit.Red)
+        newTrick.stack.head._2.name should be("p1")
+        newTrick.stack(1)._1.suit should be(Suit.Red)
+        newTrick.stack(1)._2.name should be("p2")
+        newTrick.stack.length should be(2)
+      }
+
     }
+
+
   }
 }

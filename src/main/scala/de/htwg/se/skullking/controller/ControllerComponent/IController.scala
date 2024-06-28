@@ -24,6 +24,10 @@ trait IController() extends Observable {
   
   def setPrediction(player: IPlayer, prediction: Int): Unit
   
+  def saveGame: Unit
+  
+  def loadGame: Unit
+  
   def quit: Unit
 }
 
@@ -32,6 +36,7 @@ enum ControllerEvents extends ObservableEvent {
   case PromptPlayerLimit
   case PromptPlayerName
   case PlayerAdded
+  case PlayerAddedFinished
   case PlayerLimitSet
   case PromptPrediction
   case PredictionSet
@@ -41,4 +46,6 @@ enum ControllerEvents extends ObservableEvent {
   case Undo
   case Redo
   case CardPlayed
+  case SaveGame
+  case LoadGame
 }

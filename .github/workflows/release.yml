@@ -66,10 +66,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
         run: |
-          ls -aR  | egrep -v '^\.$|^\.\.$'
-          for directory in */; do
-            for file in "$directory"*.jar; do
-              gh release upload "$tag" "$file"
-            done
-          done
+              gh release upload "$tag" *.jar
+          
         working-directory: ${{ github.workspace }}

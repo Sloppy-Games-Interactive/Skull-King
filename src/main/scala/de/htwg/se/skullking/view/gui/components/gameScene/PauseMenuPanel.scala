@@ -31,6 +31,7 @@ class PauseMenuPanel(
 
     new GameButton(medium) {
       text = "Scoreboard"
+      disable = true
       onAction = () => {
         toggleClick()
         onClickScoreboardBtn()
@@ -48,6 +49,20 @@ class PauseMenuPanel(
       onAction = () => {
         toggleClick()
         controller.redo
+      }
+    },
+    new GameButton(medium) {
+      text = "Save Game"
+      onAction = () => {
+        toggleClick()
+        controller.saveGame
+      }
+    },
+    new GameButton(medium) {
+      text = "Load Game"
+      onAction = () => {
+        toggleClick()
+        controller.loadGame
       }
     },
     new GameButton(medium) {

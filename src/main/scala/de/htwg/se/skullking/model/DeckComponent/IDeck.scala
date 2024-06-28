@@ -1,8 +1,42 @@
 package de.htwg.se.skullking.model.DeckComponent
 
-import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.CardComponent.{CardDeserializer, ICard}
+import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.DeckFactory
+import de.htwg.se.skullking.modules.{Deserializer, Serializable}
+import de.htwg.se.skullking.modules.Default.given
+import play.api.libs.json.{JsObject, Json}
 
-trait IDeck(cards: List[ICard] = List()) {
+import scala.xml.Elem
+
+object DeckDeserializer extends Deserializer[IDeck] {
+
+  private val DeckFactory = summon[IDeckFactory]
+
+  override def fromXml(xml: Elem): IDeck = {
+    val cards = CardDeserializer.cardListFromXml(xml)
+    DeckFactory(cards)
+  }
+
+  override def fromJson(json: JsObject): IDeck = {
+    val cards = (json \ "cards").as[List[JsObject]].map(CardDeserializer.fromJson)
+    DeckFactory(cards)
+  }
+}
+
+trait IDeck extends Serializable{
+  val cards: List[ICard]
+  override def toXml: Elem = {
+    <Deck>
+      {cards.map(_.toXml)}
+    </Deck>
+  }
+
+  override def toJson: JsObject = {
+    Json.obj(
+      "cards" -> cards.map(_.toJson)
+    )
+  }
+
   /**
    * shuffle cards in the card list
    *
@@ -30,4 +64,5 @@ enum DeckContent {
 
 trait IDeckFactory {
   def apply(kind: DeckContent = DeckContent.empty): IDeck
+  def apply(cards: List[ICard]): IDeck
 }

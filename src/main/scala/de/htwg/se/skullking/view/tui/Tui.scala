@@ -91,6 +91,11 @@ class Tui(controller: IController) extends Observer {
           case None => println("No active player.")
         }
       }
+
+      case ControllerEvents.LoadGame => {
+        println("Game loaded.")
+        printStatusScreen()
+      }
       case _ => printStatusScreen()
     }
   }
@@ -101,6 +106,8 @@ class Tui(controller: IController) extends Observer {
       case TuiKeys.Undo.key => controller.undo
       case TuiKeys.Redo.key => controller.redo
       case TuiKeys.NewGame.key => controller.newGame
+      case TuiKeys.Save.key => controller.saveGame
+      case TuiKeys.Load.key => controller.loadGame
       case _ => promptState match {
         case PromptState.PlayerLimit => parser.parsePlayerLimit(input) match {
           case Some(playerLimit) => controller.setPlayerLimit(playerLimit)

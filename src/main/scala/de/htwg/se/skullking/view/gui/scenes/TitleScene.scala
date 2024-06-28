@@ -33,6 +33,13 @@ case class TitleScene(
   }
   playGameBtn.setId("large-button")
 
+  private val loadGameBtn: Button = new GameButton(large) {
+    text = "Load Game"
+    onAction = () => {
+      controller.loadGame
+    }
+  }
+
   private val settingsBtn: Button = new GameButton(medium) {
     text = "Settings"
     onAction = onClickSettingsButton
@@ -47,6 +54,7 @@ case class TitleScene(
     children = Seq(
       title,
       playGameBtn,
+      loadGameBtn,
       new HBox {
         children = Seq(
           settingsBtn,

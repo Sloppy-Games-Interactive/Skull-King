@@ -6,6 +6,10 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.transform.{Scale, Translate}
 import scalafx.Includes.*
+import scalafx.animation.{ScaleTransition, TranslateTransition}
+import scalafx.scene.input.MouseEvent
+import scalafx.scene.transform.{Scale, Translate}
+import scalafx.util.Duration
 
 enum CardSize {
   case Mini, Small, Medium, XXMedium, Large
@@ -63,23 +67,36 @@ class CardPane(card: ICard|CardBack, size: CardSize, hoverEffect: Boolean = true
       if (hoverEffect) {
         val scaleTransform = new Scale(1.0, 1.0)
         val translateTransform = new Translate(0, 0)
-
         transforms = Seq(scaleTransform, translateTransform)
 
-        onMouseEntered = (event: MouseEvent) => {
-          scaleTransform.x = 1.2
-          scaleTransform.y = 1.2
+        val scaleTransition = new ScaleTransition {
+          duration = Duration(200)
+          node = CardPane.this // Das zu animierende Objekt
+          fromX = 1.0
+          fromY = 1.0
+          toX = 1.2
+          toY = 1.2
+        }
 
-          translateTransform.x = -(imgWidth * 0.1)
-          translateTransform.y = -(imgHeight * 0.2)
+        val translateTransition = new TranslateTransition {
+          duration = Duration(200)
+          node = CardPane.this // Das zu animierende Objekt
+          fromX = 0
+          fromY = 0
+          toX = -(imgWidth * 0.1)
+          toY = -(imgHeight * 0.2)
+        }
+
+        onMouseEntered = (event: MouseEvent) => {
+          scaleTransition.playFromStart()
+          translateTransition.playFromStart()
         }
 
         onMouseExited = (event: MouseEvent) => {
-          scaleTransform.x = 1.0
-          scaleTransform.y = 1.0
-
-          translateTransform.x = 0
-          translateTransform.y = 0
+          scaleTransition.rate = -1 // Rückwärts abspielen
+          translateTransition.rate = -1 // Rückwärts abspielen
+          scaleTransition.play()
+          translateTransition.play()
         }
       }
     }

@@ -37,20 +37,8 @@ lazy val root = project
         ),
       "net.codingwell" %% "scala-guice" % "7.0.0",
       "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
-      "com.typesafe.play" %% "play-json" % "2.10.5",
-      "org.openjfx" % "javafx-controls" % "18.0.2" classifier "mac-aarch64"
-    ) ++ {
-      // Determine OS version of JavaFX binaries
-      lazy val osName = sys.props("os.name").toLowerCase match {
-        case n if n.contains("linux") => "linux"
-        case n if n.contains("mac") => "mac"
-        case n if n.contains("win") => "win"
-        case _ => throw new Exception("Unknown platform!")
-      }
-      Seq("base", "controls", "fxml", "graphics", "media", "swing", "web")
-        .map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName)
-    },
-
+      "com.typesafe.play" %% "play-json" % "2.10.5"
+    ) ++ setJavaFXVersion.value),
     assembly / assemblyJarName := {
       lazy val osName = sys.props("os.name").toLowerCase match {
         case n if n.contains("linux") => "linux"

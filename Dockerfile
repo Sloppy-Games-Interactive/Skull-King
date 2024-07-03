@@ -18,11 +18,16 @@ RUN apt update && \
     xvfb \
     x11vnc
 
+# Set environment variables for X11 forwarding
+ENV DISPLAY=host.docker.internal:0
+ENV LIBGL_ALWAYS_INDIRECT=true
+
+# Create a directory for X11 UNIX socket
+RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
+
 WORKDIR /skullking
 ADD . /skullking
 
-EXPOSE 5900
-ENV DISPLAY=:99
-CMD Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & \
-    x11vnc -forever -create -passwd yohoho & \
-    xvfb-run --auto-servernum --server-num=99 sbt -Djava.awt.headless=false -Dawt.useSystemAAFontSettings=lcd -Dsun.java2d.xrender=true run
+RUN sbt assembly
+
+CMD ["java", "-jar", "target/scala-3.4.0/SkullKing.jar"]

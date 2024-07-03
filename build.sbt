@@ -5,8 +5,12 @@ val setJavaFXVersion = settingKey[Seq[ModuleID]]("Sets the JavaFX version and cl
 setJavaFXVersion := {
   val arch = sys.props("os.arch")
   val isArm = arch == "aarch64"
-  val javafxVersion = if (isArm) "22-ea+28" else "22"
-  val javafxClassifier = if (isArm) "mac-aarch64" else "mac"
+  val javafxVersion = "22"
+  val javafxClassifier = sys.props("os.name").toLowerCase match {
+    case n if n.contains("linux") => if (isArm) "linux-aarch64" else "linux"
+    case n if n.contains("mac") => if (isArm) "mac-aarch64" else "mac"
+    case _ => "win"
+  }
   Seq(
     "org.openjfx" % "javafx-base" % javafxVersion classifier javafxClassifier,
     "org.openjfx" % "javafx-controls" % javafxVersion classifier javafxClassifier,

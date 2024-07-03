@@ -5,7 +5,7 @@ import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.StateComponent.*
-import de.htwg.se.skullking.model.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
 
 case class GameState(
   phase: Phase = Phase.PrepareGame,
@@ -163,4 +163,16 @@ case class GameState(
     val nextIndex = players.indexWhere(_.active) + 1
     players.lift(nextIndex)
   }
+}
+
+object GameStateFactory extends IGameStateFactory {
+  def apply(
+    round: Int,
+    phase: Phase,
+    playerLimit: Int,
+    roundLimit: Int,
+    deck: IDeck,
+    players: List[IPlayer],
+    tricks: List[ITrick]
+  ): IGameState = GameState(phase, playerLimit, players, round, tricks, deck, roundLimit)
 }

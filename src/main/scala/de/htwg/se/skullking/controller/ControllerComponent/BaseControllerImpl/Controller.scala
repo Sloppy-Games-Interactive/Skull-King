@@ -1,13 +1,14 @@
 package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
 import de.htwg.se.skullking.modules.Default.given
-import de.htwg.se.skullking.controller.ControllerComponent._
+import de.htwg.se.skullking.controller.ControllerComponent.*
 import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.FileIOComponent.IFileIO
 import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, IPlayerFactory}
 import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
-class Controller(var state: IGameState = summon[IGameState]) extends IController {
+class Controller(using var state: IGameState) extends IController {
   private val undoManager = UndoManager()
 
   def handleState(): Unit = {
@@ -62,6 +63,19 @@ class Controller(var state: IGameState = summon[IGameState]) extends IController
     handleState()
   }
 
+  def saveGame: Unit = {
+    summon[IFileIO].save(state)
+    notifyObservers(ControllerEvents.SaveGame)
+    handleState()
+  }
+  
+  def loadGame: Unit = {
+    state = summon[IFileIO].load
+    undoManager.doStep(new LoadGameCommand(this, state))
+    notifyObservers(ControllerEvents.LoadGame)
+    handleState()
+  }
+  
   def quit: Unit = {
     // TODO: implement save game state to file
     notifyObservers(ControllerEvents.Quit)

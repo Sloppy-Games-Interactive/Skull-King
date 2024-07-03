@@ -7,34 +7,24 @@
 
 ---
 
-## sbt project compiled with Scala 3
-
-### Usage
-
-This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
-
-For more information on the sbt-dotty plugin, see the
-[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
-
-This is the scull king game in scala. It is a card game. 
-
-
 # Skull King - Digital Card Game (Educational Project)
 
-![Skull King Logo](skull_king_logo.png)
+![Skull King Logo](doc/Title.png)
 
 Welcome to Skull King - the digital adaptation of the beloved card game! This project aims to bring the excitement and thrill of the Skull King card game to your computer screen, allowing you to enjoy endless rounds of strategic and entertaining gameplay.
 
 ## Features:
-### Not yet implemented
+
 1. **Digital Gameplay:** Experience the thrill of Skull King on your computer. Play anytime, anywhere!
 
 2. **Single Player Mode:** Test your skills against computer-controlled opponents of varying difficulty levels.
+#### Not yet implemented 
 
+---
 3. **Multiplayer Mode:** Challenge friends or compete against players from around the world in online multiplayer mode.
 
 4. **Customizable Rules:** Tailor the game to your preferences with customizable rule settings.
-
+---
 5. **Beautiful Design:** Enjoy stunning graphics and intuitive user interface designed for seamless gameplay experience.
 
 ## How to Play:
@@ -52,6 +42,18 @@ Skull King is a trick-taking game played with a standard deck of cards. The obje
 5. **Scoring:** Points are awarded based on successful bids and penalties are applied for failed bids.
 
 6. **Winning:** The player with the highest score at the end of the predetermined number of rounds wins the game.
+
+## Screenshots:
+### Main Menu:
+![Main Menu](doc/start-menu.png)
+### Add Player:
+![Add Player](doc/pre-game-view.png)
+### Game Play Screen:
+![Game Play Screen](doc/playerView.png)
+![Play Card Screen](doc/playCard.png)
+![Predict Screen](doc/predict.png)
+### Pause Menu:
+![Pause Menu](doc/menu.png)
 
 ## ~~Contributing~~:
 **At the moment, we cant accept any contributions because the project is still in development 
@@ -73,6 +75,17 @@ git clone https://github.com/Sloppy-Games-Interactive/Skull-King.git
 cd skull-king
 sbt run
 ```
+
+## sbt project compiled with Scala 3
+
+### Usage
+
+This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
+
+For more information on the sbt-dotty plugin, see the
+[scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).
+
+This is the scull king game in scala. It is a card game.
 
 ## License:
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE](LICENSE) file for details.

@@ -4,7 +4,7 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
-import de.htwg.se.skullking.view.gui.components.{BtnSize, CardPane, CardSize, GameButton, InputField}
+import de.htwg.se.skullking.view.gui.components.{BtnSize, CardEffect, CardPane, CardSize, GameButton, InputField}
 import scalafx.scene.layout.{FlowPane, HBox, StackPane, VBox}
 import scalafx.scene.text.{Font, Text}
 import scalafx.geometry.{Insets, Pos}
@@ -62,11 +62,8 @@ class AddPredictionPanel(
         case size if size > 7 => -100
       }
 
-      activeHand.children = handCards.map(card => new CardPane(card, CardSize.Small) {
+      activeHand.children = handCards.map(card => new CardPane(card, CardSize.Small, CardEffect.FlipOnce, showFaceUp = false) {
         padding = Insets(0, cardMargin, 0, 0)
-        onMouseClicked = _ => {
-          this.toFront()
-        }
       })
 
       var groupedPredictions: List[List[Int]] = (0 to handCards.size).grouped(8).toList.map(_.toList)

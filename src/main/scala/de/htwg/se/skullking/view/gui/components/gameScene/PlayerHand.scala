@@ -5,10 +5,12 @@ import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
 import scalafx.application.Platform
-import scalafx.geometry.{Insets, Pos}
+import scalafx.geometry.{Insets, Point2D, Pos}
 import scalafx.scene.layout.{HBox, VBox}
 import scalafx.animation.TranslateTransition
 import scalafx.util.Duration
+
+import java.awt.MouseInfo
 
 class PlayerHand(
   controller: IController,
@@ -26,7 +28,10 @@ class PlayerHand(
     toY = 0 // The final value of translateY
   }
 
-  onMouseEntered = _ => transition.playFromStart()
+  onMouseEntered = _ => {
+    transition.playFromStart()
+    cardList.foreach(_.flipFaceUp())
+  }
 
   transition.onFinished = _ => {
     transition.toY = if (translateY.value == 0) translateYValue else 0
@@ -34,9 +39,10 @@ class PlayerHand(
 
   onMouseExited = _ => transition.playFromStart()
 
+  var cardList:List[CardPane] = List()
   var handCards: HBox = new HBox {
     alignment = Pos.Center
-    children = List()
+    children = cardList
   }
 
   def update(event: ObservableEvent): Unit = {
@@ -52,12 +58,25 @@ class PlayerHand(
         case size if size > 7 => -100
       }
 
-      handCards.children = cards.map(card => new CardPane(card, CardSize.Medium) {
+      cardList = cards.map(card => new CardPane(
+        card = card,
+        size = CardSize.Medium,
+        showFaceUp = false
+      ) {
         padding = Insets(0, cardMargin, 0, 0)
         onMouseClicked = _ => onCardClicked(card)
       })
+      handCards.children = cardList
     }
   }
 
   children = handCards
+
+  Platform.runLater {
+    val mousePoint = new Point2D(MouseInfo.getPointerInfo.getLocation.getX, MouseInfo.getPointerInfo.getLocation.getY)
+    if (contains(mousePoint)) {
+      // Manually trigger the hover effect
+      onMouseEntered()
+    }
+  }
 }

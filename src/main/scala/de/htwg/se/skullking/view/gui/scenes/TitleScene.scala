@@ -2,7 +2,7 @@ package de.htwg.se.skullking.view.gui.scenes
 
 import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
-import de.htwg.se.skullking.view.gui.components.BtnSize.{large, medium, small}
+import de.htwg.se.skullking.view.gui.components.BtnSize.{large, medium}
 import de.htwg.se.skullking.view.gui.components.GameButton
 import scalafx.scene.Scene
 import scalafx.scene.control.Button

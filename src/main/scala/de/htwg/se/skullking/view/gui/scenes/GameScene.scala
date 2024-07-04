@@ -107,9 +107,6 @@ case class GameScene(
       new VBox {
         children = Seq(
           titleAndButton,
-//          new HBox {
-//            children = Seq(quitGameBtn)
-//          },
         )
       },
       new VBox {

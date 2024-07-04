@@ -29,14 +29,14 @@ class PauseMenuPanel(
       onAction = () => toggleClick()
     },
 
-    new GameButton(medium) {
-      text = "Scoreboard"
-      disable = true
-      onAction = () => {
-        toggleClick()
-        onClickScoreboardBtn()
-      }
-    },
+//    new GameButton(medium) {
+//      text = "Scoreboard"
+//      disable = true
+//      onAction = () => {
+//        toggleClick()
+//        onClickScoreboardBtn()
+//      }
+//    },
     new GameButton(medium) {
       text = "Undo"
       onAction = () => {

@@ -5,9 +5,9 @@ import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.GameButton
-import scalafx.scene.layout.VBox
 import scalafx.Includes.*
 import scalafx.geometry.Pos
+import scalafx.scene.layout.VBox
 
 import scala.collection.immutable.List
 

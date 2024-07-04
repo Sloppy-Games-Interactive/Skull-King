@@ -1,19 +1,24 @@
 package de.htwg.se.skullking.view.gui.components
 
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import scalafx.scene.image.{Image, ImageView}
-import scalafx.scene.layout.{Background, BackgroundFill, CornerRadii, HBox, Pane, Region}
-import scalafx.scene.shape.Rectangle
-import scalafx.scene.paint.Color
+import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Label
 import scalafx.scene.effect.InnerShadow
+import scalafx.scene.image.ImageView
 import scalafx.scene.layout.Priority.Always
+import scalafx.scene.layout.{HBox, Pane, Region}
+import scalafx.scene.paint.Color
 
-class PlayerListRow (player: IPlayer) extends HBox{
-  private val name = player.name
+class PlayerListRow (player: IPlayer, tricks: List[ITrick]) extends HBox{
+  private val truncatedName = if (player.name.length > 11) {
+    player.name.take(8) + "..."
+  } else player.name
+
+  private val name = truncatedName
   private val score = player.score
   private val isCurrentPlayer = player.active
+  private val prediction = player.prediction.getOrElse(0)
 
   alignment = Pos.CenterLeft
   private val imageView = new ImageView("/images/icon.png") {
@@ -35,8 +40,20 @@ class PlayerListRow (player: IPlayer) extends HBox{
   private val scoreLabel: Label = new Label(score.toString)
   scoreLabel.getStyleClass.add("score-label")
 
+  val wonTricks = for {
+    trick <- tricks
+    winner <- trick.winner if winner.name == player.name
+  } yield trick
+  val numTricksWon = wonTricks.length
 
-  private val activePlayer: Label = new Label("☠") {
+  val predictionText = s"$numTricksWon / $prediction"
+  private val predictionLabel: Label = new Label(predictionText)
+  predictionLabel.getStyleClass.add("prediction-label")
+
+
+//  val activePlayerMark = "☠"
+  val activePlayerMark = "#"
+  private val activePlayer: Label = new Label(activePlayerMark) {
     visible = isCurrentPlayer
     effect = new InnerShadow {
       color = Color.White
@@ -46,15 +63,29 @@ class PlayerListRow (player: IPlayer) extends HBox{
   }
   activePlayer.getStyleClass.add("active-player")
 
+  val playerRowBox = new HBox {
+    children = Seq(
+      imagePane,
+      nameLabel,
+      new Region {
+        hgrow = Always
+      },
+      scoreLabel,
+      activePlayer
+    )
+  }
+  playerRowBox.getStyleClass.add("player-row")
+
+  val predictionDisplay = new HBox {
+    children = Seq(
+      predictionLabel
+    )
+  }
+  predictionDisplay.getStyleClass.add("prediction-display")
+
   // Main layout of the row (HBox)
   val mainLayout = children = Seq(
-    imagePane,
-    nameLabel,
-    new Region {
-      hgrow = Always
-    },
-    scoreLabel,
-    activePlayer
+    playerRowBox,
+    predictionDisplay
   )
-  this.getStyleClass.add("player-row")
 }

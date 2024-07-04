@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.model.CardComponent.CardBaseImpl
 
-import de.htwg.se.skullking.model.CardComponent._
+import de.htwg.se.skullking.model.CardComponent.*
 
 abstract class Card extends ICard {
   def isSpecial: Boolean = suit.cardType match {

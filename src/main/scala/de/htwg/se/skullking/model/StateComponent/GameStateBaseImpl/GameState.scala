@@ -1,11 +1,11 @@
 package de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl
 
-import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.StateComponent.*
 import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.modules.Default.given
 
 case class GameState(
   phase: Phase = Phase.PrepareGame,
@@ -14,7 +14,8 @@ case class GameState(
   round: Int = 0,
   tricks: List[ITrick] = List(),
   deck: IDeck = summon[IDeck],
-  roundLimit: Int = 10
+  roundLimit: Int = 10,
+  lastTrickWinner: Option[IPlayer] = None
 ) extends IGameState {
   def handleEvent(event: GameStateEvent): IGameState = event match {
     case SetPlayerLimitEvent(n) if phase == Phase.PrepareGame && players.isEmpty => setPlayerLimit(n)
@@ -75,7 +76,10 @@ case class GameState(
   }
 
   private def startTrick: GameState = {
+    val lastWinner = activeTrick.flatMap(_.winner)
+    
     this.copy(
+      lastTrickWinner = lastWinner,
       tricks = summon[ITrick] :: tricks,
       players = setFirstActive(players)
     ).changePhase(Phase.PlayTricks)
@@ -135,9 +139,12 @@ case class GameState(
       }
     }
 
+    val lastWinner = activeTrick.flatMap(_.winner)
+
     val nextState = this.copy(
       players = updatedPlayers,
-      tricks = List()
+      tricks = List(),
+      lastTrickWinner = lastWinner
     )
 
     if (round == roundLimit) {

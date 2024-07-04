@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.PlayerComponent._
+import de.htwg.se.skullking.model.PlayerComponent.*
 
 case class Player(
   name: String,

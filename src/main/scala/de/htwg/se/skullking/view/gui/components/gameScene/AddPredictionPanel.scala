@@ -52,6 +52,10 @@ class AddPredictionPanel(
 
   def update(event: ObservableEvent): Unit = {
     Platform.runLater {
+      if (controller.state.activePlayer.isDefined) {
+        panelBodyText.text = getPanelBodyTextForPlayer()
+      }
+
       val handCards = controller.state.activePlayer match {
         case Some(player) => player.hand.cards
         case None => List()
@@ -120,16 +124,22 @@ class AddPredictionPanel(
     }
   }
 
+  private def getPanelBodyTextForPlayer(): String = {
+    s"${controller.state.activePlayer.get.name}, how many Tricks will you win this round?"
+  }
+
+  private val panelBodyText = new Text {
+    text = ""
+    style = "-fx-font-size: 46;"
+    fill = Color.White
+  }
+
   private val panelBody = new VBox {
     style = "-fx-spacing: 30;"
     alignment = Pos.Center
     children = Seq(
       activeHand,
-      new Text {
-        text = "How many Tricks will you win this round?"
-        style = "-fx-font-size: 46;"
-        fill = Color.White
-      },
+      panelBodyText,
       predictionButtons,
     )
   }

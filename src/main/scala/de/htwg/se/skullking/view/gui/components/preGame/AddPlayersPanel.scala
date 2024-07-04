@@ -4,13 +4,13 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{BtnSize, GameButton, InputField}
-import scalafx.scene.layout.{HBox, VBox}
-import scalafx.scene.text.{Font, Text}
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.paint.Color
-import scalafx.scene.control.Button
-import scalafx.event.ActionEvent
 import scalafx.Includes.*
+import scalafx.event.ActionEvent
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.control.Button
+import scalafx.scene.layout.{HBox, VBox}
+import scalafx.scene.paint.Color
+import scalafx.scene.text.{Font, Text}
 
 class AddPlayersPanel(controller: IController) extends VBox {
   prefHeight = 4000

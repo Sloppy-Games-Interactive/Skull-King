@@ -5,11 +5,10 @@ import de.htwg.se.skullking.model.FileIOComponent.IFileIO
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.model.StateComponent.{GameStateDeserializer, IGameState}
-
-import scala.io.Source
 import play.api.libs.json.{JsObject, Json}
 
 import java.io.{File, PrintWriter}
+import scala.io.Source
 
 
 class FileIO extends IFileIO {

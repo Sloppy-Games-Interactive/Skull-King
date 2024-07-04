@@ -1,8 +1,8 @@
 package de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl
 
-import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.{ICard, ICardFactory, IJokerCard, Suit}
 import de.htwg.se.skullking.model.DeckComponent.*
+import de.htwg.se.skullking.modules.Default.given
 
 import scala.collection.immutable.List
 

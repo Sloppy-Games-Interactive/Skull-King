@@ -4,17 +4,16 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
-import de.htwg.se.skullking.view.gui.components.{BtnSize, CardEffect, CardPane, CardSize, GameButton, InputField}
-import scalafx.scene.layout.{FlowPane, HBox, StackPane, VBox}
-import scalafx.scene.text.{Font, Text}
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.paint.Color
-import scalafx.scene.control.Button
-import scalafx.event.ActionEvent
-import scalafx.Includes.*
-import scalafx.application.Platform
+import de.htwg.se.skullking.view.gui.components.*
 import scalafx.Includes.*
 import scalafx.animation.PauseTransition
+import scalafx.application.Platform
+import scalafx.event.ActionEvent
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.control.Button
+import scalafx.scene.layout.{FlowPane, HBox, StackPane, VBox}
+import scalafx.scene.paint.Color
+import scalafx.scene.text.{Font, Text}
 import scalafx.util.Duration
 
 class AddPredictionPanel(

@@ -3,8 +3,7 @@ package de.htwg.se.skullking.view.gui.components.gameScene
 import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.{BtnSize, CardEffect, CardPane, CardSize, GameButton}
+import de.htwg.se.skullking.view.gui.components.*
 import scalafx.geometry.Pos
 import scalafx.scene.layout.{HBox, VBox}
 

@@ -1,11 +1,11 @@
 package de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl
 
-import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.DeckComponent.{DeckContent, IDeck, IDeckFactory}
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.StateComponent.*
 import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.modules.Default.given
 
 case class GameState(
   phase: Phase = Phase.PrepareGame,

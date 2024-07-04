@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent._
+import de.htwg.se.skullking.model.DeckComponent.*
 
 import scala.util.Random
 

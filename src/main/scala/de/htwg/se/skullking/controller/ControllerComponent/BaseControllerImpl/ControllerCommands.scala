@@ -1,11 +1,11 @@
 package de.htwg.se.skullking.controller.ControllerComponent.BaseControllerImpl
 
-import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.controller.ControllerComponent.*
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.FileIOComponent.IFileIO
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
-import de.htwg.se.skullking.model.StateComponent.{AddPlayerEvent, IGameState, PlayCardEvent, SetPlayerLimitEvent, SetPredictionEvent}
+import de.htwg.se.skullking.model.StateComponent.*
+import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.util.Command
 
 class AddPlayerCommand(val controller: IController, player: IPlayer) extends Command {

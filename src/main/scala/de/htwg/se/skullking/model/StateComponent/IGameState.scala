@@ -1,15 +1,14 @@
 package de.htwg.se.skullking.model.StateComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.model.DeckComponent.{DeckContent, DeckDeserializer, IDeck}
+import de.htwg.se.skullking.model.DeckComponent.{DeckDeserializer, IDeck}
 import de.htwg.se.skullking.model.PlayerComponent.{IPlayer, PlayerDeserializer}
 import de.htwg.se.skullking.model.trick.TrickComponent.{ITrick, TrickDeserializer}
-import de.htwg.se.skullking.modules.{Deserializer, Serializable}
 import de.htwg.se.skullking.modules.Default.given
-
+import de.htwg.se.skullking.modules.{Deserializer, Serializable}
+import play.api.libs.json.{JsObject, Json}
 
 import scala.xml.Elem
-import play.api.libs.json.{JsObject, Json}
 
 enum Phase {
   case PrepareGame

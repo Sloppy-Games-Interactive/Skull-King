@@ -1,6 +1,6 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
-import de.htwg.se.skullking.controller.ControllerComponent.{ControllerEvents, IController}
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium

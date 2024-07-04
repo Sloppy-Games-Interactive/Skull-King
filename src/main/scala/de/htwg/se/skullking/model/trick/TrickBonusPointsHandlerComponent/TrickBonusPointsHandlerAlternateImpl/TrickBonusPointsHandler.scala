@@ -1,8 +1,7 @@
 package de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.TrickBonusPointsHandlerAlternateImpl
 
-import de.htwg.se.skullking.model.trick.TrickComponent.*
 import de.htwg.se.skullking.model.trick.TrickBonusPointsHandlerComponent.ITrickBonusPointsHandler
-import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
+import de.htwg.se.skullking.model.trick.TrickComponent.*
 
 trait BonusPointsHandler {
   def handle(t: ITrick): Int

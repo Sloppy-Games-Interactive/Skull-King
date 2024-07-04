@@ -4,10 +4,10 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
+import scalafx.animation.{PauseTransition, TranslateTransition}
 import scalafx.application.Platform
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{HBox, VBox}
-import scalafx.animation.{PauseTransition, TranslateTransition}
 import scalafx.util.Duration
 
 class PlayerHand(

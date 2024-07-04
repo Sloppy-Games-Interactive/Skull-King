@@ -1,7 +1,7 @@
 package de.htwg.se.skullking.model.CardComponent
 
-import de.htwg.se.skullking.modules.{Deserializer, Serializable}
 import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.modules.{Deserializer, Serializable}
 import play.api.libs.json.{JsObject, Json}
 
 import scala.xml.Elem

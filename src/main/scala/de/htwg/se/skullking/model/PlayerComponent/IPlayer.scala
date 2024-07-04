@@ -1,11 +1,11 @@
 package de.htwg.se.skullking.model.PlayerComponent
 
 import de.htwg.se.skullking.model.CardComponent.ICard
-import de.htwg.se.skullking.modules.{Deserializer, Serializable}
 import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.modules.{Deserializer, Serializable}
+import play.api.libs.json.{JsObject, Json}
 
 import scala.xml.Elem
-import play.api.libs.json.{JsObject, Json}
 
 object PlayerDeserializer extends Deserializer[IPlayer] {
   private val PlayerFactory = summon[IPlayerFactory]

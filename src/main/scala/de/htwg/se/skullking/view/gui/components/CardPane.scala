@@ -1,13 +1,14 @@
 package de.htwg.se.skullking.view.gui.components
 
-import scalafx.scene.layout.{Pane, StackPane}
 import de.htwg.se.skullking.model.CardComponent.*
+import scalafx.Includes.*
+import scalafx.animation.{RotateTransition, ScaleTransition, Timeline, TranslateTransition}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.input.MouseEvent
+import scalafx.scene.layout.{Pane, StackPane}
 import scalafx.scene.transform.{Rotate, Scale, Translate}
-import scalafx.animation.{RotateTransition, ScaleTransition, Timeline, TranslateTransition}
 import scalafx.util.Duration
-import scalafx.Includes.*
+
 import scala.language.postfixOps
 
 enum CardSize {

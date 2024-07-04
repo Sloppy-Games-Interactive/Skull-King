@@ -4,10 +4,10 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.{large, medium}
 import de.htwg.se.skullking.view.gui.components.GameButton
+import scalafx.Includes.*
 import scalafx.scene.Scene
 import scalafx.scene.control.Button
 import scalafx.scene.layout.{HBox, VBox}
-import scalafx.Includes.*
 import scalafx.scene.text.Text
 
 

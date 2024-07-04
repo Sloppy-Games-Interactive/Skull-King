@@ -12,7 +12,11 @@ import scalafx.scene.effect.InnerShadow
 import scalafx.scene.layout.Priority.Always
 
 class PlayerListRow (player: IPlayer, tricks: List[ITrick]) extends HBox{
-  private val name = player.name
+  private val truncatedName = if (player.name.length > 11) {
+    player.name.take(8) + "..."
+  } else player.name
+
+  private val name = truncatedName
   private val score = player.score
   private val isCurrentPlayer = player.active
   private val prediction = player.prediction.getOrElse(0)

@@ -39,7 +39,7 @@ ImageView {
     -fx-border-width: 3;
     -fx-border-radius: 10;
     -fx-alignment: center;
-    -fx-min-width: 320;
+    -fx-min-width: 450;
 }
 
 .player-icon {

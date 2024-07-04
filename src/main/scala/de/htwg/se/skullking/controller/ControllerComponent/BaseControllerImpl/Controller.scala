@@ -9,7 +9,7 @@ import de.htwg.se.skullking.model.StateComponent.{IGameState, Phase}
 import de.htwg.se.skullking.util.UndoManager
 
 class Controller(using var state: IGameState) extends IController {
-  private val undoManager = UndoManager()
+  val undoManager = UndoManager()
 
   def handleState(): Unit = {
     state.phase match {

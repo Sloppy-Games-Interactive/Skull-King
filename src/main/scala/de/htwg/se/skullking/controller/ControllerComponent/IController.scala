@@ -7,6 +7,7 @@ import de.htwg.se.skullking.util.{Observable, ObservableEvent, UndoManager}
 
 trait IController() extends Observable {
   var state: IGameState
+  val undoManager: UndoManager
 
   def handleState(): Unit
 

@@ -33,3 +33,10 @@
     -fx-wrap-text: true;
     -fx-text-alignment: center;
 }
+
+.save-notification {
+    -fx-font-size: 150;
+    -fx-text-fill: #fff;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}

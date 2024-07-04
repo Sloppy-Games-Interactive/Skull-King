@@ -30,7 +30,11 @@ class PlayCardPanel(
     currentPlayer = Some(player)
 
     cardPreview.children = (currentCard, currentPlayer) match {
-      case (Some(card), Some(player)) => Seq(new CardPane(card, CardSize.Large, hoverEffect = CardEffect.None))
+      case (Some(card), Some(player)) => Seq(new CardPane(card, CardSize.Large, hoverEffect = CardEffect.None) {
+        onMouseClicked = _ => {
+          flip()
+        }
+      })
       case _ => Seq()
     }
   }

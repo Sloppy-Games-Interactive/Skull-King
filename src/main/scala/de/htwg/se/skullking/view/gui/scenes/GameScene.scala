@@ -86,6 +86,24 @@ case class GameScene(
           }
         }
         case ControllerEvents.NewGame => println("New Game") //TODO: Show Player
+        case ControllerEvents.SaveGame => {
+          saveNotificationModal.text = "Game saved!"
+          saveNotificationOverlay.openModal(fadeIn = true)
+
+          val pause = new PauseTransition(Duration(1500))
+          pause.onFinished = _ => saveNotificationOverlay.closeModal(fadeOut = true)
+          pause.play()
+        }
+        case ControllerEvents.LoadGame => {
+          Platform.runLater {
+            saveNotificationModal.text = "Game loaded!"
+            saveNotificationOverlay.openModal(fadeIn = true)
+
+            val pause = new PauseTransition(Duration(1500))
+            pause.onFinished = _ => saveNotificationOverlay.closeModal(fadeOut = true)
+            pause.play()
+          }
+        }
         case _ =>
       }
     }
@@ -111,6 +129,16 @@ case class GameScene(
     windowHeight,
     () => sceneContent,
     trickCompleteModal
+  )
+
+  val saveNotificationModal = new Label("") {
+    styleClass.add("save-notification")
+  }
+  val saveNotificationOverlay = new Overlay(
+    windowWidth,
+    windowHeight,
+    () => sceneContent,
+    saveNotificationModal
   )
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
@@ -195,6 +223,8 @@ case class GameScene(
       roundNumberOverlay.modal,
       trickCompleteOverlay.imageView,
       trickCompleteOverlay.modal,
+      saveNotificationOverlay.imageView,
+      saveNotificationOverlay.modal,
     )
   }
 

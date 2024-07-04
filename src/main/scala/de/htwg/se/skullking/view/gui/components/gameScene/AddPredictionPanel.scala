@@ -4,16 +4,17 @@ import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
-import de.htwg.se.skullking.view.gui.components.{BtnSize, CardPane, CardSize, GameButton, InputField}
-import scalafx.scene.layout.{FlowPane, HBox, StackPane, VBox}
-import scalafx.scene.text.{Font, Text}
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.paint.Color
-import scalafx.scene.control.Button
-import scalafx.event.ActionEvent
+import de.htwg.se.skullking.view.gui.components.*
 import scalafx.Includes.*
+import scalafx.animation.PauseTransition
 import scalafx.application.Platform
-import scalafx.Includes.*
+import scalafx.event.ActionEvent
+import scalafx.geometry.{Insets, Pos}
+import scalafx.scene.control.Button
+import scalafx.scene.layout.{FlowPane, HBox, StackPane, VBox}
+import scalafx.scene.paint.Color
+import scalafx.scene.text.{Font, Text}
+import scalafx.util.Duration
 
 class AddPredictionPanel(
   controller: IController,
@@ -62,12 +63,18 @@ class AddPredictionPanel(
         case size if size > 7 => -100
       }
 
-      activeHand.children = handCards.map(card => new CardPane(card, CardSize.Small) {
-        padding = Insets(0, cardMargin, 0, 0)
-        onMouseClicked = _ => {
-          this.toFront()
+      activeHand.children = handCards.zipWithIndex.map { case (card, index) =>
+        val cardPane = new CardPane(card, CardSize.Small, CardEffect.None, showFaceUp = false) {
+          padding = Insets(0, cardMargin, 0, 0)
         }
-      })
+
+        // Create a pause transition for the card
+        val pause = new PauseTransition(Duration(index * 200)) // 200ms delay between card flips
+        pause.onFinished = _ => cardPane.flipFaceUp() // Flip the card over when the pause finishes
+        pause.play()
+
+        cardPane
+      }
 
       var groupedPredictions: List[List[Int]] = (0 to handCards.size).grouped(8).toList.map(_.toList)
 

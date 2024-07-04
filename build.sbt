@@ -43,22 +43,10 @@ lazy val root = project
       "org.scala-lang.modules" %% "scala-xml" % "2.3.0",
       "com.typesafe.play" %% "play-json" % "2.10.5"
     ) ++ setJavaFXVersion.value),
-    assembly / assemblyJarName := {
-      lazy val osName = sys.props("os.name").toLowerCase match {
-        case n if n.contains("linux") => "linux"
-        case n if n.contains("mac") => "mac"
-        case n if n.contains("win") => "win"
-        case _ => throw new Exception("Unknown platform!")
-      }
-      s"SkullKing-${osName}.jar"
-    },
+    assembly / assemblyJarName := "SkullKing.jar",
     assembly / mainClass := Some("de.htwg.se.skullking.SkullKing"),
-    assembly / assemblyMergeStrategy := {
-      case PathList("META-INF", "substrate", "config", _*) => MergeStrategy.discard
-      case "module-info.class" => MergeStrategy.discard
-      case x => {
-        val oldStrategy = (assembly / assemblyMergeStrategy).value
-        oldStrategy(x)
-      }
-    },
+    assemblyMergeStrategy in assembly := {
+      case PathList("META-INF", _*) => MergeStrategy.discard
+      case _                        => MergeStrategy.first
+    }
   )

@@ -1,16 +1,24 @@
 package de.htwg.se.skullking.view.gui.components.modal
 
-import scalafx.scene.control.Button
-import scalafx.scene.effect.{BoxBlur, GaussianBlur}
+import scalafx.Includes.*
+import scalafx.animation.FadeTransition
+import scalafx.geometry.Pos
+import scalafx.scene.Node
+import scalafx.scene.effect.BoxBlur
 import scalafx.scene.image.{ImageView, WritableImage}
-import scalafx.scene.layout.{Pane, StackPane, VBox}
+import scalafx.scene.layout.StackPane
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
-import scalafx.Includes.*
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.Node
+import scalafx.util.Duration
 
-class Overlay(windowWidth: Double, windowHeight: Double, sceneContent: () => Node, modalBox: Node) {
+class Overlay(
+   windowWidth: Double,
+   windowHeight: Double,
+   sceneContent: () => Node,
+   modalBox: Node,
+   var onOpenFinish: () => Unit = () => (),
+   var onCloseFinish: () => Unit = () => ()
+) {
   val imageView = new ImageView{
     fitWidth <== windowWidth
     fitHeight <== windowHeight
@@ -38,14 +46,41 @@ class Overlay(windowWidth: Double, windowHeight: Double, sceneContent: () => Nod
     }
   }
   
-  def openModal(): Unit = {
+  def openModal(fadeIn: Boolean = false): Unit = {
     updateSnapshot()
     modal.visible = true
+
+    if (fadeIn) {
+      val fadeInTransition = new FadeTransition {
+        node = modal
+        fromValue = 0
+        toValue = 1
+        duration = Duration(500)
+        onFinished = _ => onOpenFinish()
+      }
+      fadeInTransition.play()
+    }
   }
   
-  def closeModal(): Unit = {
-    modal.visible = false
-    imageView.image = null
+  def closeModal(fadeOut: Boolean = false): Unit = {
+    if (fadeOut) {
+      val fadeOutTransition = new FadeTransition {
+        node = modal
+        fromValue = 1
+        toValue = 0
+        duration = Duration(500)
+        onFinished = _ => {
+          modal.visible = false
+          imageView.image = null
+          onCloseFinish()
+        }
+      }
+      fadeOutTransition.play()
+    } else {
+      modal.visible = false
+      imageView.image = null
+      onCloseFinish()
+    }
   }
 
   def toggleModal(): Unit = {

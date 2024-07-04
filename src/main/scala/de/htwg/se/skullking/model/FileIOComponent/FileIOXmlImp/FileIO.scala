@@ -4,8 +4,8 @@ import de.htwg.se.skullking.model.CardComponent.CardBaseImpl.CardFactory
 import de.htwg.se.skullking.model.CardComponent.{ICard, ICardFactory, IStandardCard, Suit}
 import de.htwg.se.skullking.model.DeckComponent.DeckBaseImpl.Deck
 import de.htwg.se.skullking.model.FileIOComponent.IFileIO
-import de.htwg.se.skullking.model.PlayerComponent.{IHand, IPlayer}
 import de.htwg.se.skullking.model.PlayerComponent.PlayerBaseImpl.{Hand, PlayerFactory}
+import de.htwg.se.skullking.model.PlayerComponent.{IHand, IPlayer}
 import de.htwg.se.skullking.model.StateComponent.GameStateBaseImpl.GameState
 import de.htwg.se.skullking.model.StateComponent.{GameStateDeserializer, IGameState, Phase}
 import de.htwg.se.skullking.model.trick.TrickComponent.TrickBaseImpl.Trick

@@ -1,11 +1,11 @@
 package de.htwg.se.skullking
 
-import de.htwg.se.skullking.modules.Default.given
 import de.htwg.se.skullking.controller.ControllerComponent.IController
+import de.htwg.se.skullking.modules.Default.given
+import de.htwg.se.skullking.view.gui.Gui
 import de.htwg.se.skullking.view.tui.Tui
 
 import scala.io.StdIn.readLine
-import de.htwg.se.skullking.view.gui.Gui
 
 object SkullKing {
   private val controller: IController = summon[IController]

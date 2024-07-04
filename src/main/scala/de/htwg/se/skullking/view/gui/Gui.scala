@@ -4,18 +4,14 @@ import de.htwg.se.skullking.controller.ControllerComponent.{ControllerEvents, IC
 import de.htwg.se.skullking.model.StateComponent.Phase
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.scenes.{GameScene, PreGameScene, SettingsScene, TitleScene}
+import scalafx.Includes.*
+import scalafx.application.JFXApp3.PrimaryStage
+import scalafx.application.{JFXApp3, Platform}
+import scalafx.scene.image.Image
+import scalafx.scene.text.Font
+import scalafx.scene.{ImageCursor, Scene}
 
 import scala.compiletime.uninitialized
-import scalafx.Includes.*
-import scalafx.application.JFXApp3
-import scalafx.geometry.Pos
-import scalafx.scene.{ImageCursor, Scene}
-import scalafx.scene.control.{Button, Label}
-import scalafx.scene.layout.{HBox, VBox}
-import scalafx.scene.image.{Image, ImageView}
-import scalafx.scene.text.Font
-import scalafx.application.Platform
-import scalafx.application.JFXApp3.PrimaryStage
 
 object Styles {
   val mainCss: String = getClass.getResource("/styles/main.css").toExternalForm

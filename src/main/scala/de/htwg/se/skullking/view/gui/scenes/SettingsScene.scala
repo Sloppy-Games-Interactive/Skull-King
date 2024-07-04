@@ -1,13 +1,13 @@
 package de.htwg.se.skullking.view.gui.scenes
 
+import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.GameButton
-import de.htwg.se.skullking.controller.ControllerComponent.IController
+import scalafx.Includes.*
 import scalafx.scene.Scene
 import scalafx.scene.control.Button
 import scalafx.scene.layout.{HBox, VBox}
-import scalafx.Includes.*
 
 case class SettingsScene(
   controller: IController,

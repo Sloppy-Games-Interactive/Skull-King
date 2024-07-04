@@ -1,26 +1,53 @@
 package de.htwg.se.skullking.view.gui.components.gameScene
 
 import de.htwg.se.skullking.controller.ControllerComponent.IController
+import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
-import de.htwg.se.skullking.view.gui.components.modal.Overlay
-import de.htwg.se.skullking.view.gui.components.{BtnSize, GameButton, InputField}
-import scalafx.scene.layout.{HBox, VBox}
-import scalafx.scene.text.{Font, Text}
-import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.paint.Color
-import scalafx.scene.control.Button
-import scalafx.event.ActionEvent
+import de.htwg.se.skullking.view.gui.components.{BtnSize, GameButton}
 import scalafx.Includes.*
+import scalafx.application.Platform
+import scalafx.geometry.Pos
+import scalafx.scene.layout.VBox
 
 class PauseMenuPanel(
   controller: IController,
   toggleClick: () => Unit = () => println("toggle"),
   onClickQuitBtn: () => Unit = () => println("Quit Game"),
   onClickScoreboardBtn: () => Unit = () => println("Scoreboard")
-) extends VBox{
+) extends VBox with Observer {
+  controller.add(this)
+
+  def update(event: ObservableEvent): Unit = {
+    Platform.runLater {
+      event match {
+        case _ => {
+          undoBtn.disable = !controller.undoManager.canUndo
+          redoBtn.disable = !controller.undoManager.canRedo
+        }
+      }
+    }
+  }
 
   alignment = Pos.TopRight
+
+  val undoBtn = new GameButton(medium) {
+    text = "Undo"
+    disable = !controller.undoManager.canUndo
+    onAction = () => {
+      toggleClick()
+      controller.undo
+    }
+  }
+
+  val redoBtn = new GameButton(medium) {
+    text = "Redo"
+    disable = !controller.undoManager.canRedo
+    onAction = () => {
+      toggleClick()
+      controller.redo
+    }
+  }
 
   children = Seq(
 
@@ -29,28 +56,8 @@ class PauseMenuPanel(
       onAction = () => toggleClick()
     },
 
-    new GameButton(medium) {
-      text = "Scoreboard"
-      disable = true
-      onAction = () => {
-        toggleClick()
-        onClickScoreboardBtn()
-      }
-    },
-    new GameButton(medium) {
-      text = "Undo"
-      onAction = () => {
-        toggleClick()
-        controller.undo
-      }
-    },
-    new GameButton(medium) {
-      text = "Redo"
-      onAction = () => {
-        toggleClick()
-        controller.redo
-      }
-    },
+    undoBtn,
+    redoBtn,
     new GameButton(medium) {
       text = "Save Game"
       onAction = () => {

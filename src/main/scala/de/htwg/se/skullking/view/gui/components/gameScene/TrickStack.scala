@@ -3,7 +3,7 @@ package de.htwg.se.skullking.view.gui.components.gameScene
 import de.htwg.se.skullking.controller.ControllerComponent.IController
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
+import de.htwg.se.skullking.view.gui.components.{CardEffect, CardPane, CardSize}
 import scalafx.application.Platform
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{HBox, StackPane, VBox}
@@ -29,7 +29,7 @@ class TrickStack(controller: IController) extends HBox with Observer {
       controller.state.activeTrick match {
         case Some(trick) =>
           trickStack.children = trick.cards.map(card => {
-            val cardPane = new CardPane(card, CardSize.XXMedium, hoverEffect = false)
+            val cardPane = new CardPane(card, CardSize.XXMedium, hoverEffect = CardEffect.None)
 
             // Check if the card's transforms are already stored in the map
             val (rotateTransform, translateTransform) = cardTransforms.get(card) match {

@@ -101,12 +101,7 @@ case class GameScene(
 
   var playerList: Seq[PlayerListRow] = Seq()
   val leftColumn: VBox = new VBox {
-    val title = new Label("Ye Olde Crew")
-    title.getStyleClass.add("title")
-
-    children = Seq(
-      title,
-    )
+    children = Seq()
   }
   leftColumn.spacing = 10
 

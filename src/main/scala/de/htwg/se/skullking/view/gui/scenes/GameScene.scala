@@ -34,8 +34,10 @@ case class GameScene(
       event match {
         case ControllerEvents.PromptPrediction if (!predictionOverlay.modal.visible.value) => predictionOverlay.openModal()
         case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal()
-        case ControllerEvents.PlayerAdded => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
-        case ControllerEvents.PromptCardPlay => leftColumn.children = controller.state.players.map(player => new PlayerListRow(player)) ++ playerList
+        case ControllerEvents.PlayerAdded|ControllerEvents.PromptCardPlay|ControllerEvents.CardPlayed => {
+          val finishedTricks = controller.state.tricks.filter(t => t.stack.length == controller.state.players.length)
+          leftColumn.children = controller.state.players.map(player => new PlayerListRow(player, finishedTricks)) ++ playerList
+        }
         case ControllerEvents.NewGame => println("New Game") //TODO: Show Player
         case _ =>
       }

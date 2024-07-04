@@ -14,6 +14,8 @@ import scalafx.event.ActionEvent
 import scalafx.Includes.*
 import scalafx.application.Platform
 import scalafx.Includes.*
+import scalafx.animation.PauseTransition
+import scalafx.util.Duration
 
 class AddPredictionPanel(
   controller: IController,
@@ -62,9 +64,18 @@ class AddPredictionPanel(
         case size if size > 7 => -100
       }
 
-      activeHand.children = handCards.map(card => new CardPane(card, CardSize.Small, CardEffect.FlipOnce, showFaceUp = false) {
-        padding = Insets(0, cardMargin, 0, 0)
-      })
+      activeHand.children = handCards.zipWithIndex.map { case (card, index) =>
+        val cardPane = new CardPane(card, CardSize.Small, CardEffect.None, showFaceUp = false) {
+          padding = Insets(0, cardMargin, 0, 0)
+        }
+
+        // Create a pause transition for the card
+        val pause = new PauseTransition(Duration(index * 200)) // 200ms delay between card flips
+        pause.onFinished = _ => cardPane.flipFaceUp() // Flip the card over when the pause finishes
+        pause.play()
+
+        cardPane
+      }
 
       var groupedPredictions: List[List[Int]] = (0 to handCards.size).grouped(8).toList.map(_.toList)
 

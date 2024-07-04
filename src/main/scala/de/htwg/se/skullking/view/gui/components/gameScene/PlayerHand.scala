@@ -5,12 +5,10 @@ import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.{CardPane, CardSize}
 import scalafx.application.Platform
-import scalafx.geometry.{Insets, Point2D, Pos}
+import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.layout.{HBox, VBox}
-import scalafx.animation.TranslateTransition
+import scalafx.animation.{PauseTransition, TranslateTransition}
 import scalafx.util.Duration
-
-import java.awt.MouseInfo
 
 class PlayerHand(
   controller: IController,
@@ -30,7 +28,6 @@ class PlayerHand(
 
   onMouseEntered = _ => {
     transition.playFromStart()
-    cardList.foreach(_.flipFaceUp())
   }
 
   transition.onFinished = _ => {
@@ -38,11 +35,10 @@ class PlayerHand(
   }
 
   onMouseExited = _ => transition.playFromStart()
-
-  var cardList:List[CardPane] = List()
+  
   var handCards: HBox = new HBox {
     alignment = Pos.Center
-    children = cardList
+    children = List()
   }
 
   def update(event: ObservableEvent): Unit = {
@@ -58,25 +54,25 @@ class PlayerHand(
         case size if size > 7 => -100
       }
 
-      cardList = cards.map(card => new CardPane(
-        card = card,
-        size = CardSize.Medium,
-        showFaceUp = false
-      ) {
-        padding = Insets(0, cardMargin, 0, 0)
-        onMouseClicked = _ => onCardClicked(card)
-      })
-      handCards.children = cardList
+      handCards.children = cards.zipWithIndex.map { case (card, index) =>
+        val cardPane = new CardPane(
+          card = card,
+          size = CardSize.Medium,
+          showFaceUp = false
+        ) {
+          padding = Insets(0, cardMargin, 0, 0)
+          onMouseClicked = _ => onCardClicked(card)
+        }
+
+        // Create a pause transition for the card
+        val pause = new PauseTransition(Duration(index * 200)) // 200ms delay between card flips
+        pause.onFinished = _ => cardPane.flipFaceUp() // Flip the card over when the pause finishes
+        pause.play()
+
+        cardPane
+      }
     }
   }
 
   children = handCards
-
-  Platform.runLater {
-    val mousePoint = new Point2D(MouseInfo.getPointerInfo.getLocation.getX, MouseInfo.getPointerInfo.getLocation.getY)
-    if (contains(mousePoint)) {
-      // Manually trigger the hover effect
-      onMouseEntered()
-    }
-  }
 }

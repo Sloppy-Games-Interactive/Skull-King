@@ -14,6 +14,10 @@ Label {
     /*-fx-border-width: 3;*/
 }
 
+.prediction-label {
+    -fx-padding: 20, 10;
+}
+
 .player-name {
     -fx-font-size: 24;
     -fx-text-fill: #fff;
@@ -35,6 +39,7 @@ ImageView {
     -fx-border-width: 3;
     -fx-border-radius: 10;
     -fx-alignment: center;
+    -fx-min-width: 320;
 }
 
 .player-icon {
@@ -45,6 +50,4 @@ ImageView {
 
 .active-player {
    -fx-font-size: 64;
-    -fx-font-family: Arial;
-
 }

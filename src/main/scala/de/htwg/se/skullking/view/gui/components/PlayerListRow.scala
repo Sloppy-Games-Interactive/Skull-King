@@ -2,14 +2,13 @@ package de.htwg.se.skullking.view.gui.components
 
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.model.trick.TrickComponent.ITrick
-import scalafx.scene.image.{Image, ImageView}
-import scalafx.scene.layout.{Background, BackgroundFill, CornerRadii, HBox, Pane, Region, VBox}
-import scalafx.scene.shape.Rectangle
-import scalafx.scene.paint.Color
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Label
 import scalafx.scene.effect.InnerShadow
+import scalafx.scene.image.ImageView
 import scalafx.scene.layout.Priority.Always
+import scalafx.scene.layout.{HBox, Pane, Region}
+import scalafx.scene.paint.Color
 
 class PlayerListRow (player: IPlayer, tricks: List[ITrick]) extends HBox{
   private val truncatedName = if (player.name.length > 11) {
@@ -77,11 +76,12 @@ class PlayerListRow (player: IPlayer, tricks: List[ITrick]) extends HBox{
   }
   playerRowBox.getStyleClass.add("player-row")
 
-  val predictionDisplay = new VBox {
+  val predictionDisplay = new HBox {
     children = Seq(
       predictionLabel
     )
   }
+  predictionDisplay.getStyleClass.add("prediction-display")
 
   // Main layout of the row (HBox)
   val mainLayout = children = Seq(

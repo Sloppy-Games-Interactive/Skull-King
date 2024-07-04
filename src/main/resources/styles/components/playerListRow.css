@@ -51,3 +51,7 @@ ImageView {
 .active-player {
    -fx-font-size: 64;
 }
+
+.prediction-display {
+    -fx-alignment: center;
+}

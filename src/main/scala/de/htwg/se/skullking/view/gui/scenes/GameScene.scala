@@ -1,26 +1,22 @@
 package de.htwg.se.skullking.view.gui.scenes
 
-import de.htwg.se.skullking.view.gui.Styles
-import de.htwg.se.skullking.view.gui.components.BtnSize.medium
-import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import de.htwg.se.skullking.controller.ControllerComponent.{ControllerEvents, IController}
 import de.htwg.se.skullking.model.CardComponent.ICard
 import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
-import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, ScoreboardPanel}
-import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, TrickStack}
+import de.htwg.se.skullking.view.gui.Styles
+import de.htwg.se.skullking.view.gui.components.BtnSize.medium
+import de.htwg.se.skullking.view.gui.components.gameScene.*
 import de.htwg.se.skullking.view.gui.components.modal.Overlay
-import scalafx.scene.Scene
-import scalafx.scene.control.{Button, Label}
-import scalafx.scene.layout.{HBox, Priority, Region, StackPane, VBox}
+import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
 import scalafx.Includes.*
-import scalafx.animation.{PauseTransition, Timeline}
+import scalafx.animation.PauseTransition
 import scalafx.application.Platform
 import scalafx.geometry.Pos
-import scalafx.scene.effect.{BlendMode, BoxBlur, GaussianBlur}
-import scalafx.scene.image.{Image, ImageView, WritableImage}
-import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
+import scalafx.scene.Scene
+import scalafx.scene.control.Label
+import scalafx.scene.image.{Image, ImageView}
+import scalafx.scene.layout.*
 import scalafx.util.Duration
 
 case class GameScene(
@@ -36,18 +32,43 @@ case class GameScene(
     leftColumn.children = controller.state.players.map(player => new PlayerListRow(player, finishedTricks)) ++ playerList
   }
 
+  def displayRoundNumberModal(): Unit = {
+    roundNumberModal.text = roundText()
+    roundNumberOverlay.openModal(fadeIn = true)
+
+    val pause = new PauseTransition(Duration(1500))
+    pause.onFinished = _ => roundNumberOverlay.closeModal(fadeOut = true)
+    pause.play()
+  }
+
+  def displayTrickWinnerModal(): Unit = {
+    val mostRecentCompleteTrick = controller.state.tricks.collectFirst({ case t if t.stack.length == controller.state.players.length => t })
+    if (mostRecentCompleteTrick.isDefined) {
+      trickCompleteModal.text = trickCompleteText(mostRecentCompleteTrick.get.winner.get)
+      trickCompleteOverlay.openModal(fadeIn = true)
+
+      val pause = new PauseTransition(Duration(1500))
+      pause.onFinished = _ => {
+        trickCompleteOverlay.closeModal(fadeOut = true)
+      }
+      pause.play()
+    }
+  }
+
   def update(event: ObservableEvent): Unit = {
     Platform.runLater {
       event match {
         case ControllerEvents.PromptPrediction => {
           val noPlayerHasPredicted = controller.state.players.forall(p => p.prediction.isEmpty)
           if (controller.state.tricks.isEmpty && noPlayerHasPredicted) {
-            roundNumberModal.text = roundText()
-            roundNumberOverlay.openModal(fadeIn = true)
-
-            val pause = new PauseTransition(Duration(1500))
-            pause.onFinished = _ => roundNumberOverlay.closeModal(fadeOut = true)
-            pause.play()
+            if (trickCompleteOverlay.modal.visible.value) {
+              trickCompleteOverlay.onCloseFinish = () => {
+                displayRoundNumberModal()
+                trickCompleteOverlay.onCloseFinish = () => ()
+              }
+            } else {
+              displayRoundNumberModal()
+            }
           }
           if (!predictionOverlay.modal.visible.value) predictionOverlay.openModal(fadeIn = true)
         }
@@ -57,18 +78,11 @@ case class GameScene(
         case ControllerEvents.CardPlayed => {
           updatePlayerList()
 
+          // no predictions == new round
+          val noPlayerHasPredicted = controller.state.players.forall(p => p.prediction.isEmpty)
           val activeTrick = controller.state.activeTrick
-          if (activeTrick.isDefined && activeTrick.get.stack.isEmpty) {
-            // new trick started after card was played
-            val mostRecentCompleteTrick = controller.state.tricks.collectFirst({ case t if t.stack.length == controller.state.players.length => t })
-            if (mostRecentCompleteTrick.isDefined) {
-              trickCompleteModal.text = trickCompleteText(mostRecentCompleteTrick.get.winner.get)
-              trickCompleteOverlay.openModal(fadeIn = true)
-
-              val pause = new PauseTransition(Duration(1500))
-              pause.onFinished = _ => trickCompleteOverlay.closeModal(fadeOut = true)
-              pause.play()
-            }
+          if (noPlayerHasPredicted || (activeTrick.isDefined && activeTrick.get.stack.isEmpty)) {
+            displayTrickWinnerModal()
           }
         }
         case ControllerEvents.NewGame => println("New Game") //TODO: Show Player
@@ -81,13 +95,23 @@ case class GameScene(
   val roundNumberModal = new Label(roundText()) {
     styleClass.add("round-number")
   }
-  val roundNumberOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, roundNumberModal)
+  val roundNumberOverlay = new Overlay(
+    windowWidth,
+    windowHeight,
+    () => sceneContent,
+    roundNumberModal
+  )
 
   private def trickCompleteText(player: IPlayer): String = s"Trick Complete, Player ${player.name} won!"
   val trickCompleteModal = new Label("") {
     styleClass.add("trick-complete")
   }
-  val trickCompleteOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, trickCompleteModal)
+  val trickCompleteOverlay = new Overlay(
+    windowWidth,
+    windowHeight,
+    () => sceneContent,
+    trickCompleteModal
+  )
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
   var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn, () => scoreboardOverlay.openModal())

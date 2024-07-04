@@ -3,8 +3,9 @@ package de.htwg.se.skullking.view.gui.scenes
 import de.htwg.se.skullking.view.gui.Styles
 import de.htwg.se.skullking.view.gui.components.BtnSize.medium
 import de.htwg.se.skullking.view.gui.components.{GameButton, PlayerListRow}
-import de.htwg.se.skullking.controller.ControllerComponent.{IController, ControllerEvents}
+import de.htwg.se.skullking.controller.ControllerComponent.{ControllerEvents, IController}
 import de.htwg.se.skullking.model.CardComponent.ICard
+import de.htwg.se.skullking.model.PlayerComponent.IPlayer
 import de.htwg.se.skullking.util.{ObservableEvent, Observer}
 import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, ScoreboardPanel}
 import de.htwg.se.skullking.view.gui.components.gameScene.{AddPredictionPanel, PauseMenuPanel, PlayCardPanel, PlayerHand, TrickStack}
@@ -13,13 +14,14 @@ import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.{HBox, Priority, Region, StackPane, VBox}
 import scalafx.Includes.*
-import scalafx.animation.Timeline
+import scalafx.animation.{PauseTransition, Timeline}
 import scalafx.application.Platform
 import scalafx.geometry.Pos
 import scalafx.scene.effect.{BlendMode, BoxBlur, GaussianBlur}
 import scalafx.scene.image.{Image, ImageView, WritableImage}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
+import scalafx.util.Duration
 
 case class GameScene(
   controller: IController,
@@ -29,14 +31,45 @@ case class GameScene(
 ) extends Scene(windowWidth, windowHeight) with Observer {
   controller.add(this)
 
+  private def updatePlayerList(): Unit = {
+    val finishedTricks = controller.state.tricks.filter(t => t.stack.length == controller.state.players.length)
+    leftColumn.children = controller.state.players.map(player => new PlayerListRow(player, finishedTricks)) ++ playerList
+  }
+
   def update(event: ObservableEvent): Unit = {
     Platform.runLater {
       event match {
-        case ControllerEvents.PromptPrediction if (!predictionOverlay.modal.visible.value) => predictionOverlay.openModal()
-        case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal()
-        case ControllerEvents.PlayerAdded|ControllerEvents.PromptCardPlay|ControllerEvents.CardPlayed => {
-          val finishedTricks = controller.state.tricks.filter(t => t.stack.length == controller.state.players.length)
-          leftColumn.children = controller.state.players.map(player => new PlayerListRow(player, finishedTricks)) ++ playerList
+        case ControllerEvents.PromptPrediction => {
+          val noPlayerHasPredicted = controller.state.players.forall(p => p.prediction.isEmpty)
+          if (controller.state.tricks.isEmpty && noPlayerHasPredicted) {
+            roundNumberModal.text = roundText()
+            roundNumberOverlay.openModal(fadeIn = true)
+
+            val pause = new PauseTransition(Duration(1500))
+            pause.onFinished = _ => roundNumberOverlay.closeModal(fadeOut = true)
+            pause.play()
+          }
+          if (!predictionOverlay.modal.visible.value) predictionOverlay.openModal(fadeIn = true)
+        }
+        case ControllerEvents.PredictionSet if (controller.state.activePlayer.get.prediction.isDefined) => predictionOverlay.closeModal(fadeOut = true)
+        case ControllerEvents.PlayerAdded => updatePlayerList()
+        case ControllerEvents.PromptCardPlay => updatePlayerList()
+        case ControllerEvents.CardPlayed => {
+          updatePlayerList()
+
+          val activeTrick = controller.state.activeTrick
+          if (activeTrick.isDefined && activeTrick.get.stack.isEmpty) {
+            // new trick started after card was played
+            val mostRecentCompleteTrick = controller.state.tricks.collectFirst({ case t if t.stack.length == controller.state.players.length => t })
+            if (mostRecentCompleteTrick.isDefined) {
+              trickCompleteModal.text = trickCompleteText(mostRecentCompleteTrick.get.winner.get)
+              trickCompleteOverlay.openModal(fadeIn = true)
+
+              val pause = new PauseTransition(Duration(1500))
+              pause.onFinished = _ => trickCompleteOverlay.closeModal(fadeOut = true)
+              pause.play()
+            }
+          }
         }
         case ControllerEvents.NewGame => println("New Game") //TODO: Show Player
         case _ =>
@@ -44,10 +77,17 @@ case class GameScene(
     }
   }
 
-//  private val quitGameBtn: Button = new GameButton(medium) {
-//    text = "Quit Game"
-//    onAction = onClickQuitBtn
-//  }
+  private def roundText(): String = s"Round ${controller.state.round}"
+  val roundNumberModal = new Label(roundText()) {
+    styleClass.add("round-number")
+  }
+  val roundNumberOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, roundNumberModal)
+
+  private def trickCompleteText(player: IPlayer): String = s"Trick Complete, Player ${player.name} won!"
+  val trickCompleteModal = new Label("") {
+    styleClass.add("trick-complete")
+  }
+  val trickCompleteOverlay = new Overlay(windowWidth, windowHeight, () => sceneContent, trickCompleteModal)
 
   var predictionModalBox: AddPredictionPanel = AddPredictionPanel(controller)
   var PauseMenu: PauseMenuPanel = PauseMenuPanel(controller, () => pauseMenuOverlay.toggleModal(), onClickQuitBtn, () => scoreboardOverlay.openModal())
@@ -132,6 +172,10 @@ case class GameScene(
       playCardOverlay.modal,
       scoreboardOverlay.imageView,
       scoreboardOverlay.modal,
+      roundNumberOverlay.imageView,
+      roundNumberOverlay.modal,
+      trickCompleteOverlay.imageView,
+      trickCompleteOverlay.modal,
     )
   }
 

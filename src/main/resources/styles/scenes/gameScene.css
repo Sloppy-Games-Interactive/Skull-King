@@ -21,3 +21,15 @@
 .title-and-button {
     -fx-padding: 20;
 }
+
+.round-number {
+    -fx-font-size: 200;
+    -fx-text-fill: #fff;
+}
+
+.trick-complete {
+    -fx-font-size: 100;
+    -fx-text-fill: #fff;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}

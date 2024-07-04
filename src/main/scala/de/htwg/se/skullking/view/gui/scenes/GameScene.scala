@@ -42,9 +42,9 @@ case class GameScene(
   }
 
   def displayTrickWinnerModal(): Unit = {
-    val mostRecentCompleteTrick = controller.state.tricks.collectFirst({ case t if t.stack.length == controller.state.players.length => t })
+    val mostRecentCompleteTrick = controller.state.lastTrickWinner
     if (mostRecentCompleteTrick.isDefined) {
-      trickCompleteModal.text = trickCompleteText(mostRecentCompleteTrick.get.winner.get)
+      trickCompleteModal.text = trickCompleteText(mostRecentCompleteTrick.get)
       trickCompleteOverlay.openModal(fadeIn = true)
 
       val pause = new PauseTransition(Duration(1500))

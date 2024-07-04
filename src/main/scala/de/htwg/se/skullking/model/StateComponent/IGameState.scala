@@ -87,6 +87,7 @@ trait IGameState extends Serializable{
   val tricks: List[ITrick]
   val deck: IDeck
   val roundLimit: Int
+  val lastTrickWinner: Option[IPlayer]
 
   override def toXml: Elem = {
     <GameState round={round.toString} phase={phase.toString} playerLimit={playerLimit.toString} roundLimit={roundLimit.toString}>
